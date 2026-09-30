@@ -75,7 +75,9 @@ If it fails with "port is already allocated", run
 
 ## 4. Connect the app
 
-Copy the templates into the project (same paths):
+Copy these templates into the project, at the same paths. (The production
+database's `migrate.yml` is separate, in `templates/supabase-prod/`; Ship It
+adds it with the production database.)
 
 | Template | What it is |
 |---|---|

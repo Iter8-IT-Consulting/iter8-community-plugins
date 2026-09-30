@@ -179,9 +179,16 @@ npm run build
 npm run test:e2e
 ```
 
-If `test:e2e` says port 3000 is already used (another app's dev server,
-or the user trying this one), run it on another port: `E2E_PORT=3100 npm run test:e2e`.
-Don't stop the other server without asking.
+**If port 3000 is busy**, check whose server it is: open
+http://localhost:3000 and compare the page title with this app's name.
+
+- **This app** (the user trying the story with `npm run dev`): just run
+  `npm run test:e2e`. Locally, the tests reuse that server, which is
+  what you want. (Next.js allows only one dev server per project folder,
+  so a second one on another port won't start.)
+- **Another app:** run the tests on a free port instead:
+  `E2E_PORT=3100 npm run test:e2e`. Don't stop the other app without
+  asking.
 
 All must pass. Then **self-review**: read the whole diff
 (`git diff dev...`) against the acceptance criteria. Look for leftover

@@ -185,9 +185,19 @@ function order(args) {
   const numbers = args.map(Number);
   if (numbers.length === 0 || numbers.some((n) => !n)) fail("usage: board.mjs order <issue-number>...");
   const github = readJourney();
-  const { project, items } = loadBoard(github);
-  const byNumber = new Map(repoItems(items, github).map((i) => [i.content.number, i.id]));
-  const missing = numbers.filter((n) => !byNumber.has(n));
+  // Cards added a moment ago (by `set`) can take a few seconds to show up in
+  // the board's item list, so wait for them before giving up.
+  let project;
+  let byNumber;
+  let missing;
+  for (let attempt = 0; attempt < 10; attempt++) {
+    if (attempt > 0) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 3000);
+    const board = loadBoard(github);
+    project = board.project;
+    byNumber = new Map(repoItems(board.items, github).map((i) => [i.content.number, i.id]));
+    missing = numbers.filter((n) => !byNumber.has(n));
+    if (missing.length === 0) break;
+  }
   if (missing.length) fail(`not on the board: ${missing.map((n) => `#${n}`).join(", ")}. Add them with \`set\` first.`);
 
   // Each item goes after the previous one; the first goes to the top.

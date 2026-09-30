@@ -94,7 +94,7 @@ SUPABASE_DB_PASSWORD="<password>" node <plugin>/shared/scripts/supabase-prod.mjs
 string with the password and stores it as the `SUPABASE_DB_URL` Actions
 secret. The password is then no longer needed in this session.
 
-Copy `<plugin>/shared/templates/supabase/.github/workflows/migrate.yml`
+Copy `<plugin>/shared/templates/supabase-prod/.github/workflows/migrate.yml`
 into the project. Commit it to `dev` with the `journey.json` update below,
 push, and prove the connection with a dry run (it lists the migrations it
 would apply and changes nothing):
