@@ -34,23 +34,23 @@ existing team), and nothing else. Say so when asking to go ahead.
   deploy), say what you're waiting on and roughly how long: "Installing
   the app's building blocks. This takes 2-5 minutes."
 - Don't run silent polling loops. Use a single blocking wait (`gh run
-  watch`, `vercel inspect --wait`) or one check the user can ask you to
-  repeat.
+  watch`, `vercel-check.mjs deployment`) or one check the user can ask
+  you to repeat.
 
 ## Files this skill uses
 
-Everything is next to this SKILL.md. Refer to this folder as `<skill-dir>`.
+`<skill-dir>` is the folder holding this SKILL.md. `<plugin>` is the
+iter8-it plugin folder, two levels up (`<skill-dir>/../..`).
 
 | Path | What it is |
 |---|---|
 | `scripts/apply-templates.mjs` | Copies the templates and branding into the scaffolded app and fills in the name and purpose. |
 | `scripts/board-status.mjs` | Makes the board's Status field Todo / In Progress / In Review / Done (empty boards only). |
-| `scripts/vercel-check.mjs` | `visible <owner>/<repo>`: can Vercel's GitHub App see the repo? `project <name>`: the project's Git connection, production branch and URL. |
+| `<plugin>/shared/scripts/vercel-check.mjs` | `account`: the Vercel account's email. `visible <owner>/<repo>`: can Vercel's GitHub App see the repo? `project <name>`: the project's Git connection, production branch and URL. |
 | `assets/templates/` | The project files, laid out as they go into the project. |
 | `assets/brand/` | Iter8 Community branding (favicon, palette, footer credit). |
 
-The shared contracts this skill writes to are in the plugin's `shared/`
-folder (`<skill-dir>/../../shared/`): `journey-schema.md`,
+The shared contracts this skill writes to are in `<plugin>/shared/`: `journey-schema.md`,
 `conventions.md`, `environments.md`.
 
 ## 0. Where are we?
@@ -115,7 +115,7 @@ stop. Don't create anything halfway.
    Never guess.
 7. **Commit identity.** Commits must use an email Vercel recognizes, or
    Vercel **blocks the deploy**. Get the Vercel account's email:
-   `node <skill-dir>/scripts/vercel-check.mjs account`. Ask what name and
+   `node <plugin>/shared/scripts/vercel-check.mjs account`. Ask what name and
    email commits in this project should use, offering the Vercel email as
    the default. If the user picks a different email (for example the one
    in `git config --global user.email`), warn that Vercel may block
@@ -322,7 +322,7 @@ with `git checkout -- .gitignore`.
 **Before connecting, check Vercel can see the repo:**
 
 ```bash
-node <skill-dir>/scripts/vercel-check.mjs visible <owner>/<slug>
+node <plugin>/shared/scripts/vercel-check.mjs visible <owner>/<slug>
 ```
 
 - `VISIBLE`: go on.
@@ -342,7 +342,7 @@ echo y | vercel git connect https://github.com/<owner>/<slug> --scope <scope>
 Check the connection and the production branch:
 
 ```bash
-node <skill-dir>/scripts/vercel-check.mjs project <slug>
+node <plugin>/shared/scripts/vercel-check.mjs project <slug>
 ```
 
 `git` must be `<owner>/<slug>` and `productionBranch` must be `main`. If
@@ -364,15 +364,14 @@ git push
 
 Say: "Vercel is building the live site. This takes 1-3 minutes."
 
-Find the deployment and wait for it:
+Wait for the deployment of that commit:
 
 ```bash
-vercel ls <slug> --scope <scope> --environment production --format json
-vercel inspect <newest deployment url> --scope <scope> --wait --timeout 10m
+node <plugin>/shared/scripts/vercel-check.mjs deployment <slug> $(git rev-parse HEAD)
 ```
 
-If it fails, `vercel inspect <url> --scope <scope> --logs`, explain, fix,
-push again.
+If `state` is `ERROR`: `vercel inspect <url> --scope <scope> --logs`,
+explain, fix, push again.
 
 If its state is **BLOCKED**, Vercel didn't recognize the commit's author
 email. Check `git log -1 --format='%ae'` against
@@ -383,7 +382,7 @@ commits that are already pushed.
 Get the production URL (`productionUrl`) from:
 
 ```bash
-node <skill-dir>/scripts/vercel-check.mjs project <slug>
+node <plugin>/shared/scripts/vercel-check.mjs project <slug>
 ```
 
 It's often `https://<slug>.vercel.app`, but not always: Vercel adds a

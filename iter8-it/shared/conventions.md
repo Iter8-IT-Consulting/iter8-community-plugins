@@ -61,9 +61,11 @@ with hyphens, e.g. `feature/12-join-with-qr-code`.
 
 ## Pull requests
 
-- A PR references its Issue (`Closes #12` only on release/hotfix PRs into
-  `main`; feature PRs into `dev` use `Refs #12`, because the Issue stays
-  open until it's live).
+- PRs reference their Issues with `Refs #12`, never `Closes #12`. An Issue
+  stays open until its work is live, and GitHub only auto-closes Issues
+  for PRs merged into the default branch (`dev`), which isn't live yet.
+  **Ship It closes Issues** once the release is checked in production,
+  with a "Live in vX.Y.Z" comment.
 - Release PRs (`dev -> main`) are merged with a **merge commit**, so
   `main`'s history shows each release.
 

@@ -2,21 +2,27 @@
 // Claim It: Vercel checks the CLI doesn't do. Run from the project root
 // after `vercel link` (the team comes from .vercel/project.json).
 //
-//   node <skill-dir>/scripts/vercel-check.mjs account
+//   node <plugin>/shared/scripts/vercel-check.mjs account
 //     The signed-in Vercel account's username and email. Vercel blocks
 //     deploys of commits whose author email it doesn't recognize, so commits
 //     should use this email. Works before `vercel link`.
 //
-//   node <skill-dir>/scripts/vercel-check.mjs visible <owner>/<repo>
+//   node <plugin>/shared/scripts/vercel-check.mjs visible <owner>/<repo>
 //     Can the Vercel GitHub App see the repo? Check before
 //     `vercel git connect` (which fails vaguely when it can't), and again
 //     after the user changes the app's access.
 //     Exit: 0 visible, 2 not visible (prints where to fix it), 1 error.
 //
-//   node <skill-dir>/scripts/vercel-check.mjs project <project-name>
+//   node <plugin>/shared/scripts/vercel-check.mjs project <project-name>
 //     Prints the project's Git connection, production branch and
 //     production URL as JSON.
 //     Exit: 0 ok, 1 error.
+//
+//   node <plugin>/shared/scripts/vercel-check.mjs deployment <project-name> <commit-sha> [minutes]
+//     Waits (default 10 minutes) for the production deployment of that
+//     commit to finish, then prints it as JSON. One blocking wait: it prints
+//     one line when it starts waiting and nothing more until it's done.
+//     Exit: 0 READY, 2 failed/blocked/canceled/timed out, 1 error.
 
 import fs from "node:fs";
 import os from "node:os";
@@ -31,8 +37,16 @@ function fail(message) {
   throw new CheckError(message);
 }
 
-if (!(command === "account" || (["visible", "project"].includes(command) && arg))) {
-  console.error("usage: vercel-check.mjs account | visible <owner>/<repo> | project <project-name>");
+if (
+  !(
+    command === "account" ||
+    (["visible", "project"].includes(command) && arg) ||
+    (command === "deployment" && arg && process.argv[4])
+  )
+) {
+  console.error(
+    "usage: vercel-check.mjs account | visible <owner>/<repo> | project <project-name> | deployment <project-name> <sha> [minutes]",
+  );
   process.exit(1);
 }
 
@@ -136,9 +150,40 @@ async function project(name) {
   return 0;
 }
 
+async function deployment(name) {
+  const sha = process.argv[4];
+  const minutes = Number(process.argv[5] ?? 10);
+  const deadline = Date.now() + minutes * 60_000;
+  const done = ["READY", "ERROR", "CANCELED", "BLOCKED"];
+  console.error(`Waiting for Vercel to build and deploy ${sha.slice(0, 7)} (up to ${minutes} minutes)...`);
+  let latest = null;
+  while (Date.now() < deadline) {
+    const { deployments } = await get(
+      `https://api.vercel.com/v6/deployments?app=${encodeURIComponent(name)}&target=production&limit=20&teamId=${teamId}`,
+    );
+    latest = deployments.find((d) => d.meta?.githubCommitSha === sha) ?? null;
+    if (latest && done.includes(latest.state ?? latest.readyState)) break;
+    await new Promise((resolve) => setTimeout(resolve, 10_000));
+  }
+  const state = latest ? (latest.state ?? latest.readyState) : "NOT_FOUND";
+  console.log(
+    JSON.stringify(
+      {
+        sha,
+        state: done.includes(state) || state === "NOT_FOUND" ? state : `TIMED_OUT (${state})`,
+        url: latest ? `https://${latest.url}` : null,
+        inspectorUrl: latest?.inspectorUrl ?? null,
+      },
+      null,
+      2,
+    ),
+  );
+  return state === "READY" ? 0 : 2;
+}
+
 try {
   init();
-  process.exitCode = await { account, visible, project }[command](arg);
+  process.exitCode = await { account, visible, project, deployment }[command](arg);
 } catch (err) {
   if (!(err instanceof CheckError)) throw err;
   console.error(`vercel-check: ${err.message}`);

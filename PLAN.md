@@ -727,6 +727,17 @@ GitHub owner `Iter8-IT-Consulting`, Vercel scope `iter8-community`.
   and explains a BLOCKED deploy. Separately, `git push` goes through Git
   Credential Manager, not `gh`, so it can push as a different GitHub
   account; Claim It offers `gh auth setup-git`.
+- **Build It / Ship It mechanics (2026-09-30):** a shared
+  `shared/scripts/board.mjs` (list in board order, set status, reorder)
+  and `shared/scripts/vercel-check.mjs` (moved from Claim It; adds
+  `deployment <project> <sha>`, which waits for the production deploy of
+  a commit via `meta.githubCommitSha`). `gh` 2.97 creates typed
+  sub-issues natively (`--type`, `--parent`). Stories are squash-merged
+  into `dev`; releases are merge commits into `main`, after which `dev`
+  is fast-forwarded to `main`. Ship It commits `lastRelease` to `dev`
+  *before* the release PR so `main` and `dev` end identical. Issues are
+  closed by Ship It, not by PR keywords: GitHub only auto-closes for PRs
+  into the default branch (`dev`).
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.
