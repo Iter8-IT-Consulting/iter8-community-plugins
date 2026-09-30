@@ -69,8 +69,9 @@ feature/<issue>-<slug> ──PR──▶ dev ──release PR──▶ main
 
 - **Builds `main` only.** Feature and dev branches point at a local
   database, so previews would have no DB. `vercel.json`:
-  `{ "git": { "deploymentEnabled": { "main": true, "*": false } } }`
-  (verify the current syntax when building).
+  `{ "git": { "deploymentEnabled": { "main": true, "**": false } } }`.
+  (`"**"`, not `"*"`: Vercel matches with minimatch, where `*` doesn't
+  cross a `/`, so `"*"` would still deploy `feature/...` branches.)
 - Production env vars (`NEXT_PUBLIC_SUPABASE_URL`,
   `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`) are set on
   Vercel's Production environment by Ship It from the command line
