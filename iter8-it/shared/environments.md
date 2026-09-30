@@ -71,9 +71,11 @@ feature/<issue>-<slug> ──PR──▶ dev ──release PR──▶ main
   database, so previews would have no DB. `vercel.json`:
   `{ "git": { "deploymentEnabled": { "main": true, "*": false } } }`
   (verify the current syntax when building).
-- Production env vars reach Vercel through the Supabase <-> Vercel
-  integration (Production environment). This is the only Supabase
-  integration used.
+- Production env vars (`NEXT_PUBLIC_SUPABASE_URL`,
+  `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`) are set on
+  Vercel's Production environment by Ship It from the command line
+  (`supabase-prod.mjs vercel-env`). No Supabase dashboard integrations
+  are used.
 
 ## CI
 

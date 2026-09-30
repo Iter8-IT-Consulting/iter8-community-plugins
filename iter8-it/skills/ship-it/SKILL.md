@@ -99,9 +99,9 @@ Show the summary and the proposal, and ask to go ahead:
 If the release includes `supabase/migrations/` files, or the app uses
 Supabase (`journey.json` `supabase.local` is `true`), and
 `supabase.projectRef` is `null`: this release creates the production
-database. Tell the user what that involves (a free Supabase project, one
-dashboard step for them) and follow `<plugin>/shared/supabase-prod.md`
-before step 3.
+database. Tell the user what that involves (a free Supabase project,
+about 5 minutes, and a password to save) and follow
+`<plugin>/shared/supabase-prod.md` before step 3.
 
 ## 3. Release PR
 

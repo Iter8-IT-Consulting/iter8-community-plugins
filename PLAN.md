@@ -738,6 +738,23 @@ GitHub owner `Iter8-IT-Consulting`, Vercel scope `iter8-community`.
   *before* the release PR so `main` and `dev` end identical. Issues are
   closed by Ship It, not by PR keywords: GitHub only auto-closes for PRs
   into the default branch (`dev`).
+- **Database procedures (2026-09-30).** `shared/supabase-local.md` and
+  `shared/supabase-prod.md`, with helpers `supabase-ports.mjs` (each
+  project gets its own block of ten local ports: ScoreIt and DDJ already
+  hold 5432x and 5532x on Adam's machine), `supabase-env.mjs` and
+  `supabase-prod.mjs`. Env names follow what the Supabase Vercel
+  integration syncs today (publishable keys, not the legacy anon key):
+  `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`,
+  `SUPABASE_SECRET_KEY`. **The Supabase <-> Vercel dashboard integration is
+  replaced** by `vercel env add` with keys from `supabase projects
+  api-keys`: same variables, no dashboard pause. `supabase link` writes
+  the session-pooler URL (port 5432) to `supabase/.temp/pooler-url`,
+  which becomes the `SUPABASE_DB_URL` secret. `migrate.yml`'s manual run
+  defaults to `--dry-run`, so proving the connection from `dev` changes
+  nothing. `supabase init` no longer prompts; `supabase migration new`
+  waits on stdin when it isn't a terminal, so tools must close stdin.
+  Supabase Free allows 2 active projects per org, and paid orgs pay about
+  $10 a month per extra project, so supabase-prod asks for the plan first.
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.

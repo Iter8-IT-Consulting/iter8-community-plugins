@@ -1,0 +1,47 @@
+name: Migrate production database
+
+# The only thing that changes the production database schema. Runs when a
+# release that includes new migrations reaches main.
+on:
+  push:
+    branches: [main]
+    paths: ["supabase/migrations/**"]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Only show what would be applied"
+        type: boolean
+        default: true
+
+concurrency:
+  group: migrate-production
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    name: Apply migrations to production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # SUPABASE_DB_URL: the production session-pooler connection string
+      # (IPv4; GitHub's runners can't reach the direct host), password
+      # percent-encoded. Set by Ship It.
+      - name: Apply migrations
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ]; then
+            echo "::error::The SUPABASE_DB_URL secret isn't set. Ship It sets it up."
+            exit 1
+          fi
+          if [ "$DRY_RUN" = "true" ]; then
+            npx supabase db push --db-url "$SUPABASE_DB_URL" --dry-run
+          else
+            npx supabase db push --db-url "$SUPABASE_DB_URL" --yes
+          fi
