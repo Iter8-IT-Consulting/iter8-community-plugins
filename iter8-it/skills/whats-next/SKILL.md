@@ -1,15 +1,80 @@
 ---
 name: whats-next
-description: "What's Next — Where am I in the iter8-it journey, and what should I do next? Use when someone asks 'what's next', 'where am I', 'what should I do now', or seems unsure which step to run."
+description: "What's Next — Where am I in the iter8-it journey, and what should I do next? Looks at the project's files, board and releases and recommends one next step. Use when someone asks 'what's next', 'where am I', 'what should I do now', 'where were we', comes back to a project after a break, or seems unsure which step to run."
 ---
 
 # What's Next
 
-**Helper for the iter8-it journey.** Reads `journey.json`, the board and the
-difference between `dev` and `main`, and suggests the next step.
+**A helper for the iter8-it journey.** It answers "where am I, and what
+should I do next?" in a few lines, and offers to start that step.
 
-> **Not built yet.** This skill is a placeholder so the plugin structure can
-> be installed and tested. If someone runs it, tell them plainly that What's
-> Next isn't available yet in this version of iter8-it, and stop.
+It only reads; it never changes anything.
 
-Design: see PLAN.md section 3.11.
+## 1. Gather the facts
+
+`<plugin>` is the iter8-it plugin folder (two levels up from this
+SKILL.md). From the project folder:
+
+```bash
+node <plugin>/shared/scripts/status.mjs
+```
+
+It reports (as JSON):
+
+- `product`: which `PRODUCT.md` sections exist;
+- `journey`: the stage, live URL, needs, database and last release;
+- `git`: the current branch, uncommitted changes, and `unreleasedCommits`
+  (on `dev`, not yet live);
+- `openPullRequests`;
+- `board`: Todo, In Progress and In Review items, and how many are Done;
+- `laterIdeas`: Features labelled `later`.
+
+No `PRODUCT.md` and no `journey.json`: this folder hasn't started the
+journey. Recommend **Spot It** (or ask if they meant another folder).
+
+## 2. Decide
+
+Go down this list and stop at the **first** match. That's the
+recommendation.
+
+| # | If | Recommend |
+|---|---|---|
+| 1 | No Problem in `PRODUCT.md` | **Spot It** |
+| 2 | Still `# (unnamed)`, or no `name` in `journey.json` | **Name It** |
+| 3 | No live URL (`journey.liveUrl` is null) | **Claim It** |
+| 4 | Uncommitted changes, or a story In Progress | **Build It**, to finish that story (name it) |
+| 5 | An open PR into `dev` | **Build It**, to finish that PR (checks, merge) |
+| 6 | An open PR into `main` | **Ship It**, to finish that release |
+| 7 | No People in `PRODUCT.md` | **Meet It** |
+| 8 | No Epics or Features yet (board empty, no `later` ideas) | **Dream It** |
+| 9 | No First Version in `PRODUCT.md`, or `needs` not decided | **Trim It** |
+| 10 | Unreleased commits, and either 3+ stories In Review or the last Todo item of the first version is merged | **Ship It** (strongly) |
+| 11 | Unreleased commits | **Build It** for the next item, *or* Ship It. Recommend shipping if a person can now do something useful end to end. |
+| 12 | Items in Todo | **Build It**: the top Todo item (name it) |
+| 13 | Nothing in Todo, In Progress or In Review | **Grow It** (see below) |
+
+Some steps can run out of order (Meet It before Claim It, say); if the
+facts show that happened, don't send them back. Only recommend a step
+whose inputs are missing if it's genuinely next.
+
+**Grow It isn't built yet.** For row 13 recommend **Dream It** (new
+ideas) then **Trim It** (reconsider the `later` ideas and plan the next
+batch), and mention that Grow It will do this more fully in a later
+version.
+
+## 3. Tell them
+
+Keep it short: where they are (two or three lines), then **one**
+recommendation with the reason, then an offer.
+
+> **Plug Test** is live at https://itplug-test-1.vercel.app (v0.1.0).
+> One story is merged but not live yet (*Visitor can read the guestbook*),
+> and you're partway through *Visitor can sign the guestbook*, with
+> unsaved changes on its branch.
+>
+> **Next: finish that story with Build It.** Then both guestbook stories
+> can go live together with Ship It.
+>
+> Start Build It now?
+
+If they say yes, run that step's skill.
