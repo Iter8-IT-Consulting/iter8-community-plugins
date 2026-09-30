@@ -2,6 +2,11 @@
 
 {{PURPOSE}}
 
+## Who it's for
+
+_Meet It fills this in: the people this app is for, linked to their full
+descriptions in [PRODUCT.md](PRODUCT.md#people)._
+
 ## Run it locally
 
 You need Node.js {{NODE_MAJOR}} or newer.
@@ -22,6 +27,6 @@ npm run test:e2e    # end-to-end tests (first time: npx playwright install chrom
 
 ## About
 
-What this is and who it's for: [PRODUCT.md](PRODUCT.md).
+The problem, the people and the first version: [PRODUCT.md](PRODUCT.md).
 
 Started with tools from the [Iter8 Community](https://www.iter8.community).

@@ -85,6 +85,21 @@ devices keep CI to one browser download), and run `npm run test:e2e` to
 check it passes. If nobody uses one of the two, leave it anyway: it's
 cheap and catches layout bugs.
 
+**`README.md`**: the **Who it's for** section (right under the title and
+purpose line) lists each persona with a link to their full description,
+so anyone opening the repo finds them first. Replace the section's
+contents, or add the section there if it's missing:
+
+```markdown
+## Who it's for
+
+- **[Presenter](PRODUCT.md#presenter)**: give a talk everyone in the room can follow.
+- **[Audience Member](PRODUCT.md#audience-member)**: follow the slides on their phone, live.
+```
+
+The link is the persona's heading in `PRODUCT.md`, lowercased, with spaces
+as hyphens. The one-liner is their "trying to get done", shortened.
+
 `journey.json`: `stage` = `"meet-it"` if it was earlier.
 
 **After Claim It**, commit to `dev` and push (this is a plan change, not
@@ -93,7 +108,7 @@ code, so no PR is needed):
 ```bash
 git switch dev
 git pull
-git add PRODUCT.md journey.json playwright.config.ts
+git add PRODUCT.md README.md journey.json playwright.config.ts
 git commit -m "Meet It: the people <Name> is for"
 git push
 ```
@@ -102,9 +117,9 @@ Before Claim It, don't commit; Claim It makes the first commit.
 
 ## 4. What next?
 
-After Claim It, give them the page to share: GitHub shows `PRODUCT.md`
-nicely at `https://github.com/<owner>/<repo>/blob/dev/PRODUCT.md`. That's
-the project's "who it's for" page. (`PRODUCT.md` stays the source: skills
+After Claim It, point them to where the personas live: the repo's front
+page (`https://github.com/<owner>/<repo>`), whose README now opens with
+**Who it's for**, linking to the full descriptions in `PRODUCT.md`. (`PRODUCT.md` stays the source: skills
 read it every time, and it's versioned with the code.)
 
 "Next is **Dream It**: getting every feature idea for these people out of
