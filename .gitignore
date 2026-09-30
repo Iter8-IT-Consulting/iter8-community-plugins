@@ -1,0 +1,12 @@
+# Per-developer identity. Differs per person, so it's never committed.
+USER.md
+
+# Personal/local Claude Code overrides (permission allowlists, etc.).
+# .claude/settings.json (project-shared) is still tracked.
+/.claude/settings.local.json
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+node_modules/

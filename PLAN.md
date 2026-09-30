@@ -1,0 +1,696 @@
+# Plan: the "It" app-building plugin
+
+A Claude Code plugin that walks someone from "I have a problem" to "my app is
+live and improving", one named step at a time. Each step is a skill:
+
+| # | Step | One-liner |
+|---|------|-----------|
+| 1 | **Spot It** | Find a real problem in your life or work that a simple app could fix. |
+| 2 | **Name It** | Give your project a name. It forces you to decide what it's really for. |
+| 3 | **Claim It** *(working name)* | Claim your name on the internet: a real project and a live page, so it's real from the start. |
+| 4 | **Meet It** | Get to know the people who will use it: what they're trying to get done and what frustrates them today. |
+| 5 | **Dream It** | Get every feature idea out of your head and onto the table, big or small. |
+| 6 | **Trim It** | Cut the list down to the smallest version someone would actually use. |
+| 7 | **Build It** | Add the features one small piece at a time, checking each one as you go. |
+| 8 | **Ship It** | Put what you've built live for real users, and check it works there. |
+| 9 | **Fix It** | Things will break. Find out why, fix it, and put the fix live. |
+| 10 | **Grow It** | Keep improving your app with what you learn from real use. |
+
+**Build It -> Ship It is a loop, not a one-time step.** Build It moves work
+from feature branches into `dev`. Ship It promotes `dev` to production. You
+go around it for every release, and Fix It and Grow It feed back into it.
+
+**The one-time "hello world" moment is Claim It**, right after Name It. It
+creates the repo, the board, CI, the Vercel project, and a live starter
+page. After that, everything else (the backlog, the code, the database)
+builds on real infrastructure.
+
+This plugin stands on its own. It is **not** a replacement for
+`iter8-rails-plugins` (`iter8-dev-workflows` / `iter8-po-workflows`), which
+continue separately. That repo (`C:\Source\iter8-rails-plugins`) is a useful
+reference for structure and for proven details, called out below where
+relevant, but nothing here depends on it.
+
+The first real test of the finished plugin is rebuilding **SlideIt** from
+scratch (see [Acceptance test](#7-acceptance-test-slideit)).
+
+---
+
+## 1. Principles
+
+These apply to every skill and should be stated in the plugin README.
+
+- **Journey, not roles.** Skills are organized by where the project is, not
+  by who is using them. A solo builder runs all of them.
+- **Plain language.** The steps are written for builders who may not be
+  professional developers. Skills explain what they're doing and why in
+  everyday words, and ask one clear question at a time.
+- **Real from the start.** After Claim It there is a live URL, and every
+  later step keeps it working.
+- **Nothing before it's needed.** Infrastructure is provisioned only when
+  something has shown it's needed:
+  - No database unless the project needs one. The deciding factor is
+    usually **auth**: if users sign in, the app uses Supabase (Auth + DB).
+    Trim It records the need. **Build It** sets up the local Supabase
+    when the first story needs it, and **Ship It** creates the production
+    project on the first release that needs it.
+  - **No app tables at setup.** `supabase/migrations/` starts empty. The
+    Supabase CLI tracks applied migrations itself (in the database's
+    `supabase_migrations` schema), so no tracking table is needed either.
+    Domain tables arrive through user stories in Build It.
+- **Mostly free.** Default to free tiers: GitHub, Vercel Hobby/Team, and the
+  Supabase Free plan. Anything paid is offered, never assumed, and its cost
+  is stated up front.
+- **One cloud database, local everything else** (see
+  [Environments and branching](#2a-environments-and-branching)).
+  Supabase's cloud project is **production only**. Development runs against
+  a **local Supabase in Docker**. There is no Supabase Branching, no
+  persistent cloud dev branch, and no Supabase <-> GitHub integration.
+- **Personas drive everything.** Features and stories are always deliverables
+  to a named persona, never infrastructure-for-its-own-sake.
+- **Epic / Feature / Story hierarchy** on a **Kanban** board
+  (Todo / In Progress / In Review / Done). No sprints.
+- **Small, iterative, live.** Work isn't done when it's merged. It's done
+  when Ship It has put it in production and checked it there.
+- **Each step is runnable on its own** and also offers to flow straight into
+  the next step. Spot / Name / Claim often happen in one sitting, as do
+  Meet / Dream / Trim.
+- **Every step checks the previous ones.** Running a step whose inputs are
+  missing says what's missing and offers to run the earlier step. It never
+  silently guesses.
+
+---
+
+## 2. Shared project state
+
+Steps hand information to each other through two files at the project root
+plus GitHub Issues. Both files are committed.
+
+### `PRODUCT.md` (human-readable, the product's source of truth)
+
+```markdown
+# <Display Name>
+
+<one-line purpose>            <- Name It
+
+## Problem                    <- Spot It
+Who has it, what happens today, why it matters, how we'll know it's solved.
+
+## People                     <- Meet It
+### <Persona name>
+- Trying to get done: ...
+- Frustrations today: ...
+- Context: device, setting, skill level (e.g. "on a phone, in an audience")
+
+## First Version              <- Trim It
+The goal of the first version in a paragraph, what's explicitly out (for
+now), and what the app needs (sign-in? stored data?). The feature list
+itself lives on the board.
+```
+
+### `journey.json` (machine-readable, what skills read and write)
+
+```json
+{
+  "stage": "build-it",
+  "name": "SlideIt",
+  "slug": "slideit",
+  "purpose": "Markdown slides delivered live to your audience's phones.",
+  "needs": {
+    "auth": true,
+    "database": true,
+    "decidedIn": "trim-it"
+  },
+  "github": { "owner": "Iter8-IT-Consulting", "repo": "slideit", "project": 3 },
+  "vercel": { "scope": "iter8-community", "project": "slideit", "url": "https://slideit.vercel.app" },
+  "supabase": {
+    "local": true,
+    "org": "<org-id>",
+    "projectRef": null,
+    "region": "us-east-1"
+  },
+  "lastRelease": { "tag": null, "at": null }
+}
+```
+
+- `stage` is the furthest step completed. It is a hint for "what's next",
+  not a lock: any step can be rerun.
+- Fields are `null` until the step that owns them runs.
+- Keep a short schema doc in `shared/journey-schema.md`. Treat it as the
+  contract between skills; change it deliberately.
+
+### Work items: GitHub Issues from Dream It onward
+
+Because Claim It creates the repo and board **before** Meet / Dream / Trim,
+ideas go straight into GitHub Issues. There is no local idea list to import
+later. Dream It creates Epics and Features (unprioritized). Trim It puts
+first-version Features on the board in order and labels the rest `later`.
+Build It splits a Feature into Stories when it picks it up.
+
+### Before Claim It
+
+Spot It and Name It are **local only**: a folder, `git init`, `PRODUCT.md`
+and `journey.json`. Someone can stop there with nothing to tear down.
+
+### Everything else
+
+- `CLAUDE.md`, written by Claim It and extended by later steps: stack,
+  conventions, environments, and pointers to `PRODUCT.md` / `journey.json`.
+  It should not duplicate the product content.
+- `USER.md` (gitignored) holds per-developer identity if a skill needs it.
+
+---
+
+## 2a. Environments and branching
+
+This is the model that Claim It sets up and that Build It, Ship It and Fix
+It follow.
+
+```
+feature/<issue>-<slug> ──PR──▶ dev ──release PR──▶ main
+        │                       │                    │
+        └── local Supabase (Docker) ─┘                ├─▶ Vercel production build
+                                                     └─▶ GitHub Action: supabase db push
+                                                          (prod Supabase project)
+       \_________ Build It _________/  \______________ Ship It ______________/
+```
+
+| Branch | Code runs against | Deploys to |
+|---|---|---|
+| `feature/*` | Local Supabase (`supabase start`, Docker) | Nothing (local only) |
+| `dev` | Local Supabase | Nothing (integration branch) |
+| `main` | Production Supabase project (cloud, Free plan) | Vercel production + migration Action |
+
+- **Local Supabase.** `npx supabase start` runs the full stack (Postgres,
+  Auth, Realtime, Studio) in Docker. `npx supabase db reset` rebuilds the
+  local DB from `supabase/migrations/` (+ `supabase/seed.sql`). `.env.local`
+  is written from `npx supabase status -o env`, so it always points at local.
+- **Migrations.** Written as files in `supabase/migrations/`, either by hand
+  (`supabase migration new`) or generated from local changes with
+  `supabase db diff -f <name>`. Docker makes `db diff` available. They're
+  tested locally with `db reset` and are never applied to production by
+  hand.
+- **Production migrations run from CI.** `.github/workflows/migrate.yml` runs
+  on push to `main` when `supabase/migrations/**` changed (plus
+  `workflow_dispatch`): `supabase/setup-cli`, then
+  `supabase db push --db-url "$SUPABASE_DB_URL"`.
+  - `SUPABASE_DB_URL` is a single GitHub Actions secret: the production
+    **session pooler** connection string (IPv4; GitHub runners can't
+    reach the IPv6-only direct host), with the password percent-encoded.
+    Using `--db-url` means no Supabase access token is needed in CI.
+  - Only the migration Action touches the production schema.
+- **Vercel builds `main` only.** Production deploys come from merges to
+  `main` via the Vercel GitHub connection. Feature/dev branches point at a
+  local database, so preview deployments would have no DB. Claim It turns
+  off deployments for other branches in `vercel.json`:
+  `{ "git": { "deploymentEnabled": { "main": true, "*": false } } }`
+  (verify the current Vercel syntax when building).
+- **Production env vars** reach Vercel through the Supabase <-> Vercel
+  integration (Production environment). This is the only Supabase
+  integration used.
+- **Default branch.** `dev` is where day-to-day PRs target. Claim It creates
+  `dev` from the initial commit and sets it as the GitHub default branch.
+  `main` is only updated by Ship It's release PRs and Fix It's hotfixes.
+- **CI** (`ci.yml`) runs on PRs into `dev` and `main`: lint, typecheck,
+  Vitest, Playwright. Once the app has a database, the e2e job runs
+  `supabase start` in the runner (`supabase/setup-cli`), so tests hit a
+  real local stack built from the migrations. This also proves every
+  migration applies cleanly from scratch before it reaches `main`.
+- **Machine prerequisite:** Docker Desktop, checked with `docker info`, but
+  only once the app needs Supabase. Apps without a database never need
+  Docker.
+
+---
+
+## 3. The skills
+
+Each skill lives in `skills/<step>/SKILL.md`. **Every `SKILL.md` must start
+with YAML frontmatter** (`name`, `description`). Claude Code uses it to
+discover the skill. The existing iter8-rails skills lack it, which is likely
+why `init-project` wasn't listed as an available skill. The `description`
+should include the step's one-liner and natural trigger phrases.
+
+Shared procedures used by more than one skill live in `shared/` (see
+[Repository layout](#4-repository-layout)). In particular,
+`shared/supabase-local.md` (used by Build It) and `shared/supabase-prod.md`
+(used by Ship It) mean "add a database" is written once.
+
+For each skill below: purpose, inputs, what it does, outputs, and done-when.
+
+### 3.1 Spot It (`spot-it`)
+- **Purpose:** turn a vague itch into a clear, specific problem statement.
+- **Inputs:** none. This is the entry point. It works in an empty folder.
+- **Does:** asks who has the problem, what they do today, what goes wrong,
+  and how often. Pushes back gently on solution-first answers ("an app that
+  does X") to get at the underlying problem. Asks whether a simple app is
+  the right fix at all.
+- **Outputs:** `git init` if needed; `PRODUCT.md` with the Problem section;
+  `journey.json` with `stage: "spot-it"`.
+- **Done when:** the problem fits in a few sentences the user agrees with,
+  including how they'd know it's solved.
+
+### 3.2 Name It (`name-it`)
+- **Purpose:** a name that clarifies what the app is for.
+- **Inputs:** Problem.
+- **Does:** proposes a few names tied to the problem; settles the display
+  name, a **lowercase slug** (used for the repo, the Vercel project and
+  the Supabase project), and a one-line purpose. Checks that the slug is
+  free on GitHub under the intended owner and as a Vercel project (Claim
+  It rechecks).
+- **Outputs:** `PRODUCT.md` title and purpose line; `journey.json` name,
+  slug and purpose.
+- **Done when:** the name, slug and purpose line are agreed.
+
+### 3.3 Claim It (`claim-it`) *(working name)*
+The one-time setup, reshaped from `init-project`. It carries most of the
+hard-won detail (see [Appendix A](#appendix-a-lessons-from-the-first-slideit-run)).
+**No database here.** That comes later, only if needed.
+
+- **Purpose:** the name becomes a real project with a live page and the
+  full pipeline in place, so everything after builds on something real.
+- **Inputs:** name, slug, purpose.
+- **Preconditions (check all before creating anything):**
+  - Signed in, **as the right accounts**: `gh auth status` (note the
+    active account if there are several) and `vercel whoami`. Show which
+    account each is using and have the user confirm. Offer re-login if one
+    is stale.
+  - Commit identity: confirm the name and email for this repo and set them
+    **repo-local** (`git config user.name/user.email`).
+  - The destination GitHub owner is confirmed. Org -> native Issue Types;
+    personal account -> labels (`epic`, `feature`, `story`, `bug`).
+  - The slug is free in GitHub and Vercel. If one is taken: ask to reuse
+    or rename. Never overwrite.
+- **Steps:**
+  1. **Scaffold** Next.js (TypeScript, App Router, Tailwind, `src/`, ESLint,
+     npm) into the current folder. Keep `PRODUCT.md`, `journey.json` and
+     `.git`.
+  2. **Starter page + branding.** Hello World showing the app name and
+     purpose, with the optional Iter8 Community branding kit (favicon,
+     palette, Open Sans, footer credit). Branding lives in a few obvious
+     files so it's easy to remove; `CLAUDE.md` explains how.
+  3. **Tests:** Vitest (unit, jsdom) and Playwright (e2e), each with one
+     passing test. Playwright starts with `desktop` + `mobile` projects;
+     Meet It may adjust them later to the personas' devices.
+  4. **Repo hygiene:** `.gitignore` (including `.env*` except
+     `.env.example`, `.vercel/`, `supabase/.temp/`, Playwright output,
+     `USER.md`), `.gitattributes` (LF), `.editorconfig`.
+  5. **`CLAUDE.md`** and `README.md`. `npm run build`, `npm test` and
+     `npm run test:e2e` all pass locally. Commit.
+  6. **GitHub:** `gh repo create <owner>/<slug> --private --source=. --push`
+     (pushes `main`); create and push `dev` from it and make `dev` the
+     default branch (`gh repo edit --default-branch dev`); `gh project
+     create`; reconcile Status to Todo/In Progress/In Review/Done (read the
+     options, send back the **full** list plus additions via
+     `updateProjectV2Field`); `gh project link` to the repo. Verify Issue
+     Types exist (org) or create the labels (personal).
+  7. **CI:** `.github/workflows/ci.yml` on PRs into `dev` and `main` (and
+     pushes to both): lint, `npm run typecheck`
+     (**`next typegen && tsc --noEmit`**), Vitest, Playwright. Push and
+     watch the first run until it's green.
+  8. **Vercel:** `vercel link --yes --project <slug> --scope <scope>`,
+     commit `vercel.json` limiting deployments to `main`, then confirm the
+     Vercel GitHub App can see the repo **before** `vercel git connect`. If
+     it can't, give the exact GitHub settings link and wait for the user.
+     Verify it's connected and the production branch is `main`.
+  9. **Go live:** get the first production deploy of `main`; open the URL
+     and check the page renders (Playwright against the live URL is
+     ideal). Record the URL in `journey.json` and `CLAUDE.md`.
+- **Outputs:** live URL, repo with `main` + `dev` (default), an empty
+  board, CI green, `journey.json` github/vercel filled, `stage: "claim-it"`.
+- **Done when:** a stranger could open the URL on their phone and see it.
+
+### 3.4 Meet It (`meet-it`)
+- **Purpose:** know the users well enough to build for them.
+- **Inputs:** Problem, name.
+- **Does:** identifies 1-3 personas. For each: what they're trying to get
+  done, what frustrates them today, and their context (device, setting,
+  urgency). Device context decides mobile-first vs desktop-first per
+  experience, and updates the Playwright device projects if needed.
+- **Outputs:** the People section in `PRODUCT.md`; the personas in
+  `CLAUDE.md`.
+- **Done when:** each persona has goals, frustrations and context the user
+  recognizes.
+
+### 3.5 Dream It (`dream-it`)
+- **Purpose:** get every idea out, without judging yet.
+- **Inputs:** People; the repo from Claim It.
+- **Does:** brainstorms features per persona, including the big and silly
+  ones. Shows the grouped list for review first, then creates **Epic**
+  Issues (big areas) and **Feature** Issues (things a persona can do),
+  linked as sub-issues and tagged with the persona. They're **not** added
+  to the board yet: this is the idea pile, not the plan. Rerunnable at any
+  time to add ideas.
+- **Reference:** `iter8-po-workflows/skills/plan-batch` (draft locally,
+  review, then create the hierarchy in one batch).
+- **Done when:** the user has nothing left to add for now.
+
+### 3.6 Trim It (`trim-it`)
+- **Purpose:** the smallest version someone would actually use.
+- **Inputs:** the Feature Issues from Dream It.
+- **Does:** walks the list and asks "would anyone use the first version
+  without this?" First-version Features go on the board in Todo, **in
+  order**. The rest get the `later` label, with the reason in a comment.
+  Then it asks the **needs questions** explicitly and records the answers:
+  - Do people sign in? -> `needs.auth`
+  - Does the app store data that must survive a refresh or be shared
+    between people? -> `needs.database`
+  - `auth` implies Supabase. `database` without `auth` still means
+    Supabase, but confirm it (some apps need neither).
+  Nothing is provisioned here. Build It and Ship It act on the answers.
+- **Reference:** `iter8-po-workflows/skills/reorder-backlog` for board
+  ordering.
+- **Outputs:** the First Version section in `PRODUCT.md`; an ordered
+  board; `journey.json` `needs`.
+- **Done when:** the first version fits on one screen and the needs are
+  recorded.
+
+### 3.7 Build It (`build-it`)
+- **Purpose:** turn the next Feature into working, tested code on `dev`.
+- **Inputs:** the board. Takes the top Todo item, or the one the user names.
+- **Does:**
+  1. If the item is a Feature without stories, drafts 1-5 stories. Each is
+     a deliverable to a persona, with acceptance criteria. Confirm them
+     with the user, then create them as sub-issues.
+  2. **First story that needs data or auth?** Run
+     `shared/supabase-local.md` once:
+     - check Docker (`docker info`)
+     - `npm i -D supabase`, `npx supabase init`
+     - install `@supabase/supabase-js` + `@supabase/ssr`
+     - `supabase start` (the first run pulls images, which takes a few
+       minutes; say so)
+     - write `.env.local` from `supabase status -o env` and add
+       `.env.example`
+     - switch CI's e2e job to start Supabase in the runner
+     - set `supabase.local = true`
+
+     It lands as part of that story's PR, not as a separate infra change.
+  3. For one story: move it to In Progress, branch off `dev`
+     (`feature/<issue>-<slug>`), implement it with tests (unit, plus e2e for
+     user-facing flows on the relevant device projects), and self-review.
+  4. **Schema changes:** a migration file in `supabase/migrations/`
+     (`supabase migration new` or `supabase db diff -f <name>`), checked
+     with `supabase db reset`. Keep migrations backward-compatible with
+     the code currently in production (add before you remove); see Open
+     question 2.
+  5. Open a PR into `dev` (it references the Issue), move it to In Review,
+     and wait for green CI.
+  6. Merge into `dev` when the user approves (or per the configured review
+     policy). The story **stays In Review** (merged, not yet live) until
+     Ship It releases it.
+  7. Offer: "Build the next story, or ship what's on `dev`?"
+- **Reference:** `iter8-dev-workflows/skills/work-story` and `work-batch`
+  (Rails also integrates through a dev branch).
+- **Done when:** the story is merged to `dev` with green CI.
+
+### 3.8 Ship It (`ship-it`)
+- **Purpose:** promote what's on `dev` to production, and prove it works
+  there. It runs every release, not once.
+- **Inputs:** `dev` ahead of `main`, with green CI.
+- **Does:**
+  1. **Preflight:** summarize what's going out: stories merged since the
+     last release, and any new migrations (listing them and flagging
+     anything destructive, like drops or renames). Confirm with the user.
+  2. **First release that needs a database?** (`needs.database` or
+     `needs.auth`, a new migration, or Supabase env vars in use, with no
+     production project yet.) Run `shared/supabase-prod.md` once:
+     - Confirm the Supabase CLI account and org (`supabase orgs list`);
+       offer logout/login if it's stale.
+     - Generate a strong DB password. Tell the user to save it in their
+       password manager; it's never committed and not needed locally.
+     - `supabase projects create <slug>` on the **Free** plan, in the
+       region closest to Vercel. Poll until `ACTIVE_HEALTHY`.
+     - Pause for the one dashboard step: the **Supabase <-> Vercel
+       integration** (Production env vars). Verify with `vercel env ls`.
+     - `gh secret set SUPABASE_DB_URL` (session pooler URL, password
+       percent-encoded), commit `.github/workflows/migrate.yml` to `dev`,
+       and run it once via `workflow_dispatch` against the empty schema
+       to prove the connection.
+     - Do **not** connect the Supabase GitHub integration or enable
+       Branching.
+     - Record `supabase.projectRef`.
+  3. **Release PR** `dev -> main` with a plain-language changelog. Wait for
+     green CI, then merge (a merge commit, so `main`'s history shows
+     releases).
+  4. **Watch production:** the Vercel production deploy and, if migrations
+     changed, the migrate Action. Both must succeed.
+  5. **Smoke-check live:** open the production URL; run the e2e suite (or a
+     tagged smoke subset) against it where it's safe to; check each
+     released story's acceptance criteria briefly on the device it's for.
+  6. **Close the loop:** move the released stories and Features to Done,
+     close their Issues with a "live in <release>" comment, tag the release
+     (`vYYYY.MM.DD-n` or semver; see Open question 7), and update
+     `journey.json` `lastRelease`.
+  7. **If something fails:**
+     - A deploy fails before going live: nothing changed for users. Hand
+       off to Fix It.
+     - It's live but broken: offer Vercel's instant rollback
+       (`vercel rollback`), then Fix It.
+     - A migration failed: stop, show the log, and hand off to Fix It.
+       Never hand-edit production.
+- **Done when:** production runs the new release, it's been checked live,
+  and the board shows it as Done.
+
+### 3.9 Fix It (`fix-it`)
+- **Purpose:** find why something broke, fix it, and put the fix live.
+- **Inputs:** a bug report: the user's words, an Issue, an error message, or
+  a failing CI run, deploy or migration.
+- **Does:** creates or updates a **Bug** Issue; reproduces the problem
+  (locally against the Docker stack, or on production; checks Vercel logs,
+  CI logs and migrate Action logs); finds the root cause before changing
+  code; writes a **failing test that captures the bug**; fixes it. Explains
+  the cause in plain language on the Issue. Then it asks which path to take:
+  - **Normal:** feature branch -> `dev` (Build It's steps 3-6), then Ship It.
+  - **Hotfix:** production is broken and `dev` holds unreleased work that
+    shouldn't go out yet. Branch `hotfix/<issue>-<slug>` off `main`, PR
+    into `main`, run Ship It's steps 4-6 for it, then merge `main` back
+    into `dev` so the branches don't drift.
+- **Done when:** the fix is live, the test guards it, and the Issue
+  explains what happened.
+
+### 3.10 Grow It (`grow-it`)
+- **Purpose:** improve from real use.
+- **Inputs:** a live app. Feedback from the user, Issues, or anything they
+  paste.
+- **Does:**
+  - Gathers what's been learned: feedback and bug patterns, what shipped,
+    what's unused, and Vercel/Supabase usage if available.
+  - Revisits `PRODUCT.md`: are the personas still right? Is the problem
+    still the problem?
+  - Runs a mini Dream It -> Trim It: new ideas become Issues, `later` items
+    get reconsidered, and the board is reordered.
+  - Offers **upgrades** when they'd pay off, each with its cost stated:
+    a custom domain, error monitoring, analytics, a hosted staging
+    environment (a second Supabase project + Vercel previews for `dev`),
+    Supabase Branching (Pro) for per-PR databases, or migrate-then-deploy
+    ordering (Open question 2).
+- **Done when:** the board reflects what to do next, and why.
+
+### 3.11 Helper: What's Next (`whats-next`) (optional, small)
+Reads `journey.json`, the board and the `dev`/`main` difference. It answers
+"where am I and what should I do next?", for example "3 stories are merged
+but not shipped. Run Ship It?" It's cheap to build and makes the journey
+self-guiding. Build it after Claim It works.
+
+---
+
+## 4. Repository layout
+
+A single-plugin marketplace, modelled on `iter8-rails-plugins`:
+
+```
+<repo>/
+  .claude-plugin/marketplace.json     # lists the one plugin
+  iter8-it/
+    .claude-plugin/plugin.json        # name, version, description
+    skills/
+      spot-it/SKILL.md
+      name-it/SKILL.md
+      claim-it/SKILL.md
+      claim-it/assets/brand/...       # ported from init-project assets
+      claim-it/assets/templates/...   # ci.yml, vercel.json, test configs, CLAUDE.md, etc.
+      meet-it/SKILL.md
+      dream-it/SKILL.md
+      trim-it/SKILL.md
+      build-it/SKILL.md
+      ship-it/SKILL.md
+      ship-it/assets/templates/migrate.yml
+      fix-it/SKILL.md
+      grow-it/SKILL.md
+      whats-next/SKILL.md
+    shared/
+      journey-schema.md               # journey.json contract
+      product-template.md             # PRODUCT.md skeleton
+      conventions.md                  # board statuses, issue hierarchy, labels, branch naming
+      environments.md                 # section 2a, for skills to cite
+      supabase-local.md               # add local Supabase (Build It)
+      supabase-prod.md                # add production Supabase + migrate Action (Ship It)
+  scripts/teardown.*                  # test helper, not a skill
+  test-fixtures/
+  README.md
+  PLAN.md                             # this file
+```
+
+- **Templates as files, not prose.** The first SlideIt run showed that
+  config written out by hand drifts. Keep `ci.yml` (with and without the
+  Supabase e2e setup), `migrate.yml`, `vercel.json`, `vitest.config.mts`,
+  `playwright.config.ts`, `.editorconfig`, `.gitattributes`, the
+  `.gitignore` additions and the `CLAUDE.md` skeleton as real files, and
+  have the skills copy and fill them.
+- **Versioning:** bump `plugin.json` `version` on each change that users
+  should pick up (Claude Code caches plugins by version).
+
+---
+
+## 5. Build order
+
+Build and test one skill at a time against a throwaway project before
+starting the next.
+
+1. **Repo skeleton:** marketplace, plugin.json, the `shared/` docs
+   (journey schema, PRODUCT template, conventions, environments), and the
+   README. Install the plugin locally and confirm the skills are
+   discovered (frontmatter!).
+2. **Claim It**, driven by a fixture `PRODUCT.md` + `journey.json`. It's
+   the most mechanical step, has the freshest lessons, and everything
+   later depends on it.
+3. **Teardown helper** (`scripts/`, not a user-facing skill). It deletes a
+   test run's GitHub repo and Project, Vercel project and Supabase project
+   by slug, with confirmation. Claim It and Ship It will be run many times;
+   this makes that cheap.
+4. **Build It + Ship It together**, since they're one loop. Test both paths:
+   - **No database:** a trivial story goes feature -> `dev` -> Ship It ->
+     live, then is checked and marked Done.
+   - **With database:** a story that triggers `supabase-local` (Docker)
+     and adds a migration; Ship It then triggers `supabase-prod` (Free
+     project, Vercel integration, `SUPABASE_DB_URL`, `migrate.yml`) and
+     the Action applies the migration in production. Also exercise a
+     failure: a deliberately broken migration stops the release cleanly.
+5. **Spot It -> Name It**, then **Meet It -> Dream It -> Trim It**, each
+   writing real `PRODUCT.md` / `journey.json` / Issues. Check that Claim It
+   and Build It consume their real output, not just the fixtures.
+6. **Fix It** (normal and hotfix paths).
+7. **Grow It**, then **What's Next.**
+8. **Acceptance test:** SlideIt end to end.
+
+---
+
+## 6. Testing the skills
+
+- **Fixtures:** a `test-fixtures/` folder with `PRODUCT.md` + `journey.json`
+  at each stage (after Name It, after Claim It, after Trim It with and
+  without auth), so any skill can be started mid-journey.
+- **Throwaway slugs** for provisioning tests (e.g. `itplug-test-<n>`), plus
+  the teardown helper.
+- **For each skill, verify:** it refuses cleanly when its inputs are
+  missing; it's rerunnable without duplicating anything (idempotent where
+  it provisions); and it writes exactly the state the next step expects.
+- Consider `claude plugin eval` suites for the conversation steps (Spot,
+  Name, Meet, Dream, Trim) once they settle.
+
+---
+
+## 7. Acceptance test: SlideIt
+
+**Precondition:** the first SlideIt attempt is fully torn down, so the slug is
+free everywhere and nothing bills:
+- Supabase `slideit` project, its persistent `dev` branch and Branching
+  (**the `dev` branch bills continuously until deleted**)
+- Vercel `iter8-community/slideit`
+- GitHub `Iter8-IT-Consulting/SlideIt` and its Project (#3). Deleting a
+  repo needs `gh auth refresh -s delete_repo`.
+- Local `C:\Source\SlideIt` contents
+- Afterwards, move the Supabase org back to Free if nothing else needs
+  Pro. The new model never needs it.
+- Docker Desktop installed and running on the machine.
+
+**Run:** Spot It -> Name It -> Claim It -> Meet It -> Dream It -> Trim It ->
+Build It (first story) -> Ship It, in a fresh `SlideIt` folder, as
+`Adam-Iter8`, committing as `Adam Goss <adam@iter8itconsulting.com>`,
+GitHub owner `Iter8-IT-Consulting`, Vercel scope `iter8-community`.
+
+**Expected outcomes:**
+- Claim It: live Hello World from `main`; `dev` is the default branch; CI
+  green; no Supabase and no Docker yet.
+- Meet It yields at least a **Presenter** (desktop-first authoring) and an
+  **Audience Member** (mobile-first viewing via QR). Playwright keeps
+  `desktop` + `mobile`.
+- Dream It / Trim It: Epics and Features as Issues; the first version
+  ordered on the board; `needs.auth = true` (presenters save decks) and
+  `needs.database = true`.
+- Build It: the first data or auth story triggers the local Supabase setup;
+  its migration is checked with `db reset`; the story merges to `dev`.
+- Ship It: triggers the Free production project, Vercel integration,
+  `SUPABASE_DB_URL` and `migrate.yml`; the release PR merges; the Action
+  applies the migration; the live check passes; the story is Done. No
+  Branching and no Supabase GitHub integration anywhere.
+
+---
+
+## 8. Open questions
+
+1. **Claim It's name.** "Claim It" is a working name for the new step 3.
+   Alternatives: "Start It", "Stake It", "Plant It". Or fold it into Name
+   It ("Name It, and claim it"), although that makes Name It much
+   heavier. The step list, README and skill folder follow whatever is
+   chosen.
+2. **Deploy/migrate ordering on `main`.** A release merge starts the Vercel
+   build and the migrate Action in parallel, so new code can briefly run
+   against the old schema (or the reverse). Options:
+   a. Accept it, and require backward-compatible ("expand, then contract")
+      migrations. This is the current plan: simplest, and fine at entry
+      scale. Ship It's preflight flags destructive migrations.
+   b. Let the Action own production deploys: migrate first, then
+      `vercel deploy --prod` from the Action, with Vercel's automatic `main`
+      deploys turned off. The order is guaranteed, but it needs a
+      `VERCEL_TOKEN` secret and more moving parts.
+   Start with (a), and offer (b) as a Grow It upgrade.
+3. **Data access layer.** The Rails prescription is TypeORM (EntitySchema,
+   `synchronize: false`) with a repository pattern. Keep it, or use
+   `@supabase/supabase-js` directly (which pairs with Auth and Realtime;
+   SlideIt's live slide sync will want Realtime)? It's introduced by the
+   first data story either way. **Recommendation:** supabase-js plus a
+   repository-pattern folder, with no TypeORM. It has fewer moving parts,
+   no Node-only drivers, and it works with RLS.
+4. ~~**Plugin and repo name.**~~ **Decided (2026-09-29):** the plugin is
+   `iter8-it`, in the `iter8-community-plugins` marketplace repo
+   (`Iter8-IT-Consulting/iter8-community-plugins`, private for now).
+5. **Audience.** Is the primary user a solo non-developer builder (Iter8
+   Community), a consultant with a client, or both? This affects tone, how
+   much each step explains, and the default review policy for merges into
+   `dev` and releases to `main`.
+6. **Personal-account destinations.** Labels instead of Issue Types, and
+   `gh project` under a user. Confirm this is a supported path from v1.
+7. **Release tagging.** Date-based (`v2026.10.02-1`) or semver? Date-based
+   suits non-developers and continuous shipping. Also decide whether Ship
+   It creates a GitHub Release with the changelog.
+8. **Branch protection.** Require green CI before merging into `dev` and
+   `main`? It's cheap to set up from Claim It (`gh api` rulesets) and
+   protects beginners, but it adds friction for solo builders.
+   Recommendation: protect `main` only.
+
+---
+
+## Appendix A: Lessons from the first SlideIt run
+
+Concrete things the first attempt (with `init-project` 0.5.2, 2026-09-26)
+ran into. Build them into Claim It / Ship It.
+
+| Problem | Fix to build in |
+|---|---|
+| `init-project` never appeared as a skill in the session. | `SKILL.md` needs YAML frontmatter; bump the plugin version on changes. |
+| `create-next-app .` rejects a folder named `SlideIt` (npm names can't have capitals). | Scaffold into a lowercase temp subfolder, delete its `.git`, move the contents up. |
+| `npm i -D vitest` failed its peer check against `@types/node@20` on Node 24. | Install `@types/node@^<node major>` to match the machine's Node. |
+| CI `tsc` failed: `Cannot find name 'LayoutProps'` (types generated into gitignored `.next/types`). | `"typecheck": "next typegen && tsc --noEmit"`; CI uses it. |
+| Next 16 ships `AGENTS.md`, with `CLAUDE.md` = `@AGENTS.md`. | Keep `@AGENTS.md` as the first line of the generated `CLAUDE.md`. |
+| Two gh accounts were signed in; the wrong git email would have been committed. | Confirm the active gh account and set a repo-local git identity before the first commit. |
+| The Supabase CLI was signed in as an old account; org IDs changed after re-login. | `supabase-prod.md` shows the org list and confirms it before creating anything; offer `supabase logout/login`. |
+| `supabase init` prompts interactively. | Pipe `n` answers (or pass flags) for the VS Code/Deno prompts. |
+| `gh project create` Status lacked "In Review". | Read the options and send the full list plus additions to `updateProjectV2Field`; then `gh project link`. |
+| `vercel git connect` failed: the Vercel GitHub App was on "selected repositories" and didn't include the new repo. Even after the user changed it, it took another round. | Before connecting, query what the app can see: `GET https://api.vercel.com/v1/integrations/search-repo?provider=github&teamId=<id>&namespaceId=<installation-id>` (token from the Vercel CLI's `auth.json`). Give the exact org installation settings link and verify again before retrying. |
+| `vercel git connect` asks y/N when the local remote already matches. | Pipe `y`. |
+| `vercel link` appends `.vercel` to `.gitignore` even if already present. | Check, and revert the duplicate. |
+| The Supabase <-> Vercel integration synced vars to **Production only**. | Fine under this model: only `main` deploys, and local dev uses `supabase status -o env`. |
+| The Rails init used Supabase Branching (Pro plan + an always-on `dev` branch). That was too expensive for entry projects. | Local Supabase in Docker for `dev`/feature work; one Free production project; migrations applied by a GitHub Action on `main`. |
+| Init provisioned a database and an example `presentations` table before any story asked for them. | Claim It never touches Supabase; Build It / Ship It add it just in time; no tables without a story. |
+| A Vitest cold start timed out once (60s) on Windows. | Re-run once before treating it as a failure; consider raising `testTimeout`. |
+| A background poll loop for Supabase status confused the user. | Say what's being waited on and roughly how long before any polling loop, and prefer a single check the user can re-trigger. |
