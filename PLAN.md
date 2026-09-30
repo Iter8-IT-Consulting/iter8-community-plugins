@@ -772,6 +772,21 @@ GitHub owner `Iter8-IT-Consulting`, Vercel scope `iter8-community`.
   applied them. The live guestbook reads and writes. Torn down afterwards
   with `scripts/teardown.mjs`, including the Supabase project. **Not yet
   exercised: sign-in (auth).**
+- **Sign-in template (2026-10-01).** Built and tested locally before the
+  SlideIt trial (`shared/supabase-auth.md`). Email and password, with
+  confirmation off for the first version, because Supabase's built-in
+  email sender only reaches the org's team members and sends very little.
+  Production sign-in settings go through `supabase-prod.mjs auth-config`:
+  `config push` sends every property a config.toml declares, so it pushes
+  a temporary config that declares only the auth settings. (Checked with
+  `config diff`: undeclared settings show as "remote_only" and are left
+  alone.) Branded account emails become a `later` Feature created by
+  Build It. ScoreIt already sends through Resend
+  (`noreply@mail.apps.iter8.community`), which is the obvious path when
+  that Feature comes up.
+- **Vercel CLI logins expire after about 8 hours** (`auth.json` has
+  `expiresAt` and `refreshToken`). Scripts that read the token run
+  `vercel whoami` first to renew it.
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.
