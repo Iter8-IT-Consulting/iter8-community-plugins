@@ -718,6 +718,15 @@ GitHub owner `Iter8-IT-Consulting`, Vercel scope `iter8-community`.
   time whether to add one (org-wide) or use Task. The choice is recorded
   in `journey.json` `github.workItems`, and later skills read type names
   from there.
+- **First live run (itplug-test-1, 2026-09-29) worked end to end**, except
+  the commit identity: the first two commits used the global
+  `thegoss@gmail.com`, and Vercel **blocked** that deploy because it didn't
+  recognize the author email. Claim It now defaults the commit email to
+  the Vercel account's email (`vercel-check.mjs account`), sets it
+  repo-locally right after the go-ahead before anything is committed,
+  and explains a BLOCKED deploy. Separately, `git push` goes through Git
+  Credential Manager, not `gh`, so it can push as a different GitHub
+  account; Claim It offers `gh auth setup-git`.
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.

@@ -83,6 +83,15 @@ stop. Don't create anything halfway.
    as **<account>**. Is that right?" If not, `gh auth switch`. The token
    needs the `repo`, `project` and `workflow` scopes; if one's missing,
    `gh auth refresh -h github.com -s project,workflow`.
+
+   **Pushes must go as that account too.** `git push` doesn't use `gh`'s
+   login unless git is set up to: check
+   `git config --get-all credential.https://github.com.helper`. If it
+   doesn't mention `gh`, git uses whatever GitHub login the system's
+   credential store remembers (on Windows, Git Credential Manager), which
+   can be a different account. Explain that, and offer
+   `gh auth setup-git`, which makes git push as the active `gh` account.
+   It changes a setting for all repos on this machine, so ask first.
 4. **Where the repo goes.** Ask which GitHub owner: the account itself or
    one of its orgs (`gh api user/orgs --jq '.[].login'`). Never guess.
    Check the owner type:
@@ -101,14 +110,19 @@ stop. Don't create anything halfway.
    - **Personal account:** Issue Types don't exist there. Use labels
      `epic`, `feature`, `story`, `bug`, created in step 6. Tell the user
      that's how it works on a personal account.
-6. **Commit identity.** Ask what name and email commits in this project
-   should use. Offer `git config --global user.name` / `user.email` as the
-   default, but point out it will be public on the repo's history if the
-   repo is ever made public. (`gh api user` often returns no email, so
-   ask.) It gets set for this repo only, in step 5.
-7. **Vercel sign-in and scope.** `vercel whoami` and `vercel teams ls`.
+6. **Vercel sign-in and scope.** `vercel whoami` and `vercel teams ls`.
    Show the account and teams and ask which scope the project goes in.
    Never guess.
+7. **Commit identity.** Commits must use an email Vercel recognizes, or
+   Vercel **blocks the deploy**. Get the Vercel account's email:
+   `node <skill-dir>/scripts/vercel-check.mjs account`. Ask what name and
+   email commits in this project should use, offering the Vercel email as
+   the default. If the user picks a different email (for example the one
+   in `git config --global user.email`), warn that Vercel may block
+   deploys unless that email is also on their Vercel account's linked
+   GitHub account. Mention it will be visible in the repo's history if the
+   repo is ever made public. It's set for this repo only, straight after
+   the go-ahead.
 8. **The name is free.**
    - GitHub: `gh repo view <owner>/<slug>` must fail with "Could not
      resolve to a Repository".
@@ -128,6 +142,18 @@ Then summarize the plan and get one "go ahead":
 > Commits will be from `<name> <email>`. This takes about 15-20 minutes,
 > mostly waiting on installs and builds. Go ahead?
 
+**As soon as they say yes, before anything else,** set the commit identity
+for this repo only. Nothing may be committed before this:
+
+```bash
+git init -b main          # only if there's no .git/ yet
+git config user.name "<name>"
+git config user.email "<email>"
+```
+
+(The global identity is often a different email; that's how commits end
+up with the wrong author.)
+
 ## 2. Scaffold the app
 
 `create-next-app` won't scaffold into a folder whose name has capital
@@ -146,8 +172,6 @@ command for the shell you're in:
 
 - bash: `shopt -s dotglob && mv claim-it-tmp/* . && rmdir claim-it-tmp`
 - PowerShell: `Get-ChildItem -Force claim-it-tmp | Move-Item -Destination .; Remove-Item claim-it-tmp`
-
-If there's no `.git/` yet, `git init -b main`.
 
 Next.js writes an `AGENTS.md` and a `CLAUDE.md` containing `@AGENTS.md`.
 Keep `AGENTS.md`; the template `CLAUDE.md` keeps `@AGENTS.md` as its first
@@ -201,11 +225,11 @@ npm run test:e2e
 
 ## 5. First commit
 
-Set the identity from step 1 **for this repo only**, then commit:
+The identity was set right after the go-ahead. Check it's still this
+repo's, then commit:
 
 ```bash
-git config user.name "<name>"
-git config user.email "<email>"
+git config --local user.email     # must print the email from step 1
 git add -A
 git commit -m "Claim It: starter app for <Name>"
 ```
@@ -349,6 +373,12 @@ vercel inspect <newest deployment url> --scope <scope> --wait --timeout 10m
 
 If it fails, `vercel inspect <url> --scope <scope> --logs`, explain, fix,
 push again.
+
+If its state is **BLOCKED**, Vercel didn't recognize the commit's author
+email. Check `git log -1 --format='%ae'` against
+`vercel-check.mjs account`. Fix the repo's `user.email`, then
+`git commit --allow-empty -m "Claim It: redeploy"` and push. Don't rewrite
+commits that are already pushed.
 
 Get the production URL (`productionUrl`) from:
 

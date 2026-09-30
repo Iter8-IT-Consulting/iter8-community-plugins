@@ -2,6 +2,11 @@
 // Claim It: Vercel checks the CLI doesn't do. Run from the project root
 // after `vercel link` (the team comes from .vercel/project.json).
 //
+//   node <skill-dir>/scripts/vercel-check.mjs account
+//     The signed-in Vercel account's username and email. Vercel blocks
+//     deploys of commits whose author email it doesn't recognize, so commits
+//     should use this email. Works before `vercel link`.
+//
 //   node <skill-dir>/scripts/vercel-check.mjs visible <owner>/<repo>
 //     Can the Vercel GitHub App see the repo? Check before
 //     `vercel git connect` (which fails vaguely when it can't), and again
@@ -26,8 +31,8 @@ function fail(message) {
   throw new CheckError(message);
 }
 
-if (!["visible", "project"].includes(command) || !arg) {
-  console.error("usage: vercel-check.mjs visible <owner>/<repo> | project <project-name>");
+if (!(command === "account" || (["visible", "project"].includes(command) && arg))) {
+  console.error("usage: vercel-check.mjs account | visible <owner>/<repo> | project <project-name>");
   process.exit(1);
 }
 
@@ -52,16 +57,23 @@ function findToken() {
 let teamId;
 let headers;
 function init() {
+  headers = { Authorization: `Bearer ${findToken()}` };
+  if (command === "account") return;
   const projectFile = path.join(process.cwd(), ".vercel", "project.json");
   if (!fs.existsSync(projectFile)) fail(".vercel/project.json not found. Run `vercel link` first.");
   teamId = JSON.parse(fs.readFileSync(projectFile, "utf8")).orgId;
-  headers = { Authorization: `Bearer ${findToken()}` };
 }
 
 async function get(url) {
   const res = await fetch(url, { headers });
   if (!res.ok) fail(`${res.status} from ${url.split("?")[0]}: ${await res.text()}`);
   return res.json();
+}
+
+async function account() {
+  const { user } = await get("https://api.vercel.com/v2/user");
+  console.log(JSON.stringify({ username: user.username, email: user.email }, null, 2));
+  return 0;
 }
 
 async function visible(ownerRepo) {
@@ -126,7 +138,7 @@ async function project(name) {
 
 try {
   init();
-  process.exitCode = await (command === "visible" ? visible(arg) : project(arg));
+  process.exitCode = await { account, visible, project }[command](arg);
 } catch (err) {
   if (!(err instanceof CheckError)) throw err;
   console.error(`vercel-check: ${err.message}`);
