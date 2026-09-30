@@ -11,8 +11,10 @@
 //   - the GitHub repo <owner>/<slug>
 //   - GitHub Projects linked to that repo
 //   - the Vercel project <slug> in <scope>
-// It never touches org settings (Issue Types, app installations), the
-// local folder, or Supabase (added once Ship It creates projects).
+//   - Supabase projects named <slug> (in any org the Supabase CLI can see)
+// It never touches org settings (Issue Types, app installations) or the
+// local folder. (Stop the local Supabase yourself: `npx supabase stop` in
+// the project folder.)
 //
 // Only slugs starting with "itplug-test-" are allowed, unless --any-slug is
 // given (e.g. to tear down an earlier real attempt).
@@ -21,7 +23,7 @@
 //   gh auth refresh -h github.com -s delete_repo
 // (the browser confirmation is easy to miss; without it the scope isn't added).
 
-import { execFileSync } from "node:child_process";
+import { execFileSync, execSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -72,6 +74,11 @@ async function vercel(method, url) {
   return res.status === 204 ? {} : res.json();
 }
 
+// Supabase CLI with stdin closed (some commands wait for piped input).
+function supabase(args) {
+  return execSync(`npx supabase ${args}`, { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
+}
+
 // --- Find what exists -------------------------------------------------------
 
 const found = [];
@@ -104,6 +111,19 @@ const team = await vercel("GET", `/v2/teams/${encodeURIComponent(scope)}`);
 const teamQuery = team ? `?teamId=${team.id}` : "";
 const vproject = await vercel("GET", `/v9/projects/${encodeURIComponent(slug)}${teamQuery}`);
 if (vproject) found.push(`Vercel project   ${scope}/${vproject.name}`);
+
+let supabaseProjects = [];
+try {
+  const out = supabase("projects list -o json");
+  const listed = JSON.parse(out.slice(out.search(/[[{]/)));
+  supabaseProjects = (Array.isArray(listed) ? listed : (listed.projects ?? [])).filter((p) => p.name === slug);
+  for (const p of supabaseProjects) {
+    found.push(`Supabase project ${p.name} (ref ${p.ref}, org ${p.organization_id}, ${p.status})`);
+  }
+} catch (err) {
+  const reason = String(err.stderr ?? err.message).trim().split("\n")[0];
+  console.error(`(Couldn't list Supabase projects, so they're not checked: ${reason})`);
+}
 
 if (found.length === 0) {
   console.log(`Nothing found online for "${slug}". Already clean.`);
@@ -153,6 +173,16 @@ if (vproject) {
   } catch (err) {
     failed = true;
     console.error(`Couldn't delete Vercel project: ${err.message}`);
+  }
+}
+
+for (const p of supabaseProjects) {
+  try {
+    supabase(`projects delete ${p.ref} --yes`);
+    console.log(`Deleted Supabase project ${p.name} (${p.ref})`);
+  } catch (err) {
+    failed = true;
+    console.error(`Couldn't delete Supabase project ${p.ref}: ${String(err.stderr ?? err.message).trim()}`);
   }
 }
 
