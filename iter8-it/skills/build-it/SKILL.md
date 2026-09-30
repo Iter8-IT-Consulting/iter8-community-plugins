@@ -179,6 +179,10 @@ npm run build
 npm run test:e2e
 ```
 
+If `test:e2e` says port 3000 is already used (another app's dev server,
+or the user trying this one), run it on another port: `E2E_PORT=3100 npm run test:e2e`.
+Don't stop the other server without asking.
+
 All must pass. Then **self-review**: read the whole diff
 (`git diff dev...`) against the acceptance criteria. Look for leftover
 debug code, missing tests, anything hard-coded that shouldn't be, and
