@@ -103,6 +103,11 @@ database. Tell the user what that involves (a free Supabase project,
 about 5 minutes, and a password to save) and follow
 `<plugin>/shared/supabase-prod.md` before step 3.
 
+**Sign-in going live for the first time?** If the production database
+already exists but this release is the first with sign-in (it adds
+`src/lib/auth.ts`), run step 5 of `<plugin>/shared/supabase-prod.md`
+(sign-in settings) before the release PR.
+
 ## 3. Release PR
 
 Record the release first, so `main` and `dev` end up identical. On `dev`:

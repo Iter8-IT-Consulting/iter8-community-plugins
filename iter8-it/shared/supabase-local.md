@@ -136,13 +136,8 @@ is one Supabase project, changed only by the migrate Action on `main`.
 
 ## 6. Sign-in (only when the story needs it)
 
-If this story (or a later one) has people sign in, it also needs Next.js's
-**proxy** (`src/proxy.ts`, what older Next.js called middleware) to keep
-sessions fresh. Follow Supabase's current Next.js server-side auth guide,
-and the proxy docs that ship with Next.js
-(`node_modules/next/dist/docs/01-app/01-getting-started/16-proxy.md`).
-Local sign-up emails are caught by Mailpit (the `mail` address from
-`supabase-ports.mjs`); nothing is really sent.
+If this story has people sign in, also follow `<plugin>/shared/supabase-auth.md`
+on this branch, after this procedure.
 
 ## 7. Check, and record it
 

@@ -37,6 +37,7 @@ SKILL.md).
   branch names, PR rules.
 - `<plugin>/shared/environments.md`: branches, environments, migrations.
 - `<plugin>/shared/supabase-local.md`: adding the local database (once).
+- `<plugin>/shared/supabase-auth.md`: adding sign-in (once).
 
 ## 0. Where are we?
 
@@ -128,6 +129,9 @@ what Trim It decided.
   a database on your computer. That needs Docker Desktop." Then follow
   `<plugin>/shared/supabase-local.md` **on the story's branch** (after step
   4 creates it), so the setup lands in this story's PR.
+- Needs **sign-in** and the app has no accounts yet (no `src/lib/auth.ts`):
+  this story also adds them. Follow `<plugin>/shared/supabase-auth.md` on
+  the story's branch (after the local database, if that's new too).
 - Needs it and it's already set up: go on.
 - Needs it but `needs` says the app doesn't: stop and ask. The plan
   changed; update `needs` in `journey.json` if the user agrees.

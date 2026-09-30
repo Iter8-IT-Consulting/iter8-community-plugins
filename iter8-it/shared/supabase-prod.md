@@ -109,7 +109,27 @@ If it fails to connect, check the secret was set for the right repo and
 that `supabase/.temp/pooler-url` used port 5432, then run the helper
 again.
 
-## 5. Record it
+## 5. Sign-in settings (if the app has sign-in)
+
+If the app has accounts (`src/lib/auth.ts` exists, or `needs.auth`), the
+live project needs its own sign-in settings: the live site's address, so
+links in Supabase's emails point there, not at `localhost`, plus
+password length 8 and email confirmation off, to match local.
+
+```bash
+node <plugin>/shared/scripts/supabase-prod.mjs auth-config <project-ref> <vercel.url> --dry-run
+node <plugin>/shared/scripts/supabase-prod.mjs auth-config <project-ref> <vercel.url>
+```
+
+The first shows what will change; the second changes only those settings
+and checks they took. (It pushes a temporary config that declares just
+these; the project's own `supabase/config.toml` points at `localhost` and
+must never be pushed.)
+
+**Run this again** on any later release that first adds sign-in, and
+whenever the live address changes (a custom domain).
+
+## 6. Record it
 
 `journey.json`:
 

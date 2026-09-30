@@ -16,6 +16,10 @@
 //     (percent-encoded), and stores it as the GitHub Actions secret
 //     SUPABASE_DB_URL. The migrate Action uses it.
 //
+//   node supabase-prod.mjs auth-config <project-ref> <https://live-url> [--dry-run]
+//     Sets the live project's sign-in settings (site address, allowed
+//     redirects, password length, email confirmation off). Only these.
+//
 //   node supabase-prod.mjs vercel-env <project-ref> <vercel-scope>
 //     Sets the production environment variables on the linked Vercel project:
 //     NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY and
@@ -24,6 +28,7 @@
 import { execFileSync, execSync } from "node:child_process";
 import crypto from "node:crypto";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 
 class ProdError extends Error {}
@@ -118,10 +123,64 @@ function vercelEnv(ref, scope) {
   return 0;
 }
 
+// Push only the sign-in settings to the production project. `config push`
+// sends every property a config.toml declares, so push a temporary one
+// that declares just these, never the project's own (which points at
+// localhost). With --dry-run it only shows the differences.
+function authConfig(ref, liveUrl, ...flags) {
+  if (!ref || !liveUrl?.startsWith("https://")) fail("usage: auth-config <project-ref> <https://live-url> [--dry-run]");
+  const site = liveUrl.replace(/\/+$/, "");
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "iter8-auth-"));
+  try {
+    fs.mkdirSync(path.join(dir, "supabase"));
+    fs.writeFileSync(
+      path.join(dir, "supabase", "config.toml"),
+      [
+        `project_id = "iter8-auth-config"`,
+        ``,
+        `[auth]`,
+        `site_url = "${site}"`,
+        `additional_redirect_urls = ["${site}/**"]`,
+        `minimum_password_length = 8`,
+        ``,
+        `[auth.email]`,
+        `enable_confirmations = false`,
+        ``,
+      ].join("\n"),
+    );
+    const workdir = `--project-ref ${ref} --workdir "${dir}"`;
+    const result = json(supabase(`config diff ${workdir} --output-format json`));
+    const declared = (result.changes ?? []).filter((c) => c.declared);
+    for (const c of declared) {
+      console.log(`${c.path.join(".")}: ${JSON.stringify(c.remote)} -> ${JSON.stringify(c.local)}`);
+    }
+    if (declared.length === 0) {
+      console.log("Sign-in settings already match.");
+      return 0;
+    }
+    if (flags.includes("--dry-run")) {
+      console.log("(dry run: nothing changed)");
+      return 0;
+    }
+    supabase(`config push ${workdir} --yes`);
+    const after = json(supabase(`config diff ${workdir} --output-format json`));
+    const left = (after.changes ?? []).filter((c) => c.declared);
+    if (left.length) fail(`these sign-in settings didn't change: ${left.map((c) => c.path.join(".")).join(", ")}`);
+    console.log("Sign-in settings updated.");
+    return 0;
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
 const [command, ...args] = process.argv.slice(2);
-const commands = { password, wait, "github-secret": githubSecret, "vercel-env": vercelEnv };
+const commands = { password, wait, "github-secret": githubSecret, "vercel-env": vercelEnv, "auth-config": authConfig };
 try {
-  if (!commands[command]) fail("usage: supabase-prod.mjs password | wait <ref> [minutes] | github-secret <owner>/<repo> | vercel-env <ref> <scope>");
+  if (!commands[command]) {
+    fail(
+      "usage: supabase-prod.mjs password | wait <ref> [minutes] | github-secret <owner>/<repo> | vercel-env <ref> <scope> | auth-config <ref> <https://live-url> [--dry-run]",
+    );
+  }
   process.exitCode = await commands[command](...args);
 } catch (err) {
   if (!(err instanceof ProdError)) throw err;
