@@ -761,6 +761,17 @@ GitHub owner `Iter8-IT-Consulting`, Vercel scope `iter8-community`.
   minutes. (The org is on GitHub Free: 2,000 private-repo minutes a
   month, shared with ScoreIt. A story with a database costs about 10
   minutes: CI with Supabase is about 5 billed minutes per run.)
+- **Build It + Ship It tested live on itplug-test-1 (2026-09-30), both paths.**
+  Without a database: two Features built as stories in separate Build It
+  runs, released together as v0.1.0; board, issues, release page and
+  `dev`/`main` sync all correct. With a database: a Feature split into
+  "read" and "sign" stories; the first set up local Supabase (own port
+  block) and passed CI with Supabase in the runner; Ship It created the Pro-org
+  production project, set the Vercel env vars and `SUPABASE_DB_URL`, the
+  dry run listed both migrations, and on release the migrate Action
+  applied them. The live guestbook reads and writes. Torn down afterwards
+  with `scripts/teardown.mjs`, including the Supabase project. **Not yet
+  exercised: sign-in (auth).**
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.
