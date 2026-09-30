@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "./brand.css";
+
+@theme inline {
+  --font-sans: var(--font-open-sans), Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: var(--brand-surface);
+  color: var(--brand-ink);
+}

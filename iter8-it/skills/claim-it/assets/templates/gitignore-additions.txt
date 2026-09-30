@@ -1,0 +1,13 @@
+
+# --- Added by iter8-it (Claim It) ---
+# Env files stay local, except the example that lists what's needed.
+!.env.example
+# Supabase CLI local state
+supabase/.temp/
+# Playwright output
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+# Per-developer identity
+USER.md

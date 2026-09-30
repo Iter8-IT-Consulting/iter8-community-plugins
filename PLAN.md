@@ -203,13 +203,18 @@ feature/<issue>-<slug> ──PR──▶ dev ──release PR──▶ main
   `main` via the Vercel GitHub connection. Feature/dev branches point at a
   local database, so preview deployments would have no DB. Claim It turns
   off deployments for other branches in `vercel.json`:
-  `{ "git": { "deploymentEnabled": { "main": true, "*": false } } }`
-  (verify the current Vercel syntax when building).
+  `{ "git": { "deploymentEnabled": { "main": true, "**": false } } }`.
+  Vercel matches branches with minimatch, where `*` doesn't cross a `/`,
+  so `"*"` would still deploy `feature/...` branches; `"**"` covers them.
+  A branch matching several rules deploys if any is `true`, so `main`
+  still deploys.
 - **Production env vars** reach Vercel through the Supabase <-> Vercel
   integration (Production environment). This is the only Supabase
   integration used.
 - **Default branch.** `dev` is where day-to-day PRs target. Claim It creates
-  `dev` from the initial commit and sets it as the GitHub default branch.
+  `dev` from `main` as its last step (after the site is live, so Vercel
+  connects while `main` is still the default and picks it as the
+  production branch) and sets it as the GitHub default branch.
   `main` is only updated by Ship It's release PRs and Fix It's hotfixes.
 - **CI** (`ci.yml`) runs on PRs into `dev` and `main`: lint, typecheck,
   Vitest, Playwright. Once the app has a database, the e2e job runs
@@ -288,7 +293,7 @@ hard-won detail (see [Appendix A](#appendix-a-lessons-from-the-first-slideit-run
      purpose, with the optional Iter8 Community branding kit (favicon,
      palette, Open Sans, footer credit). Branding lives in a few obvious
      files so it's easy to remove; `CLAUDE.md` explains how.
-  3. **Tests:** Vitest (unit, jsdom) and Playwright (e2e), each with one
+  3. **Tests:** Vitest (unit, happy-dom: ~1s warm vs ~2.3s for jsdom) and Playwright (e2e), each with one
      passing test. Playwright starts with `desktop` + `mobile` projects;
      Meet It may adjust them later to the personas' devices.
   4. **Repo hygiene:** `.gitignore` (including `.env*` except
@@ -644,7 +649,14 @@ GitHub owner `Iter8-IT-Consulting`, Vercel scope `iter8-community`.
       deploys turned off. The order is guaranteed, but it needs a
       `VERCEL_TOKEN` secret and more moving parts.
    Start with (a), and offer (b) as a Grow It upgrade.
-3. **Data access layer.** The Rails prescription is TypeORM (EntitySchema,
+3. ~~**Data access layer.**~~ **Decided (2026-09-29): `@supabase/supabase-js`**
+   with generated types (`supabase gen types typescript`) and a
+   `src/repositories/` folder. No TypeORM. Migrations stay with the Supabase
+   CLI (consider its declarative schemas so migrations are generated from
+   the desired table definitions). Deciding reason: supabase-js queries as
+   the signed-in user, so Row Level Security enforces who sees what in the
+   database; an ORM on a direct connection bypasses RLS, and one missed
+   filter leaks data. Original question: The Rails prescription is TypeORM (EntitySchema,
    `synchronize: false`) with a repository pattern. Keep it, or use
    `@supabase/supabase-js` directly (which pairs with Auth and Realtime;
    SlideIt's live slide sync will want Realtime)? It's introduced by the
@@ -654,19 +666,61 @@ GitHub owner `Iter8-IT-Consulting`, Vercel scope `iter8-community`.
 4. ~~**Plugin and repo name.**~~ **Decided (2026-09-29):** the plugin is
    `iter8-it`, in the `iter8-community-plugins` marketplace repo
    (`Iter8-IT-Consulting/iter8-community-plugins`, private for now).
-5. **Audience.** Is the primary user a solo non-developer builder (Iter8
+5. ~~**Audience.**~~ **Decided (2026-09-29): solo non-developer builders
+   first.** Skills explain more, and Claude merges without a second
+   reviewer. Original question: Is the primary user a solo non-developer builder (Iter8
    Community), a consultant with a client, or both? This affects tone, how
    much each step explains, and the default review policy for merges into
    `dev` and releases to `main`.
 6. **Personal-account destinations.** Labels instead of Issue Types, and
    `gh project` under a user. Confirm this is a supported path from v1.
-7. **Release tagging.** Date-based (`v2026.10.02-1`) or semver? Date-based
+7. ~~**Release tagging.**~~ **Decided (2026-09-29): semver** (`vMAJOR.MINOR.PATCH`).
+   Ship It proposes the bump from what's going out and explains it; the
+   user confirms. Patch = fixes only; minor = new stories (things people
+   can do); major = something people relied on changed or was removed, or
+   a redesign. Releases count up from `v0.1.0`; the release that
+   completes Trim It's first version is `v1.0.0`. Each release also gets a **GitHub Release** page (under the repo's
+   Releases) with a plain-language list of what changed. Original question: Date-based (`v2026.10.02-1`) or semver? Date-based
    suits non-developers and continuous shipping. Also decide whether Ship
    It creates a GitHub Release with the changelog.
-8. **Branch protection.** Require green CI before merging into `dev` and
+8. ~~**Branch protection.**~~ **Decided (2026-09-29): require green CI before
+   merging into `main`** (not `dev`). Claim It adds a ruleset for `main`.
+   GitHub only enforces rulesets on public repos or paid plans; on a
+   private repo under GitHub Free (Iter8-IT-Consulting is on Free), Claim It
+   says so and the rule is skill-enforced instead: Ship It and Fix It never
+   merge into `main` until CI is green. Grow It offers the paid plan as an
+   upgrade, with its cost. Original question: Require green CI before merging into `dev` and
    `main`? It's cheap to set up from Claim It (`gh api` rulesets) and
    protects beginners, but it adds friction for solo builders.
    Recommendation: protect `main` only.
+
+---
+
+## Appendix B: Decisions made while building Claim It (2026-09-29)
+
+- **Templates are applied by a script** (`claim-it/scripts/apply-templates.mjs`),
+  which reads `journey.json` and refuses to run twice without `--force`.
+  The name and purpose live in one generated file, `src/app/site.ts`, which
+  the page, the metadata and both tests import.
+- **`create-next-app --disable-git`** avoids deleting the temp folder's `.git`.
+- **Vercel checks are a script** (`claim-it/scripts/vercel-check.mjs`):
+  `visible` (the search-repo check from Appendix A) and `project`
+  (Git connection, production branch, production URL from
+  `/v9/projects`). The production URL is read, never assumed: Vercel
+  adds a suffix when `<slug>.vercel.app` is taken.
+- **Connecting Vercel doesn't deploy.** Claim It pushes a commit to `main`
+  afterwards and waits for that deployment (`vercel inspect --wait`), then
+  runs the e2e suite against the live URL (`BASE_URL=... npm run test:e2e`).
+- **Status field:** `claim-it/scripts/board-status.mjs` sends GraphQL
+  variables (no shell escaping) and refuses boards that already have
+  items, because replacing the option list regenerates option IDs.
+- **Story vs Task:** if an org has no Story Issue Type, Claim It asks each
+  time whether to add one (org-wide) or use Task. The choice is recorded
+  in `journey.json` `github.workItems`, and later skills read type names
+  from there.
+- **Cold-start test times on Windows** are antivirus scanning freshly
+  installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
+  after). Retry once before treating a timeout as a failure.
 
 ---
 

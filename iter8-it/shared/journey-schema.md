@@ -20,7 +20,19 @@ update every skill that reads or writes the field you change.
     "database": true,
     "decidedIn": "trim-it"
   },
-  "github": { "owner": "Iter8-IT-Consulting", "repo": "slideit", "project": 3 },
+  "github": {
+    "owner": "Iter8-IT-Consulting",
+    "repo": "slideit",
+    "project": 3,
+    "mainProtected": false,
+    "workItems": {
+      "kind": "issue-types",
+      "epic": "Epic",
+      "feature": "Feature",
+      "story": "Task",
+      "bug": "Bug"
+    }
+  },
   "vercel": { "scope": "iter8-community", "project": "slideit", "url": "https://slideit.vercel.app" },
   "supabase": {
     "local": true,
@@ -55,6 +67,9 @@ update every skill that reads or writes the field you change.
 | `github.owner` | string | Claim It | GitHub org or user that owns the repo. |
 | `github.repo` | string | Claim It | Repo name (normally the slug). |
 | `github.project` | number | Claim It | GitHub Project (board) number. |
+| `github.mainProtected` | boolean | Claim It | `true` if GitHub enforces "CI must pass before merging into `main`" (a ruleset). `false` on private repos under GitHub Free, where Ship It and Fix It enforce it themselves. |
+| `github.workItems.kind` | string | Claim It | `issue-types` (org: native Issue Types) or `labels` (personal account). |
+| `github.workItems.epic` / `.feature` / `.story` / `.bug` | string | Claim It | The Issue Type (or label) name used for each level. `story` may be `Task` when the org has no Story type and the user chose not to add one. Skills always use these names, never hard-coded ones. |
 | `vercel.scope` | string | Claim It | Vercel team/scope. |
 | `vercel.project` | string | Claim It | Vercel project name. |
 | `vercel.url` | string | Claim It | Production URL. |
@@ -77,7 +92,7 @@ values in:
   "slug": null,
   "purpose": null,
   "needs": { "auth": null, "database": null, "decidedIn": null },
-  "github": { "owner": null, "repo": null, "project": null },
+  "github": { "owner": null, "repo": null, "project": null, "mainProtected": null, "workItems": null },
   "vercel": { "scope": null, "project": null, "url": null },
   "supabase": { "local": false, "org": null, "projectRef": null, "region": null },
   "lastRelease": { "tag": null, "at": null }

@@ -18,8 +18,13 @@ branches.
   infrastructure for its own sake: setup work (like adding a database)
   lands inside the first story that needs it.
 - **Org-owned repos** use GitHub's native Issue Types (Epic, Feature,
-  Story, Bug). **Personal-account repos** use labels instead: `epic`,
-  `feature`, `story`, `bug`.
+  Story, Bug). If the org has no Story type, Claim It asks whether to add
+  one (org-wide) or use the existing Task type for stories.
+  **Personal-account repos** use labels instead: `epic`, `feature`,
+  `story`, `bug`.
+- The names actually used are recorded in `journey.json`
+  `github.workItems`. Skills read them from there; they never hard-code
+  "Story" or "Task".
 
 ## Other labels
 

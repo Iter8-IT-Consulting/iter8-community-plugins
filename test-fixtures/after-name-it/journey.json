@@ -1,0 +1,11 @@
+{
+  "stage": "name-it",
+  "name": "Plug Test",
+  "slug": "itplug-test-1",
+  "purpose": "A throwaway app for testing the iter8-it plugin's steps.",
+  "needs": { "auth": null, "database": null, "decidedIn": null },
+  "github": { "owner": null, "repo": null, "project": null, "mainProtected": null, "workItems": null },
+  "vercel": { "scope": null, "project": null, "url": null },
+  "supabase": { "local": false, "org": null, "projectRef": null, "region": null },
+  "lastRelease": { "tag": null, "at": null }
+}

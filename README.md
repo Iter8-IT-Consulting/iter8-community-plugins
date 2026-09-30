@@ -47,8 +47,9 @@ production.
 
 ## Status
 
-**Early scaffold.** The plugin installs and all its skills are listed, but
-each one is a placeholder that says it isn't built yet. Skills are being
+**Early.** **Claim It** is written and its local steps are tested; its
+GitHub and Vercel steps haven't had a full live run yet. The other skills
+are placeholders that say they aren't built yet. Skills are being
 built one at a time, in the order in [PLAN.md](PLAN.md#5-build-order).
 
 ## Install

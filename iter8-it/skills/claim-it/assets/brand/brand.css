@@ -1,0 +1,32 @@
+/*
+ * Iter8 Community starter palette - from the Iter8 style guide.
+ * Swap these values (or delete this file and its import in
+ * globals.css) to rebrand the app.
+ */
+:root {
+  --brand-primary: #1356cf; /* Vivid Blue */
+  --brand-accent: #6f42c1;  /* Smart Purple - use sparingly */
+  --brand-ink: #2b2b2b;     /* Charcoal */
+  --brand-muted: #6c757d;   /* Slate */
+  --brand-surface: #f1f3f5; /* Cloud */
+
+  --status-ok: #28a745;
+  --status-warn: #ffc107;
+  --status-error: #dc3545;
+
+  --brand-font-headline: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --brand-font-code: Consolas, ui-monospace, monospace;
+}
+
+@theme inline {
+  --color-brand: var(--brand-primary);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-muted: var(--brand-muted);
+  --color-brand-surface: var(--brand-surface);
+  --color-status-ok: var(--status-ok);
+  --color-status-warn: var(--status-warn);
+  --color-status-error: var(--status-error);
+  --font-headline: var(--brand-font-headline);
+  --font-mono: var(--brand-font-code);
+}
