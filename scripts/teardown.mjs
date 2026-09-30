@@ -59,10 +59,19 @@ function vercelToken() {
     path.join(home, "Library", "Application Support", "com.vercel.cli", "auth.json"),
     path.join(process.env.XDG_DATA_HOME || path.join(home, ".local", "share"), "com.vercel.cli", "auth.json"),
   ].filter(Boolean);
-  for (const file of candidates) {
-    if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, "utf8")).token;
+  const file = candidates.find((c) => fs.existsSync(c));
+  if (!file) return null;
+  let auth = JSON.parse(fs.readFileSync(file, "utf8"));
+  // Vercel CLI logins expire after a few hours; let the CLI renew it.
+  if (auth.expiresAt && auth.expiresAt * 1000 < Date.now() + 60_000) {
+    try {
+      execSync("vercel whoami", { stdio: "ignore" });
+    } catch {
+      return null;
+    }
+    auth = JSON.parse(fs.readFileSync(file, "utf8"));
   }
-  return null;
+  return auth.token ?? null;
 }
 
 async function vercel(method, url) {

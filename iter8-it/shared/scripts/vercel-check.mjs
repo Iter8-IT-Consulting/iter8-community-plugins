@@ -24,6 +24,7 @@
 //     one line when it starts waiting and nothing more until it's done.
 //     Exit: 0 READY, 2 failed/blocked/canceled/timed out, 1 error.
 
+import { execSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -59,11 +60,20 @@ function findToken() {
     path.join(home, "Library", "Application Support", "com.vercel.cli", "auth.json"),
     path.join(process.env.XDG_DATA_HOME || path.join(home, ".local", "share"), "com.vercel.cli", "auth.json"),
   ].filter(Boolean);
-  for (const file of candidates) {
-    if (fs.existsSync(file)) {
-      const { token } = JSON.parse(fs.readFileSync(file, "utf8"));
-      if (token) return token;
+  const file = candidates.find((c) => fs.existsSync(c));
+  if (file) {
+    let auth = JSON.parse(fs.readFileSync(file, "utf8"));
+    // Vercel CLI logins expire after a few hours; the CLI renews them when
+    // it runs, so let it do that, then read the new token.
+    if (auth.expiresAt && auth.expiresAt * 1000 < Date.now() + 60_000) {
+      try {
+        execSync("vercel whoami", { stdio: "ignore" });
+      } catch {
+        fail("the Vercel login has expired and couldn't be renewed. Run `vercel login`.");
+      }
+      auth = JSON.parse(fs.readFileSync(file, "utf8"));
     }
+    if (auth.token) return auth.token;
   }
   fail(`no Vercel CLI login found (looked in ${candidates.join(", ")}). Run \`vercel login\`.`);
 }
