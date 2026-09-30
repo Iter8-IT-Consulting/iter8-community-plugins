@@ -14,7 +14,7 @@ This is the one-time setup. When it's done, the project has:
 - unit and end-to-end tests, passing
 - a private GitHub repo with `main` and `dev` (`dev` is the default)
 - a GitHub project board (Todo / In Progress / In Review / Done), empty
-- CI running on every PR and push to `dev` and `main`, green
+- CI running on every PR into `dev` and `main` (and pushes to `main`), green
 - `main` protected: nothing merges into it unless CI is green
 - a Vercel project that deploys `main` only
 - a live URL a stranger could open on their phone

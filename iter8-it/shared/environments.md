@@ -80,7 +80,8 @@ feature/<issue>-<slug> ──PR──▶ dev ──release PR──▶ main
 
 ## CI
 
-`ci.yml` runs on PRs into `dev` and `main` (and pushes to both): lint,
+`ci.yml` runs on PRs into `dev` and `main`, and on pushes to `main` (not
+`dev`: a merged PR already ran on that exact code): lint,
 `npm run typecheck` (`next typegen && tsc --noEmit`), Vitest, Playwright.
 Once the app has a database, the e2e job runs `supabase start` in the
 runner, so tests hit a real local stack built from the migrations. That

@@ -1,10 +1,13 @@
 name: CI
 
+# PRs into dev and main are where changes get checked. Pushes to dev aren't
+# re-checked: a merged PR already ran on exactly that code. Pushes to main
+# (releases, hotfixes) run once more as a record of what went live.
 on:
   pull_request:
     branches: [dev, main]
   push:
-    branches: [dev, main]
+    branches: [main]
   workflow_dispatch:
 
 concurrency:

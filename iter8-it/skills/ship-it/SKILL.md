@@ -52,10 +52,10 @@ SKILL.md). Run the scripts from the project folder.
 
 3. Anything to ship? `git log --oneline origin/main..origin/dev`. If it's
    empty: "Everything on `dev` is already live." Offer Build It. Stop.
-4. `dev`'s latest CI run must be green:
-   `gh run list --branch dev --workflow ci.yml --limit 1 --json conclusion,status,url`.
-   Still running: wait for it (`gh run watch <id> --exit-status`). Failed:
-   stop. Say what failed; fixing it is Build It's (or Fix It's) job.
+4. No open PRs into `dev` still waiting on checks or review that the user
+   expects in this release (`gh pr list --base dev`). If there are, ask
+   whether to wait for them. (CI doesn't run on `dev` itself; the release
+   PR in step 3 runs the full checks on everything going out.)
 
 ## 1. What's going out
 

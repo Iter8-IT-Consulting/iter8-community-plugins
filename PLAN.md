@@ -755,6 +755,12 @@ GitHub owner `Iter8-IT-Consulting`, Vercel scope `iter8-community`.
   waits on stdin when it isn't a terminal, so tools must close stdin.
   Supabase Free allows 2 active projects per org, and paid orgs pay about
   $10 a month per extra project, so supabase-prod asks for the plan first.
+- **CI doesn't run on pushes to `dev` (2026-09-30).** Only PRs into `dev`
+  and `main`, plus pushes to `main`. A merged PR already ran on that
+  exact code, so the push run was a repeat, about a third of the CI
+  minutes. (The org is on GitHub Free: 2,000 private-repo minutes a
+  month, shared with ScoreIt. A story with a database costs about 10
+  minutes: CI with Supabase is about 5 billed minutes per run.)
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.
