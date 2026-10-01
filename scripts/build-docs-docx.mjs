@@ -6,7 +6,9 @@
 //   node scripts/build-docs-docx.mjs [output.docx]
 //
 // Default output: dist/iter8-it-journey.docx (dist/ is gitignored).
-// Needs pandoc on the PATH.
+// Styling, page setup (a folded booklet) and the branded header and footer
+// come from docs/template/journey-reference.docx; regenerate that with
+// scripts/make-docx-template.mjs. Needs pandoc on the PATH.
 
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
@@ -16,6 +18,7 @@ import { fileURLToPath } from "node:url";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const docs = path.join(repo, "docs");
+const template = path.join(docs, "template", "journey-reference.docx");
 const output = path.resolve(process.argv[2] ?? path.join(repo, "dist", "iter8-it-journey.docx"));
 
 const pages = [
@@ -63,7 +66,19 @@ fs.mkdirSync(path.dirname(output), { recursive: true });
 try {
   execFileSync(
     "pandoc",
-    [input, "--from", "gfm+raw_attribute", "--to", "docx", "--metadata", "title=The iter8-it journey", "-o", output],
+    [
+      input,
+      "--from",
+      "gfm+raw_attribute",
+      "--to",
+      "docx",
+      "--reference-doc",
+      template,
+      "--metadata",
+      "title=The iter8-it journey",
+      "-o",
+      output,
+    ],
     { stdio: "inherit" },
   );
 } finally {
