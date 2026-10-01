@@ -29,4 +29,4 @@ every step carry on from there.
    live app without a way back. Gaps you'd rather keep are written down,
    so the other steps work around them.
 
-Then [What's Next](../steps/whats-next.md) takes it from there.
+Then [What's Next](whats-next.md) takes it from there.

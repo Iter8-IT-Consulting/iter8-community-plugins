@@ -23,7 +23,7 @@ the reason.
 It goes down the journey in order and stops at the first thing that needs
 doing: a missing step, then unfinished work, then what's waiting to ship,
 then the next card in Todo. If Todo's empty, it suggests
-[Trim It](06-trim-it.md) to choose what's next.
+[Trim It](../steps/06-trim-it.md) to choose what's next.
 
 It only looks. It never changes anything. Say yes, and it starts the
 step it recommended.

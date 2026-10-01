@@ -24,12 +24,15 @@ anything important.
 | 8 | [Ship It](steps/08-ship-it.md) | Put it live for real people, and check it works. |
 | 9 | [Fix It](steps/09-fix-it.md) | When something breaks, find out why and fix it. *(coming soon)* |
 | 10 | [Grow It](steps/10-grow-it.md) | Improve it from what real use teaches you. *(coming soon)* |
-| | [What's Next](steps/whats-next.md) | Lost track? It tells you where you are and what to do now. |
+
+**Lost track of where you are?** Ask [What's Next](extras/whats-next.md): it
+looks at your project and tells you the one thing to do now.
 
 **Extras**, for when you need them:
 
 | | In one line |
 |---|---|
+| [What's Next](extras/whats-next.md) | Lost track? It tells you where you are and what to do now. |
 | [Your own web address](extras/custom-domain.md) | Move your app from `something.vercel.app` to a name you own. |
 | [Adopt It](extras/adopt-it.md) | Bring an app you've already started onto the journey. *(coming soon)* |
 

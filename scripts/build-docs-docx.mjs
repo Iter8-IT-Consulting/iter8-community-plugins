@@ -38,12 +38,17 @@ const pages = sample
       ...fs
         .readdirSync(path.join(docs, "steps"))
         .filter((f) => f.endsWith(".md"))
-        .sort((a, b) => (a === "whats-next.md") - (b === "whats-next.md") || a.localeCompare(b))
+        .sort((a, b) => a.localeCompare(b))
         .map((f) => `steps/${f}`),
       ...fs
         .readdirSync(path.join(docs, "extras"))
         .filter((f) => f.endsWith(".md"))
-        .sort((a, b) => (a === "custom-domain.md" ? -1 : b === "custom-domain.md" ? 1 : a.localeCompare(b)))
+        // What's Next first, then your own web address, then the rest.
+        .sort((a, b) => {
+          const order = ["whats-next.md", "custom-domain.md"];
+          const rank = (f) => (order.includes(f) ? order.indexOf(f) : order.length);
+          return rank(a) - rank(b) || a.localeCompare(b);
+        })
         .map((f) => `extras/${f}`),
     ];
 
