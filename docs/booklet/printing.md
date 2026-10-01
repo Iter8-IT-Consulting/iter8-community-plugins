@@ -17,9 +17,11 @@ side of every sheet, then asks you to reload the paper.
 0. **Load exactly as many sheets as the booklet needs**, fanned (riffle
    the edges so they separate). A booklet of N pages uses N/4 sheets,
    rounded up: 28 pages = 7 sheets.
-1. **If the printer runs out of paper before the first side is done**,
-   two sheets went through together. Start again rather than printing the
-   backs, or every back after that point lands on the wrong sheet.
+1. **Count the printed sheets before reloading** (7 for 28 pages). One
+   short means two went through together, or one slipped off the output
+   tray (it happens: check the floor). Find it or start again; printing
+   the backs onto a short stack puts every back after that point on the
+   wrong sheet.
 2. **Between the two sides, don't reorder the sheets.** Keep the stack
    exactly as it came out.
 3. **Turn the whole stack over in one go**, flipping it along one axis
