@@ -18,6 +18,11 @@
 //     production URL as JSON.
 //     Exit: 0 ok, 1 error.
 //
+//   node <plugin>/shared/scripts/vercel-check.mjs domain <domain>
+//     How Vercel wants the domain's DNS set up, and whether it already is:
+//     Vercel's first-choice CNAME and A values, and the current state.
+//     Exit: 0 configured, 2 not configured yet, 1 error.
+//
 //   node <plugin>/shared/scripts/vercel-check.mjs deployment <project-name> <commit-sha> [minutes]
 //     Waits (default 10 minutes) for the production deployment of that
 //     commit to finish, then prints it as JSON. One blocking wait: it prints
@@ -41,12 +46,12 @@ function fail(message) {
 if (
   !(
     command === "account" ||
-    (["visible", "project"].includes(command) && arg) ||
+    (["visible", "project", "domain"].includes(command) && arg) ||
     (command === "deployment" && arg && process.argv[4])
   )
 ) {
   console.error(
-    "usage: vercel-check.mjs account | visible <owner>/<repo> | project <project-name> | deployment <project-name> <sha> [minutes]",
+    "usage: vercel-check.mjs account | visible <owner>/<repo> | project <project-name> | domain <domain> | deployment <project-name> <sha> [minutes]",
   );
   process.exit(1);
 }
@@ -160,6 +165,32 @@ async function project(name) {
   return 0;
 }
 
+async function domain(name) {
+  const config = await get(`https://api.vercel.com/v6/domains/${encodeURIComponent(name)}/config?teamId=${teamId}`);
+  const first = (list) => (list ?? []).find((r) => r.rank === 1)?.value;
+  const cname = first(config.recommendedCNAME);
+  const a = first(config.recommendedIPv4);
+  const isApex = name.split(".").length <= 2;
+  console.log(
+    JSON.stringify(
+      {
+        domain: name,
+        configured: config.misconfigured === false,
+        configuredBy: config.configuredBy ?? null,
+        // A subdomain takes one CNAME; a bare domain takes A records.
+        addThisRecord: isApex
+          ? { type: "A", values: Array.isArray(a) ? a : [a] }
+          : { type: "CNAME", value: typeof cname === "string" ? cname.replace(/.$/, "") : cname },
+        currentA: config.aValues ?? [],
+        currentCNAME: config.cnames ?? [],
+      },
+      null,
+      2,
+    ),
+  );
+  return config.misconfigured === false ? 0 : 2;
+}
+
 async function deployment(name) {
   const sha = process.argv[4];
   const minutes = Number(process.argv[5] ?? 10);
@@ -193,7 +224,7 @@ async function deployment(name) {
 
 try {
   init();
-  process.exitCode = await { account, visible, project, deployment }[command](arg);
+  process.exitCode = await { account, visible, project, domain, deployment }[command](arg);
 } catch (err) {
   if (!(err instanceof CheckError)) throw err;
   console.error(`vercel-check: ${err.message}`);

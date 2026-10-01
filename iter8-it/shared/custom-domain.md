@@ -33,12 +33,21 @@ managed: `nslookup -type=NS <parent domain> 8.8.8.8`
 
 ```bash
 vercel domains add <domain> <vercel.project> --scope <vercel.scope>
-vercel domains inspect <domain> --scope <vercel.scope>
+node <plugin>/shared/scripts/vercel-check.mjs domain <domain>
 ```
 
-`inspect` shows the DNS record Vercel wants (type, name, value). **Use
-exactly that value.** Vercel gives project-specific targets (like
-`600d5ac992f47442.vercel-dns-017.com`), not a generic one.
+`vercel-check domain` gives Vercel's first-choice record in
+`addThisRecord`: a **CNAME** for a subdomain, **A** records for a bare
+domain. **Use exactly that value.** Vercel gives project-specific CNAME
+targets (like `600d5ac992f47442.vercel-dns-017.com`). An A record with
+`76.76.21.21` also works (Vercel's second choice); if `configured` is
+already `true`, nothing more is needed.
+
+**Don't change the domain's nameservers.** If the parent domain is
+already in the Vercel team (another app uses a subdomain of it),
+`vercel domains inspect` shows the *parent* and suggests moving its
+nameservers to Vercel. That would move the whole domain's DNS away from
+the registrar. One record is all that's needed.
 
 ## 3. The DNS record (the user does this)
 
@@ -51,7 +60,7 @@ GoDaddy:
 >    - **Type:** CNAME
 >    - **Name:** `<the part before the parent domain>` (for
 >      `slideit.apps.iter8.community` it's `slideit.apps`)
->    - **Value:** `<the value from vercel domains inspect>`
+>    - **Value:** `<addThisRecord from vercel-check domain>`
 >    - **TTL:** default (1 hour is fine)
 > 3. **Save.**
 
@@ -68,11 +77,11 @@ request, no polling loop).
 ## 4. Wait for Vercel
 
 ```bash
-vercel domains inspect <domain> --scope <vercel.scope>
+node <plugin>/shared/scripts/vercel-check.mjs domain <domain>
 node <plugin>/shared/scripts/vercel-check.mjs project <vercel.project>
 ```
 
-The domain should show as configured, and `aliases` in `vercel-check`
+`configured` should be `true`, and `aliases` in `vercel-check`
 should include it. Then open `https://<domain>`: the certificate
 (https) is issued by Vercel automatically, sometimes a minute or two
 after the DNS check passes.
