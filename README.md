@@ -7,6 +7,8 @@ Claude Code plugins from Iter8 for the community.
 **[iter8-it](iter8-it/)** walks you from "I have a problem" to "my app is
 live and improving", one named step at a time:
 
+Each step has its own explainer page: **[the iter8-it journey](docs/README.md)**.
+
 | # | Step | What it does |
 |---|------|--------------|
 | 1 | **Spot It** | Find a real problem in your life or work that a simple app could fix. |
@@ -47,10 +49,11 @@ production.
 
 ## Status
 
-**Early.** **Claim It** is written and its local steps are tested; its
-GitHub and Vercel steps haven't had a full live run yet. The other skills
-are placeholders that say they aren't built yet. Skills are being
-built one at a time, in the order in [PLAN.md](PLAN.md#5-build-order).
+**Pre-release, being tested.** Spot It through Ship It and What's Next
+are written. Claim It, Build It and Ship It have been tested live,
+including the database path. Sign-in is tested locally; Spot It through
+Trim It are being tested end to end now. Fix It and Grow It are coming
+later.
 
 ## Install
 
