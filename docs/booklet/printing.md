@@ -14,14 +14,18 @@ fold the stack in the middle.
 **File → Print → Manually Print on Both Sides.** Word prints the first
 side of every sheet, then asks you to reload the paper.
 
-- **Don't reorder the sheets.** Keep the stack exactly as it came out.
-- **Turn the whole stack over in one go**, flipping it along one axis
-  only. Don't spin it end to end.
+1. **Between the two sides, don't reorder the sheets.** Keep the stack
+   exactly as it came out.
+2. **Turn the whole stack over in one go**, flipping it along one axis
+   only. Don't spin it end to end.
+3. **After the second side, reverse the order of the sheets** before
+   folding, so the sheet with the cover (page 1) is on the outside.
 
-That's what worked on Adam's printer (2026-10-01). Other printers can
-feed differently, so if yours is new to you, try one sheet first: the
-back of the sheet with pages 1 and the last page should get page 2 and
-the second-to-last page, the right way up.
+That's what works on Adam's printer (2026-10-01). Other printers can
+feed and stack differently, so if yours is new to you, try one sheet
+first: the back of the sheet with page 1 and the last page should get
+page 2 and the second-to-last page, the right way up. In the finished
+stack, that sheet goes on the outside of the fold.
 
 Then fold the stack in the middle, and staple along the fold if you
 like.
