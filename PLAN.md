@@ -903,6 +903,19 @@ Not built yet. Their pages in `docs/steps/` describe what they'll do.
   and `PRODUCT.md` (Layout section). Build It's first story builds the
   frame. Text only, so nothing goes stale with Next.js versions. Code
   templates were considered and rejected for the upkeep.
+- **SlideIt acceptance trial, run 2026-10-01: passed.** Spot It, Name It
+  (slug `slideit`, so the live address became `slideit-two.vercel.app`,
+  as Name It warned), Claim It, Meet It (3 personas: Speaker, Operator,
+  Audience Member; added a tablet device), Dream It (6 Epics, 52 Features,
+  all in Backlog with persona labels), Trim It (7 Features to Todo, 46
+  `later`, 1 never; two-sided layout with a front page), Build It (one
+  story, then "this feature" for #56 sign-in: local Supabase, the auth
+  template, the decks table with owner-only RLS, the new CI file, and
+  #68 branded emails filed as `later`), Ship It v0.1.0 (Pro-org
+  production project, Vercel env, `SUPABASE_DB_URL`, auth-config, migrate
+  on `main`, 7 cards Done). Lessons: Trim It should save as it goes
+  (9.2); Docker can wedge and need restarting or updating; stopping other
+  local Supabase setups speeds builds up a lot.
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.
