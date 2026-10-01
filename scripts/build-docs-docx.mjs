@@ -4,7 +4,9 @@
 // in docs/steps/ in order, then docs/extras/, each starting on a new page. Links between the
 // pages become links within the document.
 //
-//   node scripts/build-docs-docx.mjs [output.docx]
+//   node scripts/build-docs-docx.mjs [output.docx] [--pdf]
+//     --pdf: also save a PDF next to it, made by Word (Windows, with Word
+//     installed), with the contents page numbers filled in.
 //   node scripts/build-docs-docx.mjs --sample --reference <template.docx> <output.docx>
 //     (used by make-docx-template.mjs: just the title page, front matter and
 //     one step chapter, built with the given template)
@@ -24,6 +26,7 @@ const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const docs = path.join(repo, "docs");
 const args = process.argv.slice(2);
 const sample = args.includes("--sample");
+const pdf = args.includes("--pdf");
 const referenceIndex = args.indexOf("--reference");
 const template = referenceIndex === -1 ? path.join(docs, "template", "journey-reference.docx") : path.resolve(args[referenceIndex + 1]);
 const positional = args.filter((a, i) => !a.startsWith("--") && i !== referenceIndex + 1);
@@ -138,3 +141,32 @@ try {
 
 console.log(`Wrote ${path.relative(process.cwd(), output)} (${pages.length} pages: ${pages.join(", ")})`);
 if (!sample) console.log("To print it as a booklet, see docs/booklet/printing.md.");
+
+// A PDF made by Word itself, so the booklet layout and the contents page
+// numbers match what Word prints.
+if (pdf) {
+  if (process.platform !== "win32") {
+    console.error("build-docs-docx: --pdf needs Windows with Word installed.");
+    process.exit(1);
+  }
+  const pdfPath = output.replace(/\.docx$/i, ".pdf");
+  const ps = [
+    "$ErrorActionPreference = 'Stop'",
+    "$word = New-Object -ComObject Word.Application",
+    "$word.Visible = $false",
+    "$word.DisplayAlerts = 0",
+    "try {",
+    `  $doc = $word.Documents.Open('${output.replace(/'/g, "''")}', $false, $false)`,
+    "  foreach ($toc in $doc.TablesOfContents) { $toc.Update() }",
+    `  $doc.ExportAsFixedFormat('${pdfPath.replace(/'/g, "''")}', 17)`,
+    "  $doc.Close($false)",
+    "} finally { $word.Quit() }",
+  ].join("\n");
+  try {
+    execFileSync("powershell", ["-NoProfile", "-NonInteractive", "-Command", ps], { stdio: "inherit" });
+  } catch {
+    console.error("build-docs-docx: Word couldn't make the PDF. Is the PDF open somewhere? Close it and try again.");
+    process.exit(1);
+  }
+  console.log(`Wrote ${path.relative(process.cwd(), pdfPath)} (made by Word)`);
+}
