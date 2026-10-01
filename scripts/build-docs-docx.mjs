@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-// Build one Word document from the journey explainers: docs/README.md, then
-// each page in docs/steps/ in order, each step starting on a new page.
-// Links between the pages become links within the document.
+// Build one Word document from the journey explainers: a title page and
+// front matter (docs/booklet/front.md), then docs/README.md, then each page
+// in docs/steps/ in order, each starting on a new page. Links between the
+// pages become links within the document.
 //
 //   node scripts/build-docs-docx.mjs [output.docx]
 //
@@ -46,7 +47,18 @@ const anchors = new Map(sources.map(({ page, text }) => [page, anchorOf(text)]))
 
 const pageBreak = "\n```{=openxml}\n<w:p><w:r><w:br w:type=\"page\"/></w:r></w:p>\n```\n";
 
-const combined = sources
+// Front matter: title page, About this booklet, Contents. {{VERSION}} and
+// {{DATE}} come from the plugin and today's date. The 8 mark is copied next
+// to the combined markdown so pandoc can embed it.
+const pluginVersion = JSON.parse(fs.readFileSync(path.join(repo, "iter8-it", ".claude-plugin", "plugin.json"), "utf8")).version;
+const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+const front = fs
+  .readFileSync(path.join(docs, "booklet", "front.md"), "utf8")
+  .replace(/<!--[\s\S]*?-->\s*/, "")
+  .replaceAll("{{VERSION}}", `v${pluginVersion}`)
+  .replaceAll("{{DATE}}", today);
+
+const combined = front + pageBreak + sources
   .map(({ page, text }) => {
     const dir = path.posix.dirname(page);
     // [text](other.md) -> [text](#other-page-title), resolved from this page.
@@ -60,6 +72,10 @@ const combined = sources
 
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "iter8-docs-"));
 const input = path.join(tmp, "journey.md");
+fs.copyFileSync(
+  path.join(repo, "iter8-it", "skills", "claim-it", "assets", "brand", "iter8-mark.png"),
+  path.join(tmp, "iter8-mark.png"),
+);
 fs.writeFileSync(input, combined);
 fs.mkdirSync(path.dirname(output), { recursive: true });
 
@@ -69,13 +85,13 @@ try {
     [
       input,
       "--from",
-      "gfm+raw_attribute",
+      "markdown+raw_attribute+fenced_divs-implicit_figures",
+      "--resource-path",
+      tmp,
       "--to",
       "docx",
       "--reference-doc",
       template,
-      "--metadata",
-      "title=The iter8-it journey",
       "-o",
       output,
     ],

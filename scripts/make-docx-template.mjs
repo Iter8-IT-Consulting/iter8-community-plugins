@@ -10,7 +10,12 @@
 //     body, Consolas for code. The fonts must be installed where the
 //     document is opened or printed; Word substitutes silently otherwise.
 //   - a header with the 8 mark and "The iter8-it journey", and a footer with
-//     "Iter8 Community · www.iter8.community" and the page number
+//     "Iter8 Community · www.iter8.community" and the page number; none on
+//     the title page
+//   - styles for the title page and front matter (Cover Mark, Cover Title,
+//     Cover Subtitle, Cover Note, Front Heading), used by
+//     docs/booklet/front.md
+//   - Word updates the table of contents when the document is opened
 //
 //   node scripts/make-docx-template.mjs
 //
@@ -101,6 +106,37 @@ try {
     /(<w:style [^>]*w:styleId="VerbatimChar">[\s\S]*?<w:rPr>)[\s\S]*?(<\/w:rPr>)/,
     `$1${runFonts(FONTS.code)}<w:sz w:val="14" /><w:szCs w:val="14" />$2`,
   );
+  // Title page and front matter styles, used by docs/booklet/front.md
+  // through pandoc custom styles. Edit them freely in Word (by name).
+  const paraStyle = (name, pPr, rPr) =>
+    `<w:style w:type="paragraph" w:customStyle="1" w:styleId="${name.replace(/ /g, "")}"><w:name w:val="${name}" /><w:basedOn w:val="Normal" /><w:qFormat /><w:pPr>${pPr}</w:pPr><w:rPr>${rPr}</w:rPr></w:style>`;
+  const center = `<w:jc w:val="center" />`;
+  styles = styles.replace(
+    "</w:styles>",
+    [
+      paraStyle("Cover Mark", `${center}<w:spacing w:before="2400" w:after="360" />`, ""),
+      paraStyle(
+        "Cover Title",
+        `${center}<w:spacing w:after="240" />`,
+        `${runFonts(FONTS.heading)}<w:b /><w:bCs /><w:color w:val="${BRAND.primary}" /><w:sz w:val="56" /><w:szCs w:val="56" />`,
+      ),
+      paraStyle(
+        "Cover Subtitle",
+        `${center}<w:spacing w:after="1440" />`,
+        `<w:color w:val="${BRAND.ink}" /><w:sz w:val="24" /><w:szCs w:val="24" />`,
+      ),
+      paraStyle(
+        "Cover Note",
+        `${center}<w:spacing w:after="60" />`,
+        `<w:color w:val="${BRAND.muted}" /><w:sz w:val="17" /><w:szCs w:val="17" />`,
+      ),
+      paraStyle(
+        "Front Heading",
+        `<w:keepNext /><w:spacing w:before="240" w:after="120" /><w:pBdr><w:bottom w:val="single" w:sz="8" w:space="4" w:color="${BRAND.primary}" /></w:pBdr>`,
+        `${runFonts(FONTS.heading)}<w:b /><w:bCs /><w:color w:val="${BRAND.primary}" /><w:sz w:val="28" /><w:szCs w:val="28" />`,
+      ),
+    ].join("") + "</w:styles>",
+  );
   write("word/styles.xml", styles);
 
   // --- Header and footer ------------------------------------------------
@@ -160,15 +196,25 @@ try {
 </w:ftr>`,
   );
 
+  // The title page (first page) has no header or footer.
+  write(
+    "word/header2.xml",
+    `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:hdr ${ns}><w:p /></w:hdr>`,
+  );
+  write(
+    "word/footer2.xml",
+    `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr ${ns}><w:p /></w:ftr>`,
+  );
+
   replace(
     "word/_rels/document.xml.rels",
     "</Relationships>",
-    `<Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Id="rIdHeader1" Target="header1.xml" /><Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Id="rIdFooter1" Target="footer1.xml" /></Relationships>`,
+    `<Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Id="rIdHeader1" Target="header1.xml" /><Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Id="rIdFooter1" Target="footer1.xml" /><Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Id="rIdHeader2" Target="header2.xml" /><Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Id="rIdFooter2" Target="footer2.xml" /></Relationships>`,
   );
   replace(
     "[Content_Types].xml",
     "</Types>",
-    `<Default Extension="png" ContentType="image/png" /><Override PartName="/word/header1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml" /><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml" /></Types>`,
+    `<Default Extension="png" ContentType="image/png" /><Override PartName="/word/header1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml" /><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml" /><Override PartName="/word/header2.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml" /><Override PartName="/word/footer2.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml" /></Types>`,
   );
 
   // --- Page setup: Letter landscape, book fold --------------------------
@@ -178,15 +224,18 @@ try {
     `<w:sectPr>
       <w:headerReference w:type="default" r:id="rIdHeader1" />
       <w:footerReference w:type="default" r:id="rIdFooter1" />
+      <w:headerReference w:type="first" r:id="rIdHeader2" />
+      <w:footerReference w:type="first" r:id="rIdFooter2" />
       <w:footnotePr><w:numRestart w:val="eachSect" /></w:footnotePr>
       <w:pgSz w:w="${PAGE.w}" w:h="${PAGE.h}" w:orient="landscape" />
       <w:pgMar w:top="${PAGE.margin}" w:right="${PAGE.margin}" w:bottom="${PAGE.margin}" w:left="${PAGE.margin}" w:header="${PAGE.header}" w:footer="${PAGE.footer}" w:gutter="0" />
+      <w:titlePg />
     </w:sectPr>`,
   );
   if (!read("word/document.xml").includes('xmlns:r="')) {
     replace("word/document.xml", "<w:document ", `<w:document xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" `);
   }
-  replace("word/settings.xml", "<w:defaultTabStop", `<w:bookFoldPrinting /><w:defaultTabStop`);
+  replace("word/settings.xml", "<w:defaultTabStop", `<w:updateFields w:val="true" /><w:bookFoldPrinting /><w:defaultTabStop`);
 
   // --- Zip it back up ---------------------------------------------------
   fs.mkdirSync(path.dirname(output), { recursive: true });
