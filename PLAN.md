@@ -696,6 +696,72 @@ GitHub owner `Iter8-IT-Consulting`, Vercel scope `iter8-community`.
 
 ---
 
+## 9. After Friday (2026-10-02): ideas queued
+
+### 9.1 Adopt It: bring an existing project onto the journey
+
+**Idea (Adam, 2026-10-01):** take a project that already exists (on
+GitHub, Vercel and Supabase, say), work out where it is in the journey,
+and fill in the gaps, so iter8-it can carry on from there. **First test
+case: ScoreIt.** It has a GitHub repo and board (#2), a Vercel project
+with production on `release/prod`, Supabase `scoreit-prod` plus a paused
+`scoreit-test`, and Resend for email.
+
+A one-time step (working name **Adopt It**), run in the project's folder:
+
+1. **Discover, read-only.** Read the repo (stack, `package.json`, tests,
+   CI, `supabase/`, README), GitHub (default branch, branches, Issues and
+   their types and labels, Projects and their Status options, rulesets),
+   Vercel (`vercel-check.mjs project`: Git link, production branch,
+   domains, env vars by name only) and Supabase (projects, Branching,
+   integrations, how migrations are applied today). Nothing changes yet.
+2. **Place it on the journey.** Fill in `journey.json` from what was
+   found and set `stage` to the furthest step whose outputs already
+   exist. A live app with a backlog is past Trim It, for example.
+3. **Reconstruct the product story.** Draft `PRODUCT.md` (Problem,
+   People, First Version, Layout) from the README, the code, the Issues
+   and the live site. Confirm each part with the user in a short
+   "confirm mode" of Spot / Name / Meet / Trim It: show the draft, ask
+   what's wrong, never re-interview from scratch.
+4. **Gap report.** Compare with the iter8-it conventions
+   (`shared/conventions.md`, `environments.md`, `journey-schema.md`) and
+   list each difference in plain words, with what it would take to close
+   it, the risk, and whether it's needed or optional. For example:
+   - branches (`release/prod` vs `main` + `dev`), and Vercel's
+     production branch;
+   - the board's Status options (Backlog / Todo / In Progress /
+     In Review / Done), Issue Types vs labels, `persona:` labels;
+   - CI (lint, typecheck, unit; e2e on releases) and `vercel.json`
+     (deploy only production);
+   - the database: Branching or a persistent cloud dev database
+     (billing!) vs local Docker; migrations applied by `migrate.yml` with
+     `SUPABASE_DB_URL` vs by hand or by an integration; production env var
+     names (publishable keys);
+   - tests (Vitest, Playwright desktop/mobile), `CLAUDE.md` and README
+     sections;
+   - anything iter8-it doesn't support (a non-Next.js stack, say): say
+     so plainly, and adopt only the parts that fit (board, Issues,
+     PRODUCT.md, releases).
+5. **Close gaps one at a time, with consent,** smallest risk first. Each
+   change goes through a PR. Nothing that could break the live app
+   happens without a rollback plan: switching Vercel's production branch,
+   say, or replacing how migrations run. Some gaps can be left on
+   purpose; record them in `journey.json` (e.g. an `adopted.exceptions`
+   list) so other skills don't trip over them.
+6. **Hand off** to What's Next.
+
+**Things to work out:**
+- How much the other skills must tolerate a partly adopted project:
+  exceptions, or a "compatibility" flag that each skill checks.
+- Existing Issues with no Feature/Story structure: map them, or leave
+  them and only structure new work.
+- Data safety when moving off Branching or a cloud dev database: what
+  local seed data replaces it.
+- Cost: adoption may *save* money (e.g. dropping a persistent Branching
+  database). Say so in the gap report.
+
+---
+
 ## Appendix B: Decisions made while building Claim It (2026-09-29)
 
 - **Templates are applied by a script** (`claim-it/scripts/apply-templates.mjs`),
