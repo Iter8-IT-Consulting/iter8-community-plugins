@@ -10,3 +10,6 @@ USER.md
 Thumbs.db
 .vscode/
 node_modules/
+
+# Generated documents (scripts/build-docs-docx.mjs)
+dist/
