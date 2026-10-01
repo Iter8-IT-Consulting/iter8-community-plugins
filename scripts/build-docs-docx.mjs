@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Build one Word document from the journey explainers: a title page and
 // front matter (docs/booklet/front.md), then docs/README.md, then each page
-// in docs/steps/ in order, each starting on a new page. Links between the
+// in docs/steps/ in order, then docs/extras/, each starting on a new page. Links between the
 // pages become links within the document.
 //
 //   node scripts/build-docs-docx.mjs [output.docx]
@@ -40,6 +40,11 @@ const pages = sample
         .filter((f) => f.endsWith(".md"))
         .sort((a, b) => (a === "whats-next.md") - (b === "whats-next.md") || a.localeCompare(b))
         .map((f) => `steps/${f}`),
+      ...fs
+        .readdirSync(path.join(docs, "extras"))
+        .filter((f) => f.endsWith(".md"))
+        .sort((a, b) => (a === "custom-domain.md" ? -1 : b === "custom-domain.md" ? 1 : a.localeCompare(b)))
+        .map((f) => `extras/${f}`),
     ];
 
 // The anchor pandoc gives a page's first heading: lowercase, punctuation

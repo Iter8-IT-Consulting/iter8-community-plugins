@@ -33,7 +33,10 @@ in Trim It, with its navigation, ready for everything that follows.
 **The first time your app needs to remember something**, Build It quietly
 adds a database on your computer, plus sign-in if people need accounts.
 That goes into the same story as the feature that needed it. Nothing
-gets set up before it's needed.
+gets set up before it's needed. With sign-in, it also adds a note to
+your Backlog for later: making the app's account emails (sign-up,
+password reset) look like they come from your app, once it has its own
+look.
 
 ## What you end up with
 

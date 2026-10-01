@@ -26,6 +26,13 @@ anything important.
 | 10 | [Grow It](steps/10-grow-it.md) | Improve it from what real use teaches you. *(coming soon)* |
 | | [What's Next](steps/whats-next.md) | Lost track? It tells you where you are and what to do now. |
 
+**Extras**, for when you need them:
+
+| | In one line |
+|---|---|
+| [Your own web address](extras/custom-domain.md) | Move your app from `something.vercel.app` to a name you own. |
+| [Adopt It](extras/adopt-it.md) | Bring an app you've already started onto the journey. *(coming soon)* |
+
 ## How it fits together
 
 ```

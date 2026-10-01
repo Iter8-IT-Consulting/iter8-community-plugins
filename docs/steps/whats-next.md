@@ -28,6 +28,9 @@ then the next card in Todo. If Todo's empty, it suggests
 It only looks. It never changes anything. Say yes, and it starts the
 step it recommended.
 
+It also tells you which version of iter8-it you're running, handy after
+an update.
+
 | | |
 |---|---|
 | **Time** | Seconds |

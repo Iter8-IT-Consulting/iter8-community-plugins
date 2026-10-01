@@ -18,7 +18,8 @@ computer's copy.
 3. **The first time your app needs a database online**, Ship It sets it
    up: a Supabase project on the free plan (or your paid one, with the
    cost stated first), connected to the live site. You save one password;
-   it does the rest.
+   it does the rest. If people sign in, it also points sign-in at your
+   live address, so account links go to the right place.
 4. **The final checks.** Every test runs one last time on GitHub,
    including the ones that click through the app. Nothing goes live
    unless they pass.
@@ -54,4 +55,5 @@ Then: back to Build It for the next piece, or Trim It to choose what's
 next.
 
 **Next:** [Fix It](09-fix-it.md) when something breaks, [Grow It](10-grow-it.md)
-as people use it.
+as people use it, and [your own web address](../extras/custom-domain.md)
+whenever you're ready to share it.
