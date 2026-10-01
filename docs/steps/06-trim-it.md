@@ -32,6 +32,21 @@ under the hood: **Do people sign in? Does the app need to remember
 anything?** If not, there's no database at all: simpler, and free
 forever.
 
+And it helps you choose the app's **layout**, its overall shape. Claude
+recommends one from your people and their devices, with a reason:
+
+| Layout | In one line |
+|---|---|
+| **Single-purpose tool** | One focused screen that does one job well. |
+| **Signed-in app with navigation** | Lists of "my things", detail pages, and a menu between areas. |
+| **Mobile-first with bottom tabs** | A phone app in the browser: a few main areas, one tap apart. |
+| **Front page + app** | A public page that explains it, and the app behind "Get started". |
+| **Two-sided** | One person creates on a big screen; others follow on their phones. |
+
+Or none of these: describe what you picture, and that becomes the plan.
+Build It's first story builds the frame, so every later feature lands in
+the same place.
+
 ## Grooming: Trim It again and again
 
 Trim It isn't only for the first version. **Run it whenever Todo is

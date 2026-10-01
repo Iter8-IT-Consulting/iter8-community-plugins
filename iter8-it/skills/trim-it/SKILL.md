@@ -58,7 +58,8 @@ project folder).
    - **Grooming** (any later run): show the board in a few lines (what's
      in Todo, In Progress and In Review, how many in Backlog and how many
      of those are `later`). Ask what prompted it: Todo running low, new
-     ideas, or a change of plan. Skip step 4 unless the needs changed.
+     ideas, or a change of plan. Skip steps 4 and 5 unless the needs
+     changed or there's no layout yet.
 
 Never move or reorder anything that's In Progress, In Review or Done.
 
@@ -117,7 +118,20 @@ Tell them what happens next: "When Build It reaches the first story that
 saves data, it'll set up a database on your computer (Docker Desktop is
 needed then). The first release after that creates the online database."
 
-## 5. Save it
+## 5. The layout
+
+First trim only (and whenever `journey.json` has no `layout` yet).
+Now that the people and the first version are known, choose the app's
+overall shape: the page frame and navigation that features slot into.
+Read `<plugin>/shared/layouts.md` and follow its **Choosing** section:
+recommend one layout with a one-sentence reason (and a runner-up if it's
+close), show the others in a line each, and let the user pick, or
+describe their own (`custom`).
+
+Explain why it matters, briefly: "Picking a shape now means every feature
+lands in the same frame, instead of each one inventing its own."
+
+## 6. Save it
 
 **Board:**
 
@@ -145,8 +159,8 @@ then move it to Todo as above.
 gh issue close <n> -R <owner>/<repo> --reason "not planned" --comment "Not planned: <reason>. (Trim It)"
 ```
 
-**`PRODUCT.md`**, first trim: add the **First Version** section, following
-`<plugin>/shared/product-template.md`:
+**`PRODUCT.md`**, first trim: add the **First Version** section and, after
+it, the **Layout** section, following `<plugin>/shared/product-template.md`:
 
 ```markdown
 ## First Version
@@ -154,14 +168,22 @@ gh issue close <n> -R <owner>/<repo> --reason "not planned" --comment "Not plann
 <The goal sentence.> The first version includes <short list, in order>.
 Out for now: <the main things labelled later>. The app needs sign-in: yes/no.
 It stores data: yes/no.
+
+## Layout
+
+**<Layout name>**: <its one-line description>. <One sentence on why it fits
+these people.> (For `custom`: the description the user gave, in the same
+shape as layouts.md: fits / desktop / phone / first story builds.)
 ```
 
 Grooming: leave First Version as it is once it's live (it's history);
 the board and Issues carry the plan from then on.
 
 **`journey.json`**, first trim: `needs` =
-`{ "auth": <bool>, "database": <bool>, "decidedIn": "trim-it" }` and
-`stage` = `"trim-it"` if it was earlier. Grooming: update `needs` only if
+`{ "auth": <bool>, "database": <bool>, "decidedIn": "trim-it" }`,
+`layout` = the layout id (`single-tool`, `app-nav`, `mobile-tabs`,
+`front-and-app`, `two-sided` or `custom`), and `stage` = `"trim-it"` if it
+was earlier. Grooming: update `needs` only if
 it changed.
 
 Commit any file changes to `dev` and push:
@@ -173,7 +195,7 @@ git commit -m "Trim It: <first version planned | next batch planned>"
 git push
 ```
 
-## 6. What next?
+## 7. What next?
 
 Show the board link (`journey.json` has the project number:
 `https://github.com/orgs/<owner>/projects/<number>` for an org,

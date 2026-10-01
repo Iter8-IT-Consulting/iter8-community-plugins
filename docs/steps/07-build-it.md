@@ -26,6 +26,9 @@ see every piece working before it's kept.
      you say "merge", and it's added to the version waiting to go live.
 4. **Next story**, until the run is done. Stop whenever you like.
 
+**The first story also builds your app's frame**: the layout you chose
+in Trim It, with its navigation, ready for everything that follows.
+
 **The first time your app needs to remember something**, Build It quietly
 adds a database on your computer, plus sign-in if people need accounts.
 That goes into the same story as the feature that needed it. Nothing

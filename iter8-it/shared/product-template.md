@@ -31,6 +31,11 @@ Who has it, what happens today, why it matters, how we'll know it's solved.
 <!-- Trim It -->
 The goal of the first version in a paragraph, what's explicitly out (for
 now), and what the app needs (sign-in? stored data?).
+
+## Layout
+<!-- Trim It -->
+The app's overall shape, from shared/layouts.md (or described by the
+user), and why it fits these people.
 ```
 
 ## Rules

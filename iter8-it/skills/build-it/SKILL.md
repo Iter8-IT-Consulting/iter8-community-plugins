@@ -39,6 +39,8 @@ SKILL.md).
 - `<plugin>/shared/environments.md`: branches, environments, migrations.
 - `<plugin>/shared/supabase-local.md`: adding the local database (once).
 - `<plugin>/shared/supabase-auth.md`: adding sign-in (once).
+- `<plugin>/shared/layouts.md`: the app layouts; the first story builds
+  the chosen one's frame.
 
 ## 0. Where are we?
 
@@ -151,6 +153,24 @@ what Trim It decided.
 - Needs it and it's already set up: go on.
 - Needs it but `needs` says the app doesn't: stop and ask. The plan
   changed; update `needs` in `journey.json` if the user agrees.
+
+### The app's frame (first story)
+
+If the app still has Claim It's starter page and no frame of its own
+(no shared header/navigation in `src/components/`), this story also
+builds the frame for the chosen layout: `journey.json` `layout`, described
+in `<plugin>/shared/layouts.md` (or, for `custom`, in `PRODUCT.md`'s
+Layout section). Follow its "First story builds" line and the
+**Building** section there. Keep the Iter8 credit in the footer unless
+the user removed the branding.
+
+No layout chosen yet (Trim It ran before layouts existed, or was
+skipped): pick one now, following the **Choosing** section of
+`layouts.md`, and record it in `journey.json` and `PRODUCT.md` on this
+story's branch.
+
+Tell the user in a sentence: "This first story also builds the app's
+frame, the <layout> layout, so later features slot into it."
 
 ## 4. Start the story
 
