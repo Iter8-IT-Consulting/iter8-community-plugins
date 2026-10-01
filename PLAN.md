@@ -805,6 +805,13 @@ GitHub owner `Iter8-IT-Consulting`, Vercel scope `iter8-community`.
 - **Build It run scope (2026-10-01):** asks once per run: one story, this
   Feature (the default) or everything in Todo. It loops story by story,
   keeping the try-it pause, and stops early on failures or decisions.
+- **Two loops (2026-10-01).** After Claim It, the journey has an inner
+  loop (Build It <-> Ship It, with Fix It) and an outer loop (Grow It ->
+  Meet It -> Dream It -> Trim It). The outer loop runs whenever real use
+  teaches something. Meet It reruns add, adjust or retire personas, and
+  lead into a Dream It focused on a new persona, then Trim It. What's
+  Next and Ship It nudge toward the outer loop every couple of releases.
+  Grow It (after Friday) becomes the outer loop's guide.
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.

@@ -12,7 +12,8 @@ turns that into the next round of work.
 
 - **Gather what you've learned**: feedback, bug patterns, what's used
   and what isn't.
-- **Look again at the basics**: are your personas still right? Is the
+- **Look again at the basics**: are your personas still right, and has
+  anyone new turned up? (That's [Meet It](04-meet-it.md) again.) Is the
   problem still the problem?
 - **Dream and trim, again**: new ideas go into the Backlog, parked ideas
   get a second look, and the board is reordered for the next release.

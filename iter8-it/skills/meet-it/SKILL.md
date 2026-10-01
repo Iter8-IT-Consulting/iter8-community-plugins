@@ -31,8 +31,17 @@ SKILL.md).
   offer those steps and stop.
 - It works before or after Claim It. After Claim It (`journey.json`
   `github.repo` set), the result is committed to `dev`.
-- A **People** section already exists: a rerun. Show it and ask what to
-  change: add someone, adjust someone, or start over.
+- A **People** section already exists: a rerun, usually because using
+  the app taught them something (Grow It, What's Next and Ship It suggest
+  it). Show the personas and ask what's changed: someone new turned up,
+  someone isn't who we thought, or someone doesn't matter any more.
+  - **Adjust**: update their description; keep their name if possible
+    (Issues are tagged with it).
+  - **Retire** (after the first version, prefer this to deleting):
+    move them under a short "### No longer the focus" note in People
+    with the reason, keep their `persona:` label, and mention that Trim
+    It can park their Backlog Features.
+  - **Start over** only before anything's been built.
 
 ## 1. Who are they?
 
@@ -122,6 +131,17 @@ page (`https://github.com/<owner>/<repo>`), whose README now opens with
 **Who it's for**, linking to the full descriptions in `PRODUCT.md`. (`PRODUCT.md` stays the source: skills
 read it every time, and it's versioned with the code.)
 
-"Next is **Dream It**: getting every feature idea for these people out of
-your heads and onto the table. Ready?" Meet It, Dream It and Trim It often
-happen in one sitting.
+**First time:** "Next is **Dream It**: getting every feature idea for
+these people out of your heads and onto the table. Ready?" Meet It, Dream
+It and Trim It often happen in one sitting.
+
+**A rerun that added someone:** a new persona has no Features yet. Offer
+**Dream It focused on them** ("What would <new persona> love to be able
+to do?"), then **Trim It** to decide whether any of it belongs in the
+next release. Also check the existing Backlog and Todo Features: does
+any of them serve the new persona too? If so, add their `persona:`
+label (`gh issue edit <n> --add-label "persona:<name>"`, creating the
+label first if it doesn't exist).
+
+**A rerun that changed or retired someone:** offer **Trim It**, since
+priorities may have shifted.

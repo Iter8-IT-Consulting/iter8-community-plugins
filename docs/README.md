@@ -29,17 +29,30 @@ anything important.
 ## How it fits together
 
 ```
-Spot It -> Name It -> Claim It -> Meet It -> Dream It -> Trim It
-                                                            |
-                         +---------> Build It -> Ship It ---+
-                         |                         |
-                         +---- Fix It, Grow It <---+
+Spot It -> Name It -> Claim It                        (once)
+                         |
+                         v
+        +--> Meet It -> Dream It -> Trim It ----+     (outer loop: what to build, for whom)
+        |                                        |
+        |                                        v
+     Grow It <--- Ship It <---> Build It <-------+    (inner loop: build and release)
+                     ^             |
+                     +-- Fix It <--+
 ```
 
-The first steps happen once, often in one or two sittings: Spot, Name and
-Claim together, then Meet, Dream and Trim together. After that, **Build
-It and Ship It are a loop**: build a few pieces, put them live, repeat.
-Trim It comes back whenever you need to choose what's next.
+**Once:** Spot It, Name It and Claim It, often in one sitting. They take
+you from an idea to a live web address.
+
+**The inner loop: Build It and Ship It.** This is where most of the time
+goes. Build a few small pieces, put them live, repeat. Fix It jumps in
+when something breaks.
+
+**The outer loop: Meet It, Dream It, Trim It.** The first time through, it
+plans your first version. After that, come back whenever real use has
+taught you something: a new kind of person using the app, new ideas,
+or a change of priorities. Then Trim It chooses what goes into the next
+round of building. Grow It (coming soon) will lead you around it;
+until then, What's Next will nudge you when it's time.
 
 ## What it's built on
 

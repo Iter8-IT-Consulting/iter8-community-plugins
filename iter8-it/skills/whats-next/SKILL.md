@@ -51,7 +51,7 @@ recommendation.
 | 9 | No First Version in `PRODUCT.md`, or `needs` not decided | **Trim It** |
 | 10 | Unreleased commits, and either 3+ stories In Review or the last Todo item of the first version is merged | **Ship It** (strongly) |
 | 11 | Unreleased commits | **Build It** for the next item, *or* Ship It. Recommend shipping if a person can now do something useful end to end. |
-| 12 | Items in Todo | **Build It**: the top Todo item (name it). If it's the *last* Todo item and the Backlog has ideas, add: "After this, Todo is empty; a quick Trim It will pick what's next." |
+| 12 | Items in Todo | **Build It**: the top Todo item (name it). If it's the *last* Todo item and the Backlog has ideas, add: "After this, Todo is empty; a quick Trim It will pick what's next." If there have been **2+ releases since Trim It last ran** (`git log --oneline --grep "Trim It" -1` vs. `gh release list`), add the outer-loop nudge below. |
 | 13 | Nothing in Todo, but ideas in Backlog | **Trim It**, to groom: pick the next Features from the Backlog |
 | 14 | Nothing in Todo, In Progress, In Review or Backlog | **Grow It** (see below) |
 
@@ -59,9 +59,25 @@ Some steps can run out of order (Meet It before Claim It, say); if the
 facts show that happened, don't send them back. Only recommend a step
 whose inputs are missing if it's genuinely next.
 
-**Grow It isn't built yet.** For row 14 recommend **Dream It** (new
-ideas) then **Trim It** (reconsider the `later` ideas and plan the next
-batch), and mention that Grow It will do this more fully in a later
+**The two loops.** After Claim It, the journey runs in two loops:
+
+```
+Meet It -> Dream It -> Trim It      (outer: what to build, and for whom)
+Build It <-> Ship It, with Fix It   (inner: build and release)
+```
+
+What's Next mostly keeps people in the inner loop. **The outer-loop
+nudge** is one extra line after the recommendation, when real use may
+have taught them something: "You've released twice since you last
+looked at your people and ideas. When there's a moment: new kinds of
+people using it? **Meet It**. New ideas? **Dream It**. Then **Trim It**
+to choose."
+
+**Grow It isn't built yet.** For row 14, ask what they've learned from
+people using the app, then recommend: **Meet It** if new kinds of people
+have turned up (or someone isn't who we thought), otherwise **Dream It**
+(new ideas) then **Trim It** (reconsider the `later` ideas and plan the
+next batch). Mention that Grow It will guide this more fully in a later
 version.
 
 ## 3. Tell them

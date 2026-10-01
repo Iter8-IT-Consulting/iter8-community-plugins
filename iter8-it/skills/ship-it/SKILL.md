@@ -249,6 +249,10 @@ Offer: "Next up on the board is #<n>, *<title>*. Build it now?" If
 Todo is empty, offer **Trim It** instead, to pick the next batch from the
 Backlog (or Dream It, if the Backlog is empty too).
 
+Every couple of releases, add the outer-loop nudge: "Now that people are
+using it: anyone new turned up (**Meet It**)? New ideas (**Dream It**)?
+Then **Trim It** to choose what's next."
+
 ## Stop and ask if
 
 - CI on `dev` is failing, or the release PR's checks fail.

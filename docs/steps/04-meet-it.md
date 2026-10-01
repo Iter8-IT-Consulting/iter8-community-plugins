@@ -40,4 +40,12 @@ how it's tested.
 | **Decisions** | Who the app is really for, and who can wait |
 | **Cost** | Nothing |
 
+## Come back when you learn something
+
+Your first personas are your best guess. Once real people use the app,
+you'll often discover someone you didn't expect, or find that someone
+isn't quite who you thought. Run Meet It again to add or adjust them.
+It then offers a Dream It session focused on the newcomer, and a Trim It
+to decide what's worth building for them next.
+
 **Next:** [Dream It](05-dream-it.md)
