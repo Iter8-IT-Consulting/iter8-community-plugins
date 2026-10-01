@@ -8,6 +8,7 @@ Claude Code plugins from Iter8 for the community.
 live and improving", one named step at a time:
 
 Each step has its own explainer page: **[the iter8-it journey](docs/README.md)**.
+New? Start with **[Before you start](docs/getting-ready.md)**.
 
 | # | Step | What it does |
 |---|------|--------------|

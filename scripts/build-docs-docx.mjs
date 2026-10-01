@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Build one Word document from the journey explainers: a title page and
-// front matter (docs/booklet/front.md), then docs/README.md, then each page
-// in docs/steps/ in order, then docs/extras/, each starting on a new page. Links between the
+// front matter (docs/booklet/front.md), then docs/README.md, then
+// docs/getting-ready.md, then each page in docs/steps/ in order, then
+// docs/extras/, each starting on a new page. Links between the
 // pages become links within the document.
 //
 //   node scripts/build-docs-docx.mjs [output.docx] [--pdf]
@@ -29,7 +30,7 @@ const sample = args.includes("--sample");
 const pdf = args.includes("--pdf");
 const referenceIndex = args.indexOf("--reference");
 const template = referenceIndex === -1 ? path.join(docs, "template", "journey-reference.docx") : path.resolve(args[referenceIndex + 1]);
-const positional = args.filter((a, i) => !a.startsWith("--") && i !== referenceIndex + 1);
+const positional = args.filter((a, i) => !a.startsWith("--") && (referenceIndex === -1 || i !== referenceIndex + 1));
 const output = path.resolve(positional[0] ?? path.join(repo, "dist", "iter8-it-journey.docx"));
 
 // The sample (the template's own body) is one chapter with every component:
@@ -38,6 +39,7 @@ const pages = sample
   ? ["steps/06-trim-it.md"]
   : [
       "README.md",
+      "getting-ready.md",
       ...fs
         .readdirSync(path.join(docs, "steps"))
         .filter((f) => f.endsWith(".md"))

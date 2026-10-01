@@ -12,6 +12,9 @@ You don't need to be a developer. Every step explains what it's doing in
 plain words, asks one thing at a time, and checks with you before
 anything important.
 
+**New here?** Start with [Before you start](getting-ready.md): the accounts
+and free tools to set up once.
+
 | | Step | In one line |
 |---|---|---|
 | 1 | [Spot It](steps/01-spot-it.md) | Find a real problem a simple app could fix. |
@@ -69,8 +72,9 @@ until then, What's Next will nudge you when it's time.
 The same simple, mostly free tools for every app: a **Next.js** web app,
 hosted on **Vercel**, with the code and the to-do board on **GitHub**,
 and a **Supabase** database only if the app needs one. Free plans cover
-almost everything. Anything paid is offered, never assumed, and the cost
-is spelled out first.
+all of those. The one thing to pay for is **Claude Pro** (Claude Code
+isn't in Claude's free plan). Anything else paid is offered, never
+assumed, and the cost is spelled out first.
 
 ## Our principles
 

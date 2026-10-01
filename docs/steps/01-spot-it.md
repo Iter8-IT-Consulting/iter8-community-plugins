@@ -38,4 +38,7 @@ adjust them until they're right.
 **Bring a partner.** It works with two people at the keyboard. They'll
 often remember different parts of the problem.
 
+**Before your first Spot It:** set up the accounts and tools in
+[Before you start](../getting-ready.md).
+
 **Next:** [Name It](02-name-it.md)

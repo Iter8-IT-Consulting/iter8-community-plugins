@@ -48,10 +48,11 @@ first six steps once. After that, Build It and Ship It repeat for every
 release, and Meet It, Dream It and Trim It come back whenever you've
 learned something.
 
-**What you need to start.** A computer with Claude Code, and free GitHub
-and Vercel accounts. Claim It checks everything else and tells you what's
-missing. If your app needs to save data, Docker Desktop (also free) comes
-in later.
+**What you need to start.** A computer, a Claude Pro account (the one
+paid part), and free GitHub and Vercel accounts, plus a few free tools.
+The chapter *Before you start* lists them all, with the commands to
+install them. Claim It checks everything again and tells you what's
+missing.
 
 **Where to find more.** The Iter8 Community: www.iter8.community.
 
