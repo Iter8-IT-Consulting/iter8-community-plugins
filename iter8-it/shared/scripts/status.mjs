@@ -22,7 +22,12 @@ function run(cmd, args) {
   }
 }
 
-const status = { folder: root };
+// The plugin version this script belongs to (its own plugin.json).
+const manifest = path.join(here, "..", "..", ".claude-plugin", "plugin.json");
+const status = {
+  folder: root,
+  plugin: fs.existsSync(manifest) ? `iter8-it ${JSON.parse(fs.readFileSync(manifest, "utf8")).version}` : null,
+};
 
 // --- Local files ---------------------------------------------------------
 const productPath = path.join(root, "PRODUCT.md");

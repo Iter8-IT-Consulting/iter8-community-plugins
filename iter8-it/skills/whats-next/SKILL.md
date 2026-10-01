@@ -21,6 +21,7 @@ node <plugin>/shared/scripts/status.mjs
 
 It reports (as JSON):
 
+- `plugin`: the installed iter8-it version;
 - `product`: which `PRODUCT.md` sections exist;
 - `journey`: the stage, live URL, needs, database and last release;
 - `git`: the current branch, uncommitted changes, and `unreleasedCommits`
@@ -83,7 +84,9 @@ version.
 ## 3. Tell them
 
 Keep it short: where they are (two or three lines), then **one**
-recommendation with the reason, then an offer.
+recommendation with the reason, then an offer. End with the plugin
+version in small print ("_iter8-it 0.14.3_"), so people can tell which
+version they are running.
 
 > **Plug Test** is live at https://itplug-test-1.vercel.app (v0.1.0).
 > One story is merged but not live yet (*Visitor can read the guestbook*),
