@@ -14,11 +14,18 @@ fold the stack in the middle.
 **File → Print → Manually Print on Both Sides.** Word prints the first
 side of every sheet, then asks you to reload the paper.
 
-1. **Between the two sides, don't reorder the sheets.** Keep the stack
+0. **Fan the paper before loading it** (riffle the edges so the sheets
+   separate), and don't overfill the tray. Two sheets going through
+   together is the usual way manual both-sides printing goes wrong.
+1. **Count the sheets after the first side.** A booklet of N pages uses
+   N/4 sheets, rounded up (28 pages = 7 sheets). One short means two
+   went through together; start again rather than printing the backs,
+   or every back after that point lands on the wrong sheet.
+2. **Between the two sides, don't reorder the sheets.** Keep the stack
    exactly as it came out.
-2. **Turn the whole stack over in one go**, flipping it along one axis
+3. **Turn the whole stack over in one go**, flipping it along one axis
    only. Don't spin it end to end.
-3. **After the second side, reverse the order of the sheets** before
+4. **After the second side, reverse the order of the sheets** before
    folding, so the sheet with the cover (page 1) is on the outside.
 
 That's what works on Adam's printer (2026-10-01). Other printers can
