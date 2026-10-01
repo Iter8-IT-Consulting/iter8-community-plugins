@@ -242,10 +242,13 @@ Then **self-review**: read the whole diff
 debug code, missing tests, anything hard-coded that shouldn't be, and
 anything outside the story's scope.
 
-**Let the user try it.** Offer: "Want to try it yourself? Run
-`npm run dev` and open http://localhost:3000 (on your phone too, if it's
-for mobile: use your computer's network address)." Adjust from their
-feedback before opening the PR.
+**Let the user try it: this is the approval.** Offer: "Want to try it
+yourself? Run `npm run dev` and open http://localhost:3000 (on your
+phone too, if it's for mobile: use your computer's network address).
+When it looks good, say so and I'll open the PR and merge it into `dev`
+once the checks pass." Adjust from their feedback until they approve.
+Their "looks good" covers the merge: Build It doesn't ask again (step 7).
+If they'd rather skip trying it, ask for a plain "go ahead" instead.
 
 ## 6. Pull request into `dev`
 
@@ -283,8 +286,8 @@ simply, fix it, push, and watch again.
 
 ## 7. Merge into `dev`
 
-When the checks are green, summarize what the story does and ask: "Merge
-it into `dev`? It won't be live until we run Ship It." On yes:
+The user approved the story at the try-it pause (step 5), so **merge as
+soon as the checks are green**, without asking again:
 
 ```bash
 gh pr merge <pr> --squash --delete-branch
@@ -299,6 +302,13 @@ Then:
 - The story **stays In Review** (merged, not live). Don't close it.
 - If every story under the feature is now merged, set the feature to
   In Review too.
+- Tell the user in one line: "Merged #<pr> into `dev`. It goes live with
+  the next Ship It."
+
+**Ask before merging instead** if anything changed after their approval
+(a fix needed to get the checks green, say): show what changed in a
+sentence or two and get a fresh "looks good". Never merge with failing
+checks.
 
 ## 8. Next story, or stop
 
@@ -314,7 +324,7 @@ allows:
 Between stories, say in one line what was merged and what's next ("#14
 merged. Next: #15, *Audience member sees the current slide*."), and
 carry on. The user can say "stop" at any pause (the try-it check, the
-merge question); finish cleanly at the next safe point (nothing half
+approval at the try-it pause); finish cleanly at the next safe point (nothing half
 done: the current story merged, or its branch pushed and left In
 Progress).
 

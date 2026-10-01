@@ -22,8 +22,9 @@ see every piece working before it's kept.
      through the app on a desktop and on a phone.
    - **You try it.** Open it on your computer (or your phone) and say
      whether it's right. Feedback gets built in before anything is kept.
-   - It goes to GitHub for a quick automatic check (about a minute), then
-     you say "merge", and it's added to the version waiting to go live.
+   - **When you say it looks good,** it goes to GitHub for a quick
+     automatic check (about a minute) and, once that passes, it's added
+     to the version waiting to go live. No second "are you sure?".
 4. **Next story**, until the run is done. Stop whenever you like.
 
 **The first story also builds your app's frame**: the layout you chose
@@ -45,7 +46,7 @@ gets set up before it's needed.
 | | |
 |---|---|
 | **Time** | Varies. Most stories take 15-45 minutes, mostly Claude working. |
-| **Decisions** | Approving the stories; trying each one; saying "merge" |
+| **Decisions** | Approving the stories; trying each one and saying when it looks good |
 | **You'll need** | Docker Desktop (free), but only once your app needs a database |
 | **Cost** | Nothing |
 
