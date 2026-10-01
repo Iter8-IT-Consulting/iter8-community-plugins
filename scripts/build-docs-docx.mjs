@@ -5,6 +5,9 @@
 // pages become links within the document.
 //
 //   node scripts/build-docs-docx.mjs [output.docx]
+//   node scripts/build-docs-docx.mjs --sample --reference <template.docx> <output.docx>
+//     (used by make-docx-template.mjs: just the title page, front matter and
+//     one step chapter, built with the given template)
 //
 // Default output: dist/iter8-it-journey.docx (dist/ is gitignored).
 // Styling, page setup (a folded booklet) and the branded header and footer
@@ -19,17 +22,25 @@ import { fileURLToPath } from "node:url";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const docs = path.join(repo, "docs");
-const template = path.join(docs, "template", "journey-reference.docx");
-const output = path.resolve(process.argv[2] ?? path.join(repo, "dist", "iter8-it-journey.docx"));
+const args = process.argv.slice(2);
+const sample = args.includes("--sample");
+const referenceIndex = args.indexOf("--reference");
+const template = referenceIndex === -1 ? path.join(docs, "template", "journey-reference.docx") : path.resolve(args[referenceIndex + 1]);
+const positional = args.filter((a, i) => !a.startsWith("--") && i !== referenceIndex + 1);
+const output = path.resolve(positional[0] ?? path.join(repo, "dist", "iter8-it-journey.docx"));
 
-const pages = [
-  "README.md",
-  ...fs
-    .readdirSync(path.join(docs, "steps"))
-    .filter((f) => f.endsWith(".md"))
-    .sort((a, b) => (a === "whats-next.md") - (b === "whats-next.md") || a.localeCompare(b))
-    .map((f) => `steps/${f}`),
-];
+// The sample (the template's own body) is one chapter with every component:
+// title, intro, section headings, tables, bullets and a diagram.
+const pages = sample
+  ? ["steps/06-trim-it.md"]
+  : [
+      "README.md",
+      ...fs
+        .readdirSync(path.join(docs, "steps"))
+        .filter((f) => f.endsWith(".md"))
+        .sort((a, b) => (a === "whats-next.md") - (b === "whats-next.md") || a.localeCompare(b))
+        .map((f) => `steps/${f}`),
+    ];
 
 // The anchor pandoc gives a page's first heading: lowercase, punctuation
 // dropped, spaces to hyphens ("What's Next" -> "whats-next").
@@ -78,6 +89,20 @@ fs.copyFileSync(
 );
 fs.writeFileSync(input, combined);
 fs.mkdirSync(path.dirname(output), { recursive: true });
+
+// Word locks a document while it's open; say so instead of failing deep in pandoc.
+if (fs.existsSync(output)) {
+  try {
+    fs.closeSync(fs.openSync(output, "r+"));
+  } catch (err) {
+    if (["EBUSY", "EPERM", "EACCES"].includes(err.code)) {
+      console.error(`build-docs-docx: ${path.relative(process.cwd(), output)} is open in Word (or another program). Close it and run this again.`);
+      fs.rmSync(tmp, { recursive: true, force: true });
+      process.exit(1);
+    }
+    throw err;
+  }
+}
 
 try {
   execFileSync(

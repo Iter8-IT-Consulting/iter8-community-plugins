@@ -17,11 +17,21 @@
 //     docs/booklet/front.md
 //   - Word updates the table of contents when the document is opened
 //
-//   node scripts/make-docx-template.mjs
+// Its body is a short sample of the real booklet (title page, front matter,
+// the Trim It chapter), so it can be styled by hand against real content.
+// pandoc ignores the body when building; only styles, header, footer and
+// page setup are used.
+//
+//   node scripts/make-docx-template.mjs [--force]
+//
+// It won't overwrite a template that was edited by hand since it last
+// generated it (it keeps a fingerprint in docs/template/.generated-sha256).
+// --force overwrites anyway, losing those edits.
 //
 // Needs pandoc, and Windows 10+ tar.exe (or bsdtar elsewhere) to unzip and zip.
 
 import { execFileSync } from "node:child_process";
+import crypto from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -29,6 +39,19 @@ import { fileURLToPath } from "node:url";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const output = path.join(repo, "docs", "template", "journey-reference.docx");
+const fingerprint = path.join(repo, "docs", "template", ".generated-sha256");
+const sha256 = (file) => crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
+
+if (fs.existsSync(output) && !process.argv.includes("--force")) {
+  const recorded = fs.existsSync(fingerprint) ? fs.readFileSync(fingerprint, "utf8").trim() : null;
+  if (recorded !== sha256(output)) {
+    console.error(
+      "make-docx-template: docs/template/journey-reference.docx has been edited since this script made it.\n" +
+        "Regenerating would throw those edits away. Run with --force if that's really what you want.",
+    );
+    process.exit(1);
+  }
+}
 const logo = path.join(repo, "iter8-it", "skills", "claim-it", "assets", "brand", "iter8-mark.png");
 
 const BRAND = { primary: "1356CF", ink: "2B2B2B", muted: "6C757D" };
@@ -238,10 +261,15 @@ try {
   replace("word/settings.xml", "<w:defaultTabStop", `<w:updateFields w:val="true" /><w:bookFoldPrinting /><w:defaultTabStop`);
 
   // --- Zip it back up ---------------------------------------------------
-  fs.mkdirSync(path.dirname(output), { recursive: true });
-  const zip = path.join(tmp, "out.zip");
+  const zip = path.join(tmp, "styles.zip");
   sh(TAR, ["-a", "-c", "-f", zip, "-C", dir, "[Content_Types].xml", "_rels", "docProps", "word"]);
-  fs.copyFileSync(zip, output);
+  const styled = path.join(tmp, "styles.docx");
+  fs.copyFileSync(zip, styled);
+
+  // --- Sample body: a few real pages, built with those styles -----------
+  fs.mkdirSync(path.dirname(output), { recursive: true });
+  sh(process.execPath, [path.join(repo, "scripts", "build-docs-docx.mjs"), "--sample", "--reference", styled, output]);
+  fs.writeFileSync(fingerprint, sha256(output) + "\n");
   console.log(`Wrote ${path.relative(process.cwd(), output)}`);
 } finally {
   fs.rmSync(tmp, { recursive: true, force: true });
