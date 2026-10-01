@@ -127,3 +127,4 @@ try {
 }
 
 console.log(`Wrote ${path.relative(process.cwd(), output)} (${pages.length} pages: ${pages.join(", ")})`);
+if (!sample) console.log("To print it as a booklet, see docs/booklet/printing.md.");
