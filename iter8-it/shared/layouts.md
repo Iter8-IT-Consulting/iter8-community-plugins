@@ -1,7 +1,8 @@
 # App layouts
 
-Five common shapes for an app: the page frame and navigation that
-features slot into. Trim It recommends one after the first trim, the user
+Four common shapes for an app (the page frame and navigation that
+features slot into), plus one separate choice: whether it has a public
+**front page**. Trim It recommends one after the first trim, the user
 picks (or says "none of these, design one with me"), and Build It's first
 story builds the frame to match. They're descriptions, not code: Build It
 builds them fresh with the app's Next.js and branding.
@@ -11,8 +12,9 @@ phone, the signals that point to it, and what the first story builds.
 Everything is mobile-friendly; "mobile-first" means designed for the
 phone first, then widened.
 
-The choice is recorded in `journey.json` `layout` (the id below) and in
-`PRODUCT.md` (a short **Layout** section). It's a starting point, not a
+The choice is recorded in `journey.json` `layout` (`shape`: the id below;
+`frontPage`: true or false) and in `PRODUCT.md` (a short **Layout**
+section). It's a starting point, not a
 cage: later stories can change it, and Grow It may suggest a change.
 
 ---
@@ -28,7 +30,8 @@ cage: later stories can change it, and Grow It may suggest a change.
 - **Phone:** the same column, full width with side padding. Big touch
   targets; the main action within thumb reach.
 - **Signals:** one persona (or one main one); one or two first-version
-  Features; no sign-in, or sign-in only to save one thing.
+  Features; no sign-in, or sign-in only to save one thing. Usually no
+  front page: the tool is the front page.
 - **Examples:** a guestbook, a tip calculator, a sign-up sheet, a "which
   bin does this go in?" lookup.
 - **First story builds:** the home page as the tool itself, with a small
@@ -74,28 +77,6 @@ cage: later stories can change it, and Grow It may suggest a change.
   needs (placeholders are fine for areas whose stories come later; hide
   them if they're empty) and the first area's content.
 
-## `front-and-app`: Front page + app
-
-**A public page that explains the app, and the app itself behind
-"Get started".**
-
-- **Fits:** apps people need to understand before they try them, or that
-  anyone can find. Visitors aren't signed in; users are.
-- **Front page:** a hero (name, one-line purpose, a "Get started" button),
-  then a few short sections (what it does, who it's for, how it works),
-  and a footer. Mobile-first, readable without zooming.
-- **The app:** behind sign-in, using `app-nav` or `mobile-tabs` (pick by
-  the users' device). Signed-in people skip the front page and land in
-  the app.
-- **Signals:** the problem needs explaining; new people arrive from
-  links; `needs.auth`; often a community or public audience.
-- **Examples:** most community apps, a booking service, a club's members
-  area.
-- **First story builds:** the front page (written from `PRODUCT.md`: the
-  purpose, the problem, the people) and the entry into the app.
-  Combine with the inner layout's first story if the first Feature is
-  inside the app.
-
 ## `two-sided`: Two-sided
 
 **One kind of person creates or controls on a big screen; another follows
@@ -122,21 +103,49 @@ on their phone.**
 
 ---
 
+## The front page (any layout)
+
+**A public page that explains the app, with "Get started" leading into
+it.** A yes/no choice on top of the layout.
+
+- **Yes, when:** people need to understand it before they try it; new
+  people arrive from links or searches; it's for a community or the
+  public; there's sign-in (the front page is where visitors land before
+  they have an account).
+- **No, when:** the people already know what it is (a team's own tool,
+  an invite-only app), or the tool itself *is* the front page
+  (`single-tool` usually says no).
+- **What it is:** a hero (name, one-line purpose, a "Get started"
+  button), then a few short sections written from `PRODUCT.md` (what it
+  does, who it's for, how it works) and a footer. Mobile-first, readable
+  without zooming. It uses its own plain frame, not the app's navigation.
+- **With sign-in:** signed-in people skip it and land in the app.
+- **Two-sided:** "Get started" leads to the creator side; the follower
+  side keeps its direct links / QR codes and never needs the front page.
+- **First story builds:** the front page is its own small piece of work.
+  It goes in with the first story if that story is about getting people
+  in (sign-up, joining); otherwise it's a Feature of its own, which Trim
+  It adds to Todo (creating it as a Feature if Dream It didn't).
+
+---
+
 ## Choosing (Trim It)
 
 After the first trim, read the personas (roles, devices) and the
 first-version Features, and **recommend one layout with a one-sentence
-reason**, naming a runner-up if it's close:
+reason**, naming a runner-up if it's close. Then, separately, **recommend
+yes or no on a front page**, with its reason:
 
 > Your audience follows on their phones while speakers and operators
-> work on laptops, so I'd go **two-sided**. (Runner-up: front page + app,
-> if you want a public page explaining SlideIt.)
+> work on laptops, so I'd go **two-sided**. And yes to a **front page**:
+> new speakers will arrive from a link and need to see what SlideIt is
+> before they sign up.
 
 Show the recommendation and the alternatives as one line each (the bold
 line under each heading above). The user picks, or says "none of these":
 then ask them to describe what they picture, write it down in the same
 shape (fits / desktop / phone / first story builds), and use `custom` as
-the id.
+the shape.
 
 ## Building (Build It)
 

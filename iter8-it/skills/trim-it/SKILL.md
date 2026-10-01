@@ -126,7 +126,11 @@ overall shape: the page frame and navigation that features slot into.
 Read `<plugin>/shared/layouts.md` and follow its **Choosing** section:
 recommend one layout with a one-sentence reason (and a runner-up if it's
 close), show the others in a line each, and let the user pick, or
-describe their own (`custom`).
+describe their own (`custom`). Then, as its own question, recommend yes
+or no on a public **front page** (see "The front page" in layouts.md). If
+yes and no Feature covers it, create one ("Visitor can see what <Name> is
+and get started", for the persona who arrives first) and decide with the
+user where it goes in Todo.
 
 Explain why it matters, briefly: "Picking a shape now means every feature
 lands in the same frame, instead of each one inventing its own."
@@ -174,6 +178,8 @@ It stores data: yes/no.
 **<Layout name>**: <its one-line description>. <One sentence on why it fits
 these people.> (For `custom`: the description the user gave, in the same
 shape as layouts.md: fits / desktop / phone / first story builds.)
+
+**Front page:** yes / no. <One sentence on why.>
 ```
 
 Grooming: leave First Version as it is once it's live (it's history);
@@ -181,8 +187,8 @@ the board and Issues carry the plan from then on.
 
 **`journey.json`**, first trim: `needs` =
 `{ "auth": <bool>, "database": <bool>, "decidedIn": "trim-it" }`,
-`layout` = the layout id (`single-tool`, `app-nav`, `mobile-tabs`,
-`front-and-app`, `two-sided` or `custom`), and `stage` = `"trim-it"` if it
+`layout` = `{ "shape": <single-tool | app-nav | mobile-tabs | two-sided | custom>, "frontPage": <bool> }`,
+and `stage` = `"trim-it"` if it
 was earlier. Grooming: update `needs` only if
 it changed.
 

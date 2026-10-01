@@ -813,10 +813,12 @@ GitHub owner `Iter8-IT-Consulting`, Vercel scope `iter8-community`.
   Next and Ship It nudge toward the outer loop every couple of releases.
   Grow It (after Friday) becomes the outer loop's guide.
 - **Layouts as descriptions, not code (2026-10-01).** `shared/layouts.md`
-  describes five app shapes (single-tool, app-nav, mobile-tabs,
-  front-and-app, two-sided), each with fits / desktop / phone / signals /
-  first story builds. Trim It recommends one after the first trim, and
-  the user picks (or `custom`). It's recorded in `journey.json` `layout`
+  describes four app shapes (single-tool, app-nav, mobile-tabs,
+  two-sided), each with fits / desktop / phone / signals / first story
+  builds, plus a separate yes/no for a public **front page**. (That was
+  first a fifth "front page + app" layout; Adam pointed out it's a choice
+  on top of any layout.) Trim It recommends both after the first trim. The
+  choice is recorded in `journey.json` `layout: { shape, frontPage }`
   and `PRODUCT.md` (Layout section). Build It's first story builds the
   frame. Text only, so nothing goes stale with Next.js versions. Code
   templates were considered and rejected for the upkeep.

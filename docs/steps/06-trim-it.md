@@ -40,10 +40,13 @@ recommends one from your people and their devices, with a reason:
 | **Single-purpose tool** | One focused screen that does one job well. |
 | **Signed-in app with navigation** | Lists of "my things", detail pages, and a menu between areas. |
 | **Mobile-first with bottom tabs** | A phone app in the browser: a few main areas, one tap apart. |
-| **Front page + app** | A public page that explains it, and the app behind "Get started". |
 | **Two-sided** | One person creates on a big screen; others follow on their phones. |
 
 Or none of these: describe what you picture, and that becomes the plan.
+
+Separately: does it need a **front page**? That's a public page that
+explains the app to newcomers, with "Get started" leading in. It works
+with any layout.
 Build It's first story builds the frame, so every later feature lands in
 the same place.
 

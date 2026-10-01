@@ -158,9 +158,11 @@ what Trim It decided.
 
 If the app still has Claim It's starter page and no frame of its own
 (no shared header/navigation in `src/components/`), this story also
-builds the frame for the chosen layout: `journey.json` `layout`, described
-in `<plugin>/shared/layouts.md` (or, for `custom`, in `PRODUCT.md`'s
-Layout section). Follow its "First story builds" line and the
+builds the frame for the chosen layout: `journey.json` `layout.shape`,
+described in `<plugin>/shared/layouts.md` (or, for `custom`, in
+`PRODUCT.md`'s Layout section). If `layout.frontPage` is true, the front
+page follows "The front page" in layouts.md: with this story if it's
+about getting people in, otherwise as its own Feature. Follow its "First story builds" line and the
 **Building** section there. Keep the Iter8 credit in the footer unless
 the user removed the branding.
 

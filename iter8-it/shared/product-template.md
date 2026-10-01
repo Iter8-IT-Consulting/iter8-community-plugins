@@ -35,7 +35,8 @@ now), and what the app needs (sign-in? stored data?).
 ## Layout
 <!-- Trim It -->
 The app's overall shape, from shared/layouts.md (or described by the
-user), and why it fits these people.
+user), and why it fits these people. Whether it has a public front page,
+and why.
 ```
 
 ## Rules

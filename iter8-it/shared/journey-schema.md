@@ -20,7 +20,7 @@ update every skill that reads or writes the field you change.
     "database": true,
     "decidedIn": "trim-it"
   },
-  "layout": "two-sided",
+  "layout": { "shape": "two-sided", "frontPage": true },
   "github": {
     "owner": "Iter8-IT-Consulting",
     "repo": "slideit",
@@ -65,7 +65,8 @@ update every skill that reads or writes the field you change.
 | `needs.auth` | boolean | Trim It | Do people sign in? |
 | `needs.database` | boolean | Trim It | Does the app store data that must survive a refresh or be shared between people? |
 | `needs.decidedIn` | string | Trim It | Which step recorded the needs (normally `trim-it`; Grow It may revise them). |
-| `layout` | string | Trim It | The app's overall shape: `single-tool`, `app-nav`, `mobile-tabs`, `front-and-app`, `two-sided` (see `shared/layouts.md`) or `custom` (described in `PRODUCT.md`). Build It's first story builds the frame for it. |
+| `layout.shape` | string | Trim It | The app's overall shape: `single-tool`, `app-nav`, `mobile-tabs`, `two-sided` (see `shared/layouts.md`) or `custom` (described in `PRODUCT.md`). Build It's first story builds the frame for it. |
+| `layout.frontPage` | boolean | Trim It | Whether the app has a public front page explaining it, leading into the app. |
 | `github.owner` | string | Claim It | GitHub org or user that owns the repo. |
 | `github.repo` | string | Claim It | Repo name (normally the slug). |
 | `github.project` | number | Claim It | GitHub Project (board) number. |
@@ -94,7 +95,7 @@ values in:
   "slug": null,
   "purpose": null,
   "needs": { "auth": null, "database": null, "decidedIn": null },
-  "layout": null,
+  "layout": { "shape": null, "frontPage": null },
   "github": { "owner": null, "repo": null, "project": null, "mainProtected": null, "workItems": null },
   "vercel": { "scope": null, "project": null, "url": null },
   "supabase": { "local": false, "org": null, "projectRef": null, "region": null },
