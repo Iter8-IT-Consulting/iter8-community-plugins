@@ -67,8 +67,10 @@ SKILL.md).
    `node <plugin>/shared/scripts/board.mjs list --status Todo`.
    Say which one and why: "Next on the board is #12, *Presenter can upload
    slides*. Shall we build that?"
-3. If the board has nothing in Todo: say so and offer Trim It (to plan the
-   next features) or Ship It (if `dev` has unreleased work).
+3. If the board has nothing in Todo: say so and offer **Trim It** to pick
+   the next Features from the Backlog (or Dream It if the Backlog is
+   empty too), or Ship It if `dev` has unreleased work. Build It never
+   takes work straight from the Backlog.
 
 ## 2. Split a Feature into stories
 

@@ -37,15 +37,20 @@ branches.
 
 A GitHub Project, **Kanban**, no sprints. Status options, in order:
 
-1. **Todo** — planned, in priority order (top = next).
-2. **In Progress** — a branch exists and work is underway.
-3. **In Review** — PR open, or merged to `dev` but not yet live.
-4. **Done** — live in production and checked there by Ship It.
+1. **Backlog**: ideas, not planned yet. Dream It puts every new Feature
+   here. Parked ones carry the `later` label.
+2. **Todo**: ready to build, in priority order (top = next). Only Trim It
+   (or the user, by hand) moves Features here.
+3. **In Progress**: a branch exists and work is underway.
+4. **In Review**: PR open, or merged to `dev` but not yet live.
+5. **Done**: live in production and checked there by Ship It.
 
 Work isn't Done when it's merged. It's Done when it's live.
 
-Dream It's ideas are Issues but **not** on the board. Trim It puts the
-first-version Features on the board in order.
+**Grooming** is rerunning Trim It: pick what moves from Backlog to Todo,
+reorder Todo, park ideas (`later`) or drop them (closed as "not planned").
+The user can also drag cards between Backlog and Todo by hand at any time;
+the skills follow whatever the board says.
 
 ## Branches
 

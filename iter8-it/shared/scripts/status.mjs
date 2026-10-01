@@ -67,7 +67,9 @@ if (journey?.github?.repo) {
     const items = JSON.parse(board);
     const by = (s) => items.filter((i) => i.status === s && i.state === "OPEN");
     const brief = (i) => ({ number: i.number, type: i.type, title: i.title });
+    const backlog = by("Backlog");
     status.board = {
+      backlog: backlog.length,
       todo: by("Todo").map(brief),
       inProgress: by("In Progress").map(brief),
       inReview: by("In Review").map(brief),

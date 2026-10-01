@@ -1,6 +1,6 @@
 ---
 name: trim-it
-description: "Trim It — Cut the list down to the smallest version someone would actually use. Step 6 of iter8-it: chooses the first version's Features, puts them on the board in order, labels the rest 'later', and records whether the app needs sign-in or a database. Use when someone wants to plan the first version, prioritize or order the backlog, or says 'trim it', 'what should we build first', or 'what's the MVP'."
+description: "Trim It — Cut the list down to the smallest version someone would actually use, and keep the board groomed after that. Step 6 of iter8-it: moves the chosen Features from Backlog to Todo in build order, parks or drops the rest, and records whether the app needs sign-in or a database. Rerun it any time to groom: pick what's next, reorder, park or drop ideas. Use when someone wants to plan the first version or the next batch, prioritize or reorder the backlog, groom the board, or says 'trim it', 'what should we build next', or 'what's the MVP'."
 ---
 
 # Trim It
@@ -8,20 +8,33 @@ description: "Trim It — Cut the list down to the smallest version someone woul
 **Step 6 of the iter8-it journey.** Cut the list down to the smallest
 version someone would actually use.
 
-Trim It turns Dream It's idea pile into a plan:
+The board has five columns:
 
-- the **first-version Features** go on the board, in Todo, **in the order
-  to build them**;
-- everything else gets the **`later`** label, with the reason in a
-  comment;
-- it records what the app **needs**: sign-in? stored data?
+```
+Backlog -> Todo -> In Progress -> In Review -> Done
+```
+
+Dream It puts every idea in **Backlog**. Trim It decides what moves to
+**Todo** (ready to build, top = next) and in what order. It's also the
+**grooming** step: rerun it whenever Todo is getting short, new ideas
+have piled up, or priorities have changed.
+
+For each Feature in Backlog, one of:
+
+| Decision | What happens |
+|---|---|
+| **Next** | Moves to Todo, in build order. |
+| **Later** | Stays in Backlog with the `later` label and the reason in a comment. |
+| **Never** | Closed as "not planned", with the reason in a comment. It drops off the board and can be reopened. |
+| **Not decided** | Stays in Backlog, no label. Fine for new ideas nobody's thought about yet. |
 
 Nothing is built or set up here. Build It and Ship It act on the plan.
 
 ## How to talk
 
-- Kind but firm. The question for every Feature is: **"Would anyone use
-  the first version without this?"** If yes, it waits.
+- Kind but firm. The test for every Feature is: **"Would anyone miss
+  this in the next version?"** For the first version: "Would anyone use
+  it without this?" If they would, it waits.
 - Celebrate cutting. "Later" isn't "never"; it's "after people are using
   it and telling us what matters."
 - One Feature at a time, briefly. Don't re-debate the whole list.
@@ -33,52 +46,61 @@ SKILL.md). Board helper: `<plugin>/shared/scripts/board.mjs` (run from the
 project folder).
 
 1. `journey.json` needs `github.*` (Claim It). Missing: offer Claim It.
-2. The Features:
+2. Read the board: `node <plugin>/shared/scripts/board.mjs list`.
+   Also look for open Features that aren't on the board at all (created
+   before the Backlog column existed, or by hand):
+   `gh issue list -R <owner>/<repo> --state open --limit 200 --json number,title,labels,issueType`.
+   Put any such Feature in Backlog first (`board.mjs set <n> Backlog`).
+3. Nothing in Backlog: offer Dream It and stop.
+4. Which kind of trim is this?
+   - **First trim**: `PRODUCT.md` has no **First Version** section. Do
+     every step below.
+   - **Grooming** (any later run): show the board in a few lines (what's
+     in Todo, In Progress and In Review, how many in Backlog and how many
+     of those are `later`). Ask what prompted it: Todo running low, new
+     ideas, or a change of plan. Skip step 4 unless the needs changed.
 
-   ```bash
-   gh issue list -R <owner>/<repo> --state open --limit 200 --json number,title,labels,issueType
-   ```
+Never move or reorder anything that's In Progress, In Review or Done.
 
-   Keep the open Features (Issue Type or label `workItems.feature`). None:
-   offer Dream It and stop.
-3. **A rerun** (Grow It uses this too): some Features are already on the
-   board or labelled `later`. Show both lists; the job is to adjust, not
-   start over. Don't move anything that's In Progress or later in the
-   board.
+## 1. The goal
 
-## 1. The first version's goal
+**First trim:** "When the first version is live, what's the one thing
+someone should be able to do from start to finish?" For SlideIt: "A
+presenter writes a short deck and presents it, and the audience follows
+on their phones."
 
-Ask: "When the first version is live, what's the one thing someone should
-be able to do from start to finish?" For SlideIt: "A presenter writes a
-short deck and presents it, and the audience follows on their phones."
+**Grooming:** "What should the next release let people do that they
+can't today?" Use what's been learned: feedback, bugs, what people
+actually use (ask; Grow It will gather this more fully later).
 
-Write it down in a sentence; it's the test for every Feature.
+Write the goal down in a sentence. It's the test for every Feature.
 
-## 2. Walk the list
+## 2. Walk the Backlog
 
-For each Feature, grouped by Epic:
+Go through the Backlog Features, grouped by Epic. Look again at the
+`later` ones too: say briefly why each was parked and ask whether that's
+still true.
 
-- Ask: "Would anyone use the first version without this?" Offer your view
-  in a sentence when it helps.
-- **In:** needed for the goal above.
-- **Later:** nice, but the goal works without it. Note the reason in a few
-  words ("Can share by copying the link for now").
+For each: **next**, **later** (with a reason in a few words: "Can share
+by copying the link for now"), **never** (with a reason), or **not
+decided**. Offer your view in a sentence when it helps.
 
 Aim for the **fewest Features that make the goal work end to end**,
-usually 3-7. If the list is long, say so and look for a smaller path.
-Features can be made smaller too: "Presenter can edit slides" might become
-"Presenter can paste a Markdown deck" for now.
+usually 3-7. Features can be made smaller too: "Presenter can edit
+slides" might become "Presenter can paste a Markdown deck" for now (edit
+the Issue's title and description, and note the smaller scope).
 
-## 3. Order the first version
+## 3. Order Todo
 
-Put the "in" Features in build order. Build first what the others depend
-on, and **get something usable end to end as early as possible** (a thin
-version of the whole journey beats one perfect piece). Show the order and
-confirm.
+Put the Todo Features (those already there plus the new ones) in build
+order. Build first what the others depend on, and **get something usable
+end to end as early as possible**: a thin version of the whole journey
+beats one perfect piece. Show the order and confirm.
 
 ## 4. What does it need?
 
-Ask these explicitly and record the answers:
+First trim (and whenever a newly chosen Feature changes the answer). Ask
+these explicitly:
 
 1. **"Do people sign in?"** (accounts, "my decks", anything private to a
    person) -> `needs.auth`
@@ -95,26 +117,35 @@ Tell them what happens next: "When Build It reaches the first story that
 saves data, it'll set up a database on your computer (Docker Desktop is
 needed then). The first release after that creates the online database."
 
-## 5. Save the plan
+## 5. Save it
 
-**Board**, first-version Features only:
+**Board:**
 
 ```bash
-node <plugin>/shared/scripts/board.mjs set <feature> Todo       # for each, in order
-node <plugin>/shared/scripts/board.mjs order <f1> <f2> <f3> ...   # build order, top first
+node <plugin>/shared/scripts/board.mjs set <feature> Todo         # each Feature moving to Todo
+node <plugin>/shared/scripts/board.mjs order <f1> <f2> <f3> ...   # all of Todo, in build order, top first
 ```
 
-**Later** Features:
+A Todo Feature that's been pushed out of the plan goes back:
+`board.mjs set <n> Backlog`, and gets the `later` label.
+
+**Later:**
 
 ```bash
 gh issue edit <n> -R <owner>/<repo> --add-label later
 gh issue comment <n> -R <owner>/<repo> --body "Later: <reason>. (Trim It)"
 ```
 
-(A later Feature that was on the board from an earlier trim: remove it
-from the board only if it's still Todo; ask first.)
+A `later` Feature that's now next: `gh issue edit <n> --remove-label later`,
+then move it to Todo as above.
 
-**`PRODUCT.md`**: add (or replace) the **First Version** section, following
+**Never:**
+
+```bash
+gh issue close <n> -R <owner>/<repo> --reason "not planned" --comment "Not planned: <reason>. (Trim It)"
+```
+
+**`PRODUCT.md`**, first trim: add the **First Version** section, following
 `<plugin>/shared/product-template.md`:
 
 ```markdown
@@ -125,15 +156,20 @@ Out for now: <the main things labelled later>. The app needs sign-in: yes/no.
 It stores data: yes/no.
 ```
 
-**`journey.json`**: `needs` = `{ "auth": <bool>, "database": <bool>, "decidedIn": "trim-it" }`,
-`stage` = `"trim-it"` if it was earlier.
+Grooming: leave First Version as it is once it's live (it's history);
+the board and Issues carry the plan from then on.
 
-Commit to `dev` and push:
+**`journey.json`**, first trim: `needs` =
+`{ "auth": <bool>, "database": <bool>, "decidedIn": "trim-it" }` and
+`stage` = `"trim-it"` if it was earlier. Grooming: update `needs` only if
+it changed.
+
+Commit any file changes to `dev` and push:
 
 ```bash
 git switch dev && git pull
 git add PRODUCT.md journey.json
-git commit -m "Trim It: first version planned"
+git commit -m "Trim It: <first version planned | next batch planned>"
 git push
 ```
 
@@ -142,5 +178,6 @@ git push
 Show the board link (`journey.json` has the project number:
 `https://github.com/orgs/<owner>/projects/<number>` for an org,
 `https://github.com/users/<owner>/projects/<number>` for a personal
-account). "Next is **Build It**: building the first Feature, one small
-story at a time. Start now?"
+account), and point out that cards can be dragged between Backlog and
+Todo, and reordered, by hand at any time. Then: "Next is **Build It**:
+building the top Feature in Todo, one small story at a time. Start now?"

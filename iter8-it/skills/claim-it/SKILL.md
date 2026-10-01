@@ -13,7 +13,7 @@ This is the one-time setup. When it's done, the project has:
 - a Next.js app with a starter page showing its name and purpose
 - unit and end-to-end tests, passing
 - a private GitHub repo with `main` and `dev` (`dev` is the default)
-- a GitHub project board (Todo / In Progress / In Review / Done), empty
+- a GitHub project board (Backlog / Todo / In Progress / In Review / Done), empty
 - CI running on every PR into `dev` and `main` (and pushes to `main`), green
 - `main` protected: nothing merges into it unless CI is green
 - a Vercel project that deploys `main` only
@@ -45,7 +45,7 @@ iter8-it plugin folder, two levels up (`<skill-dir>/../..`).
 | Path | What it is |
 |---|---|
 | `scripts/apply-templates.mjs` | Copies the templates and branding into the scaffolded app and fills in the name and purpose. |
-| `scripts/board-status.mjs` | Makes the board's Status field Todo / In Progress / In Review / Done (empty boards only). |
+| `scripts/board-status.mjs` | Makes the board's Status field Backlog / Todo / In Progress / In Review / Done (empty boards only). |
 | `<plugin>/shared/scripts/vercel-check.mjs` | `account`: the Vercel account's email. `visible <owner>/<repo>`: can Vercel's GitHub App see the repo? `project <name>`: the project's Git connection, production branch and URL. |
 | `assets/templates/` | The project files, laid out as they go into the project. |
 | `assets/brand/` | Iter8 Community branding (favicon, palette, footer credit). |
@@ -252,7 +252,7 @@ node <skill-dir>/scripts/board-status.mjs <owner> <number>
 gh project link <number> --owner <owner> --repo <owner>/<slug>
 ```
 
-`board-status.mjs` adds "In Review" to the Status field. It only changes
+`board-status.mjs` adds "Backlog" and "In Review" to the Status field. It only changes
 an empty board, which a new one is.
 
 **Work item types** (from step 1):

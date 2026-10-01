@@ -1,6 +1,6 @@
 ---
 name: dream-it
-description: "Dream It — Get every feature idea out of your head and onto the table, big or small. Step 5 of iter8-it: brainstorms features for each persona and records them as Epic and Feature issues on GitHub (the idea pile, not the plan). Rerunnable any time to add ideas. Use when someone wants to brainstorm features, add ideas, or says 'dream it', 'what could it do', or 'I have more ideas'."
+description: "Dream It — Get every feature idea out of your head and onto the table, big or small. Step 5 of iter8-it: brainstorms features for each persona and records them as Epic and Feature issues, with the Features in the board's Backlog column (the idea pile, not the plan). Rerunnable any time to add ideas. Use when someone wants to brainstorm features, add ideas, or says 'dream it', 'what could it do', or 'I have more ideas'."
 ---
 
 # Dream It
@@ -10,8 +10,9 @@ head and onto the table, big or small.
 
 Dream It is a brainstorm with **no judging yet**. Ideas become GitHub
 Issues: **Epics** (big areas of the app) and **Features** (things a
-persona can do), linked as sub-issues. They are **not** put on the board:
-this is the idea pile. Trim It decides what goes into the first version.
+persona can do), linked as sub-issues. Each Feature goes on the board in
+the **Backlog** column: the idea pile, visible next to the plan. Trim It
+decides what moves to Todo.
 
 Rerun it any time to add ideas.
 
@@ -104,8 +105,15 @@ Feature body:
 frustration in PRODUCT.md.>
 ```
 
-Say progress in one line per Epic, not per command. **Don't add anything
-to the board.**
+Put each new Feature on the board in **Backlog** (Epics stay off the
+board; they group Features through the sub-issue link):
+
+```bash
+node <plugin>/shared/scripts/board.mjs set <feature> Backlog
+```
+
+Say progress in one line per Epic, not per command. Never put anything in
+Todo; that's Trim It's call.
 
 ## 4. Record and hand off
 
@@ -121,6 +129,8 @@ git push
 
 (Skip the commit if nothing changed.)
 
-Give them the link: `https://github.com/<owner>/<repo>/issues`. Then:
+Give them the board link (`https://github.com/orgs/<owner>/projects/<number>`
+for an org, `https://github.com/users/<owner>/projects/<number>` for a
+personal account) so they can see the Backlog. Then:
 "Next is **Trim It**: cutting this down to the smallest first version
 someone would actually use. Ready?"

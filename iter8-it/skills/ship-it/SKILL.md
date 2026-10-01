@@ -244,7 +244,9 @@ database. That's why migrations only ever add.)
 - **The release page:** `gh release view <version> --json url --jq .url`.
 - **The board:** what's Done, and what's next in Todo.
 
-Offer: "Next up on the board is #<n>, *<title>*. Build it now?"
+Offer: "Next up on the board is #<n>, *<title>*. Build it now?" If
+Todo is empty, offer **Trim It** instead, to pick the next batch from the
+Backlog (or Dream It, if the Backlog is empty too).
 
 ## Stop and ask if
 

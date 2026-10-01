@@ -13,7 +13,7 @@
 //   node <plugin>/shared/scripts/board.mjs order <issue-number>...
 //     Reorder the board so these issues come first, in this order.
 //
-// Statuses: Todo, In Progress, In Review, Done.
+// Statuses: Backlog, Todo, In Progress, In Review, Done.
 
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";

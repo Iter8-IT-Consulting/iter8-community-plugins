@@ -13,7 +13,7 @@ It, Fix It, Grow It.
 - **Where the project is in the journey, and its links:**
   [journey.json](journey.json). Every iter8-it step reads and updates it.
 - **The work:** GitHub Issues (Epic -> Feature -> Story) on the project
-  board, Kanban: Todo / In Progress / In Review / Done. Work is Done when
+  board, Kanban: Backlog / Todo / In Progress / In Review / Done. Work is Done when
   it's live in production, not when it's merged.
 
 ## Links

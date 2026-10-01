@@ -26,7 +26,8 @@ It reports (as JSON):
 - `git`: the current branch, uncommitted changes, and `unreleasedCommits`
   (on `dev`, not yet live);
 - `openPullRequests`;
-- `board`: Todo, In Progress and In Review items, and how many are Done;
+- `board`: how many Features are in Backlog; the Todo, In Progress and In
+  Review items; and how many are Done;
 - `laterIdeas`: Features labelled `later`.
 
 No `PRODUCT.md` and no `journey.json`: this folder hasn't started the
@@ -46,18 +47,19 @@ recommendation.
 | 5 | An open PR into `dev` | **Build It**, to finish that PR (checks, merge) |
 | 6 | An open PR into `main` | **Ship It**, to finish that release |
 | 7 | No People in `PRODUCT.md` | **Meet It** |
-| 8 | No Epics or Features yet (board empty, no `later` ideas) | **Dream It** |
+| 8 | No Features at all (nothing on the board) | **Dream It** |
 | 9 | No First Version in `PRODUCT.md`, or `needs` not decided | **Trim It** |
 | 10 | Unreleased commits, and either 3+ stories In Review or the last Todo item of the first version is merged | **Ship It** (strongly) |
 | 11 | Unreleased commits | **Build It** for the next item, *or* Ship It. Recommend shipping if a person can now do something useful end to end. |
-| 12 | Items in Todo | **Build It**: the top Todo item (name it) |
-| 13 | Nothing in Todo, In Progress or In Review | **Grow It** (see below) |
+| 12 | Items in Todo | **Build It**: the top Todo item (name it). If it's the *last* Todo item and the Backlog has ideas, add: "After this, Todo is empty; a quick Trim It will pick what's next." |
+| 13 | Nothing in Todo, but ideas in Backlog | **Trim It**, to groom: pick the next Features from the Backlog |
+| 14 | Nothing in Todo, In Progress, In Review or Backlog | **Grow It** (see below) |
 
 Some steps can run out of order (Meet It before Claim It, say); if the
 facts show that happened, don't send them back. Only recommend a step
 whose inputs are missing if it's genuinely next.
 
-**Grow It isn't built yet.** For row 13 recommend **Dream It** (new
+**Grow It isn't built yet.** For row 14 recommend **Dream It** (new
 ideas) then **Trim It** (reconsider the `later` ideas and plan the next
 batch), and mention that Grow It will do this more fully in a later
 version.

@@ -69,7 +69,7 @@ These apply to every skill and should be stated in the plugin README.
 - **Personas drive everything.** Features and stories are always deliverables
   to a named persona, never infrastructure-for-its-own-sake.
 - **Epic / Feature / Story hierarchy** on a **Kanban** board
-  (Todo / In Progress / In Review / Done). No sprints.
+  (Backlog / Todo / In Progress / In Review / Done). No sprints.
 - **Small, iterative, live.** Work isn't done when it's merged. It's done
   when Ship It has put it in production and checked it there.
 - **Each step is runnable on its own** and also offers to flow straight into
@@ -787,6 +787,15 @@ GitHub owner `Iter8-IT-Consulting`, Vercel scope `iter8-community`.
 - **Vercel CLI logins expire after about 8 hours** (`auth.json` has
   `expiresAt` and `refreshToken`). Scripts that read the token run
   `vercel whoami` first to renew it.
+- **Backlog column and grooming (2026-10-01).** The board is Backlog /
+  Todo / In Progress / In Review / Done, so the whole backlog is visible
+  and can be dragged. Dream It puts Features in Backlog. Trim It moves
+  the chosen ones to Todo, in order. It is also the grooming step, rerun
+  whenever Todo runs low: next / later (label + reason) / never (closed
+  "not planned" + reason) / not decided. What's Next recommends Trim It
+  when Todo is empty and the Backlog isn't. Build It never takes work
+  straight from the Backlog. Added to SlideIt's board (#5) while it was
+  still empty.
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.

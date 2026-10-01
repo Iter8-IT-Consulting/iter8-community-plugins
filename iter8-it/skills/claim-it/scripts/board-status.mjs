@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Claim It: make a GitHub Project's Status field read
-// Todo / In Progress / In Review / Done.
+// Backlog / Todo / In Progress / In Review / Done.
 //
 //   node <skill-dir>/scripts/board-status.mjs <owner> <project-number> [--dry-run]
 //
@@ -22,7 +22,8 @@ if (!owner || !number) {
 }
 
 const WANTED = [
-  { name: "Todo", color: "GREEN", description: "Planned, in priority order" },
+  { name: "Backlog", color: "GRAY", description: "Ideas not planned yet (Dream It); Trim It picks from here" },
+  { name: "Todo", color: "GREEN", description: "Ready to build, in priority order (top = next)" },
   { name: "In Progress", color: "YELLOW", description: "Being worked on" },
   { name: "In Review", color: "BLUE", description: "PR open, or merged to dev but not live yet" },
   { name: "Done", color: "PURPLE", description: "Live in production and checked" },
@@ -67,7 +68,7 @@ if (!field) fail("the project has no Status field.");
 const names = field.options.map((o) => o.name);
 const wantedNames = WANTED.map((o) => o.name);
 if (wantedNames.every((n) => names.includes(n))) {
-  console.log(`Status already has all four: ${names.join(" / ")}`);
+  console.log(`Status already has all of them: ${names.join(" / ")}`);
   process.exit(0);
 }
 
