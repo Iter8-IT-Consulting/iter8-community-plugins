@@ -29,10 +29,13 @@ const logo = path.join(repo, "iter8-it", "skills", "claim-it", "assets", "brand"
 const BRAND = { primary: "1356CF", ink: "2B2B2B", muted: "6C757D" };
 const FONTS = { body: "Open Sans", heading: "Montserrat", code: "Consolas" };
 
-// Letter landscape, book fold: each half is 5.5" x 8.5". Units are twips
+// Book fold on Letter paper. With book fold on, Word's page size is ONE
+// booklet page (5.5" x 8.5"), and "landscape" describes the sheet it's
+// printed on (two pages side by side). Giving it the full 11" sheet makes
+// Word lay out 11"-wide pages on an imaginary 22" sheet. Units are twips
 // (1/1440 inch) for the page and EMUs (1/914400 inch) for images.
-const PAGE = { w: 15840, h: 12240, margin: 720, header: 360, footer: 360 };
-const HALF_TEXT_WIDTH = PAGE.w / 2 - PAGE.margin * 2;
+const PAGE = { w: 7920, h: 12240, margin: 720, header: 360, footer: 360 };
+const HALF_TEXT_WIDTH = PAGE.w - PAGE.margin * 2;
 
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "iter8-ref-"));
 const dir = path.join(tmp, "x");
