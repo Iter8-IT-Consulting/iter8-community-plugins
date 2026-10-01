@@ -81,8 +81,16 @@ feature/<issue>-<slug> ──PR──▶ dev ──release PR──▶ main
 ## CI
 
 `ci.yml` runs on PRs into `dev` and `main`, and on pushes to `main` (not
-`dev`: a merged PR already ran on that exact code): lint,
-`npm run typecheck` (`next typegen && tsc --noEmit`), Vitest, Playwright.
+`dev`: a merged PR already ran on that exact code). Two jobs:
+
+- **Lint, typecheck, unit tests** (about a minute): on every run.
+  Typecheck is `next typegen && tsc --noEmit`.
+- **End-to-end tests** (Playwright; 3-5 minutes with a database): on PRs
+  into `main`, pushes to `main`, and manual runs. Not on story PRs into
+  `dev`: Build It runs the full end-to-end suite locally, against the
+  local database, before opening each PR. The release PR is where CI runs
+  it, and Ship It won't merge until it passes.
+
 Once the app has a database, the e2e job runs `supabase start` in the
 runner, so tests hit a real local stack built from the migrations. That
 also proves every migration applies cleanly from scratch before it reaches

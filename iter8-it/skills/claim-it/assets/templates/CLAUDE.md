@@ -53,8 +53,10 @@ feature/<issue>-<slug> --PR--> dev --release PR--> main --> Vercel production
 - `dev` is the default branch. Day-to-day PRs target it.
 - `main` is production. It's only updated by release PRs from `dev` (Ship
   It) and hotfixes (Fix It).
-- CI (lint, typecheck, unit, e2e) runs on every PR into `dev` or `main`,
-  and on pushes to `main`.
+- CI runs lint, typecheck and unit tests on every PR into `dev` or `main`.
+  End-to-end tests run in CI on PRs into `main` (releases), pushes to
+  `main` and on demand; for PRs into `dev`, run `npm run test:e2e`
+  locally before opening the PR.
 
 ## Branding
 

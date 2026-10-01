@@ -796,6 +796,15 @@ GitHub owner `Iter8-IT-Consulting`, Vercel scope `iter8-community`.
   when Todo is empty and the Backlog isn't. Build It never takes work
   straight from the Backlog. Added to SlideIt's board (#5) while it was
   still empty.
+- **CI end-to-end tests only at release (2026-10-01).** Story PRs into
+  `dev` run only lint, typecheck and unit tests (about 1 minute). The
+  end-to-end job (3-5 minutes with Supabase) runs on PRs into `main`,
+  pushes to `main` and manual runs, because Build It already runs the
+  full e2e suite locally against the local database before each PR. The
+  release PR still gates `main` on e2e.
+- **Build It run scope (2026-10-01):** asks once per run: one story, this
+  Feature (the default) or everything in Todo. It loops story by story,
+  keeping the try-it pause, and stops early on failures or decisions.
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.

@@ -210,7 +210,11 @@ http://localhost:3000 and compare the page title with this app's name.
   `E2E_PORT=3100 npm run test:e2e`. Don't stop the other app without
   asking.
 
-All must pass. Then **self-review**: read the whole diff
+All must pass. **The local `test:e2e` run is the story's end-to-end check**:
+CI runs only the quick checks on PRs into `dev`, and the end-to-end tests
+run in CI at release time. Never open the PR without it passing here.
+
+Then **self-review**: read the whole diff
 (`git diff dev...`) against the acceptance criteria. Look for leftover
 debug code, missing tests, anything hard-coded that shouldn't be, and
 anything outside the story's scope.
@@ -250,7 +254,7 @@ node <plugin>/shared/scripts/board.mjs set <story> "In Review"
 gh pr checks <pr> --watch --fail-fast
 ```
 
-Say: "The automatic checks are running on GitHub. About 3-5 minutes."
+Say: "The automatic checks are running on GitHub. About a minute."
 If a check fails: `gh run view <run-id> --log-failed`, explain the cause
 simply, fix it, push, and watch again.
 

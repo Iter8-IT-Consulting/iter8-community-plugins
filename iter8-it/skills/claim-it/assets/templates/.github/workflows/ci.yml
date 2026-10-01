@@ -3,6 +3,10 @@ name: CI
 # PRs into dev and main are where changes get checked. Pushes to dev aren't
 # re-checked: a merged PR already ran on exactly that code. Pushes to main
 # (releases, hotfixes) run once more as a record of what went live.
+#
+# The quick checks run everywhere. The end-to-end tests (the slow part) run
+# on PRs into main, pushes to main, and on demand; for story PRs into dev,
+# Build It runs them locally before opening the PR.
 on:
   pull_request:
     branches: [dev, main]
@@ -31,6 +35,7 @@ jobs:
 
   e2e:
     name: End-to-end tests
+    if: github.event_name != 'pull_request' || github.base_ref == 'main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

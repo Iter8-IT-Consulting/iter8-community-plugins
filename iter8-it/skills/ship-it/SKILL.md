@@ -143,7 +143,8 @@ enforces it (`journey.json` `github.mainProtected`):
 gh pr checks <pr> --watch --fail-fast
 ```
 
-Say: "Running the final checks on the release. About 3-5 minutes." If a
+Say: "Running the final checks on the release, including the end-to-end
+tests (these only run in CI at release time). About 3-5 minutes." If a
 check fails, stop and explain; the fix goes through Build It or Fix It.
 Don't merge.
 
