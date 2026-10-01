@@ -1,6 +1,6 @@
 ---
 name: build-it
-description: "Build It — Add the features one small piece at a time, checking each one as you go. Takes the next feature on the board, splits it into small stories, builds one story with tests, and merges it into dev. Use when someone wants to work on the next feature or story, write code for their app, or says 'build the next thing', 'let's build', or 'work on #12'."
+description: "Build It — Add the features one small piece at a time, checking each one as you go. Takes the next feature on the board, splits it into small stories, and builds them one at a time with tests, merging each into dev: one story, the whole feature, or everything in Todo, as the user chooses. Use when someone wants to work on the next feature or story, write code for their app, or says 'build the next thing', 'let's build', or 'work on #12'."
 ---
 
 # Build It
@@ -9,8 +9,9 @@ description: "Build It — Add the features one small piece at a time, checking 
 time, checking each one as you go.
 
 Build It turns the next thing on the board into working, tested code on
-`dev`. It does **one story per run**, then offers the next story or Ship
-It. Nothing goes live here; Ship It does that.
+`dev`, **one story at a time**: each story gets its own branch, PR,
+checks and merge. At the start it asks how far to go this run (step 1).
+Nothing goes live here; Ship It does that.
 
 ```
 board (Todo) -> story -> feature/<issue>-<slug> -> PR -> dev
@@ -67,7 +68,20 @@ SKILL.md).
    `node <plugin>/shared/scripts/board.mjs list --status Todo`.
    Say which one and why: "Next on the board is #12, *Presenter can upload
    slides*. Shall we build that?"
-3. If the board has nothing in Todo: say so and offer **Trim It** to pick
+3. **How far this run?** Ask once, offering the default:
+
+   > How far shall I go? **This feature** (all its stories, one after
+   > another), **just one story**, or **everything in Todo**? I'll still
+   > stop after each story so you can try it before it's merged.
+
+   - **This feature** (default): every story of the current Feature.
+   - **One story**: stop after the first merge.
+   - **Everything in Todo**: carry on into the next Todo Feature when one
+     is finished, until Todo is empty.
+
+   Remember the answer for the rest of the run; step 8 uses it. Mention
+   that each story takes a few minutes of checks on GitHub.
+4. If the board has nothing in Todo: say so and offer **Trim It** to pick
    the next Features from the Backlog (or Dream It if the Backlog is
    empty too), or Ship It if `dev` has unreleased work. Build It never
    takes work straight from the Backlog.
@@ -259,16 +273,42 @@ Then:
 - If every story under the feature is now merged, set the feature to
   In Review too.
 
-## 8. What next?
+## 8. Next story, or stop
 
-Offer both, with a recommendation:
+Go round again (back to step 2, for the next story) while the run's scope
+allows:
 
-- **Build the next story** (name it), or
+| Scope | Carry on with | Stop when |
+|---|---|---|
+| One story | nothing | after this merge |
+| This feature | the Feature's next unmerged story | all its stories are merged |
+| Everything in Todo | the next story; when a Feature is done, the top Todo Feature | Todo is empty |
+
+Between stories, say in one line what was merged and what's next ("#14
+merged. Next: #15, *Audience member sees the current slide*."), and
+carry on. The user can say "stop" at any pause (the try-it check, the
+merge question); finish cleanly at the next safe point (nothing half
+done: the current story merged, or its branch pushed and left In
+Progress).
+
+**Always stop early**, whatever the scope, when:
+
+- checks fail and the fix isn't clearly part of the story;
+- something needs the user's decision (a new database or sign-in need,
+  a destructive migration, a story that should be split differently);
+- the next story needs something that isn't available (Docker not
+  running, say).
+
+When the run ends, sum up what was merged, then offer, with a
+recommendation:
+
+- **Keep building** (name the next story or Feature), or
 - **Ship what's on `dev`** now, so people can use it.
 
 Recommend shipping when a persona can do something useful end to end, or
 when 3 or more stories are waiting. Small, frequent releases are easier to
-check and to undo.
+check and to undo. If Todo is now empty, offer Trim It to pick what's
+next.
 
 ## Stop and ask if
 
