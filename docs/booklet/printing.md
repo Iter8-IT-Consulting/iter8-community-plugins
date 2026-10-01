@@ -29,6 +29,11 @@ side of every sheet, then asks you to reload the paper.
 4. **After the second side, reverse the order of the sheets** before
    folding, so the sheet with the cover (page 1) is on the outside.
 
+**Most reliable: feed one sheet at a time** for the second side (and
+the first, if the printer grabs two). It's slower, but nothing can
+double-feed or slip out of order. On Adam's printer, that's what finally
+gave a perfect booklet (third attempt, 2026-10-01).
+
 That's what works on Adam's printer (2026-10-01). Other printers can
 feed and stack differently, so if yours is new to you, try one sheet
 first: the back of the sheet with page 1 and the last page should get
