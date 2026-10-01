@@ -46,7 +46,8 @@ Or none of these: describe what you picture, and that becomes the plan.
 
 Separately: does it need a **front page**? That's a public page that
 explains the app to newcomers, with "Get started" leading in. It works
-with any layout.
+with any layout. Your Claim It starter page becomes a simple placeholder
+front page right away, so the full one can wait its turn.
 Build It's first story builds the frame, so every later feature lands in
 the same place.
 

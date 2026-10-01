@@ -128,9 +128,12 @@ recommend one layout with a one-sentence reason (and a runner-up if it's
 close), show the others in a line each, and let the user pick, or
 describe their own (`custom`). Then, as its own question, recommend yes
 or no on a public **front page** (see "The front page" in layouts.md). If
-yes and no Feature covers it, create one ("Visitor can see what <Name> is
-and get started", for the persona who arrives first) and decide with the
-user where it goes in Todo.
+yes: the first story turns Claim It's starter page into a placeholder
+front page (name, purpose, "Get started", who it's for), so the real one
+can wait. Make sure a Feature covers it ("Visitor can see what <Name> is
+and get started", for the persona who arrives first; create it in
+Backlog if Dream It didn't) and decide with the user whether it goes in
+Todo now or later.
 
 Explain why it matters, briefly: "Picking a shape now means every feature
 lands in the same frame, instead of each one inventing its own."

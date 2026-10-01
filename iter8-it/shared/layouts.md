@@ -122,10 +122,18 @@ it.** A yes/no choice on top of the layout.
 - **With sign-in:** signed-in people skip it and land in the app.
 - **Two-sided:** "Get started" leads to the creator side; the follower
   side keeps its direct links / QR codes and never needs the front page.
-- **First story builds:** the front page is its own small piece of work.
-  It goes in with the first story if that story is about getting people
-  in (sign-up, joining); otherwise it's a Feature of its own, which Trim
-  It adds to Todo (creating it as a Feature if Dream It didn't).
+- **The placeholder (first story):** Claim It's starter page already
+  shows the name and purpose, so the first story keeps it as the front
+  page, with a few tweaks: a **"Get started"** button into the app (to
+  sign in, if there are accounts), a short **"Who it's for"** line from
+  the personas in `PRODUCT.md`, and the footer credit kept. Small, but
+  real: the app has a sensible front door from the first release.
+- **The real front page:** a Feature of its own ("Visitor can see what
+  <Name> is and get started"), built whenever Trim It schedules it. It
+  replaces the placeholder with the hero and sections above. Because the
+  placeholder exists, it can sit lower in Todo.
+- **No front page:** the first story replaces the starter page with the
+  app itself (the tool, the sign-in page, or the signed-in home).
 
 ---
 
