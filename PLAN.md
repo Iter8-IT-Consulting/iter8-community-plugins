@@ -760,6 +760,21 @@ A one-time step (working name **Adopt It**), run in the project's folder:
 - Cost: adoption may *save* money (e.g. dropping a persistent Branching
   database). Say so in the gap report.
 
+### 9.2 Trim It: save each decision as it's made
+
+In the SlideIt trial (52 Features), Trim It kept every decision in the
+conversation and saved it all at the end (board moves, `later` labels,
+closures, `PRODUCT.md`, `journey.json`). If the session had stopped
+before then, all of the cutting would have been lost. Change it to apply
+each decision as it's made (label, comment, close, or move to Todo), and
+write the files at the end. A rerun then simply finds the
+partly-groomed board and carries on. Consider the same for Dream It
+(create Issues per Epic as each group is agreed).
+
+### 9.3 Fix It and Grow It
+
+Not built yet. Their pages in `docs/steps/` describe what they'll do.
+
 ---
 
 ## Appendix B: Decisions made while building Claim It (2026-09-29)
