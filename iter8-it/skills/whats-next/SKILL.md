@@ -74,6 +74,8 @@ looked at your people and ideas. When there's a moment: new kinds of
 people using it? **Meet It**. New ideas? **Dream It**. Then **Trim It**
 to choose."
 
+**A custom domain** (the app on its own address, e.g. `slideit.apps.iter8.community`): if the user asks for one, or a Todo item is about it, follow `<plugin>/shared/custom-domain.md`.
+
 **Grow It isn't built yet.** For row 14, ask what they've learned from
 people using the app, then recommend: **Meet It** if new kinds of people
 have turned up (or someone isn't who we thought), otherwise **Dream It**

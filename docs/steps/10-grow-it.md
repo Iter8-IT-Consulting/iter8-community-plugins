@@ -17,6 +17,7 @@ turns that into the next round of work.
   problem still the problem?
 - **Dream and trim, again**: new ideas go into the Backlog, parked ideas
   get a second look, and the board is reordered for the next release.
+- **Your own web address**: already available. Ask for it any time, and Claude walks you through connecting a domain you own (one DNS record at your registrar), then points sign-in at it.
 - **Suggest upgrades when they'd pay off**, each with its cost stated:
   your own domain name, error alerts, usage numbers, branded emails, a
   staging copy of your app for testing, and more. Never assumed, always
