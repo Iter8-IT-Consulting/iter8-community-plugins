@@ -99,11 +99,19 @@ function githubSecret(repo) {
 
 function vercelEnv(ref, scope) {
   if (!ref || !scope) fail("usage: vercel-env <project-ref> <vercel-scope>");
-  const listed = json(supabase(`projects api-keys --project-ref ${ref} -o json`));
+  // --reveal: without it the CLI masks secret keys ("sb_secret_mH9E3·········"),
+  // and the masked text would be stored in Vercel as if it were the key.
+  const listed = json(supabase(`projects api-keys --project-ref ${ref} --reveal -o json`));
   const keys = Array.isArray(listed) ? listed : (listed.keys ?? listed.api_keys ?? []);
   const publishable = keys.find((k) => k.type === "publishable")?.api_key;
   const secret = keys.find((k) => k.type === "secret")?.api_key;
   if (!publishable || !secret) fail("the project has no publishable/secret API keys yet. Create them in the dashboard (Settings -> API Keys).");
+  // Never store a masked or truncated key.
+  for (const [name, value] of [["publishable", publishable], ["secret", secret]]) {
+    if (!/^sb_(publishable|secret)_[A-Za-z0-9_-]{20,}$/.test(value)) {
+      fail(`the ${name} key from Supabase looks masked or incomplete, so it wasn't saved. Check \`supabase projects api-keys --reveal\`.`);
+    }
+  }
 
   const vars = [
     ["NEXT_PUBLIC_SUPABASE_URL", `https://${ref}.supabase.co`, false],
