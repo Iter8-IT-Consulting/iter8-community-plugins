@@ -58,6 +58,6 @@ seconds.
 Then: back to Build It for the next piece, or Trim It to choose what's
 next.
 
-**Next:** [Fix It](09-fix-it.md) when something breaks, [Grow It](10-grow-it.md)
+**Next:** [Fix It](10-fix-it.md) when something breaks, [Grow It](11-grow-it.md)
 as people use it, and [your own web address](../extras/custom-domain.md)
 whenever you're ready to share it.

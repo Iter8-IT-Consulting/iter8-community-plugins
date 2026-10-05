@@ -53,6 +53,7 @@ recommendation.
 | 10 | Unreleased commits, and either 3+ stories In Review or the last Todo item of the first version is merged | **Ship It** (strongly) |
 | 11 | Unreleased commits | **Build It** for the next item, *or* Ship It. Recommend shipping if a person can now do something useful end to end. |
 | 12 | Items in Todo | **Build It**: the top Todo item (name it). If it's the *last* Todo item and the Backlog has ideas, add: "After this, Todo is empty; a quick Trim It will pick what's next." If there have been **2+ releases since Trim It last ran** (`git log --oneline --grep "Trim It" -1` vs. `gh release list`), add the outer-loop nudge below. |
+| 12a | `journey.skin` is `null`, and at least one release has gone out | Whatever row 12 says, plus one line: "Your app still wears the starter look. When you know what you want, **Skin It** shows you a few directions." (Never instead of building.) |
 | 13 | Nothing in Todo, but ideas in Backlog | **Trim It**, to groom: pick the next Features from the Backlog |
 | 14 | Nothing in Todo, In Progress, In Review or Backlog | **Grow It** (see below) |
 

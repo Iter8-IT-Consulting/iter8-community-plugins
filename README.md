@@ -18,10 +18,11 @@ New? Start with **[Before you start](docs/getting-ready.md)**.
 | 4 | **Meet It** | Get to know the people who will use it: what they're trying to get done and what frustrates them today. |
 | 5 | **Dream It** | Get every feature idea out of your head and onto the table, big or small. |
 | 6 | **Trim It** | Cut the list down to the smallest version someone would actually use. |
-| 7 | **Build It** | Add the features one small piece at a time, checking each one as you go. |
-| 8 | **Ship It** | Put what you've built live for real users, and check it works there. |
-| 9 | **Fix It** | Things will break. Find out why, fix it, and put the fix live. |
-| 10 | **Grow It** | Keep improving your app with what you learn from real use. |
+| 7 | **Skin It** | Choose how your app looks: colours, fonts, shapes, light or dark. |
+| 8 | **Build It** | Add the features one small piece at a time, checking each one as you go. |
+| 9 | **Ship It** | Put what you've built live for real users, and check it works there. |
+| 10 | **Fix It** | Things will break. Find out why, fix it, and put the fix live. |
+| 11 | **Grow It** | Keep improving your app with what you learn from real use. |
 
 Build It and Ship It are a loop: you go around it for every release, and
 Fix It and Grow It feed back into it.

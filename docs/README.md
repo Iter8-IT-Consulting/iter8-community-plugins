@@ -23,10 +23,11 @@ and free tools to set up once.
 | 4 | [Meet It](steps/04-meet-it.md) | Get to know the people who'll use it. |
 | 5 | [Dream It](steps/05-dream-it.md) | Get every idea out of your head and onto the board. |
 | 6 | [Trim It](steps/06-trim-it.md) | Choose the smallest version worth building, and keep choosing. |
-| 7 | [Build It](steps/07-build-it.md) | Build it one small, tested piece at a time. |
-| 8 | [Ship It](steps/08-ship-it.md) | Put it live for real people, and check it works. |
-| 9 | [Fix It](steps/09-fix-it.md) | When something breaks, find out why and fix it. *(coming soon)* |
-| 10 | [Grow It](steps/10-grow-it.md) | Improve it from what real use teaches you. *(coming soon)* |
+| 7 | [Skin It](steps/07-skin-it.md) | Choose how it looks: colours, fonts, the feel. Now, or after building a little. |
+| 8 | [Build It](steps/08-build-it.md) | Build it one small, tested piece at a time. |
+| 9 | [Ship It](steps/09-ship-it.md) | Put it live for real people, and check it works. |
+| 10 | [Fix It](steps/10-fix-it.md) | When something breaks, find out why and fix it. *(coming soon)* |
+| 11 | [Grow It](steps/11-grow-it.md) | Improve it from what real use teaches you. *(coming soon)* |
 
 **Lost track of where you are?** Ask [What's Next](extras/whats-next.md): it
 looks at your project and tells you the one thing to do now.
@@ -46,6 +47,7 @@ Spot It -> Name It -> Claim It                        (once)
                          |
                          v
         +--> Meet It -> Dream It -> Trim It ----+     (outer loop: what to build, for whom)
+        |                    (Skin It, any time) |
         |                                        |
         |                                        v
      Grow It <--- Ship It <---> Build It <-------+    (inner loop: build and release)
@@ -64,7 +66,9 @@ when something breaks.
 plans your first version. After that, come back whenever real use has
 taught you something: a new kind of person using the app, new ideas,
 or a change of priorities. Then Trim It chooses what goes into the next
-round of building. Grow It (coming soon) will lead you around it;
+round of building. **Skin It** chooses how the app looks: right after
+Trim It, or once you've built a little and know what you want. Grow It
+(coming soon) will lead you around it;
 until then, What's Next will nudge you when it's time.
 
 ## What it's built on

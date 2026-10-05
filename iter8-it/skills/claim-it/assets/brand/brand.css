@@ -1,32 +1,51 @@
 /*
- * Iter8 Community starter palette - from the Iter8 style guide.
- * Swap these values (or delete this file and its import in
- * globals.css) to rebrand the app.
+ * The app's skin: every colour, font and shape the app uses comes from
+ * these tokens. This is the Iter8 Community starter skin, from the Iter8
+ * style guide. iter8-it's Skin It step replaces the values (and the fonts
+ * in src/app/layout.tsx); /style-guide shows whatever is set here.
  */
 :root {
-  --brand-primary: #1356cf; /* Vivid Blue */
-  --brand-accent: #6f42c1;  /* Smart Purple - use sparingly */
-  --brand-ink: #2b2b2b;     /* Charcoal */
-  --brand-muted: #6c757d;   /* Slate */
-  --brand-surface: #f1f3f5; /* Cloud */
+  --brand-primary: #1356cf; /* Vivid Blue: buttons, links, highlights */
+  --brand-on-primary: #ffffff; /* text on primary */
+  --brand-accent: #6f42c1; /* Smart Purple: use sparingly */
+  --brand-ink: #2b2b2b; /* Charcoal: text */
+  --brand-muted: #636b73; /* Slate (a touch darker than the style guide's #6c757d, so small text passes WCAG AA on Cloud): secondary text */
+  --brand-surface: #f1f3f5; /* Cloud: page background */
+  --brand-raised: #ffffff; /* cards, inputs, panels */
+  --brand-border: #d5dae0; /* lines and outlines */
 
   --status-ok: #28a745;
   --status-warn: #ffc107;
   --status-error: #dc3545;
 
+  --brand-radius: 0.5rem; /* corners of buttons, cards, inputs */
+
   --brand-font-headline: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --brand-font-code: Consolas, ui-monospace, monospace;
 }
 
+/*
+ * Dark mode (optional): Skin It fills this in if the app offers a dark
+ * look. It follows the device's setting. Leave it out for light only.
+ *
+ * @media (prefers-color-scheme: dark) {
+ *   :root { --brand-surface: ...; --brand-raised: ...; --brand-ink: ...; ... }
+ * }
+ */
+
 @theme inline {
   --color-brand: var(--brand-primary);
+  --color-brand-on: var(--brand-on-primary);
   --color-brand-accent: var(--brand-accent);
   --color-brand-ink: var(--brand-ink);
   --color-brand-muted: var(--brand-muted);
   --color-brand-surface: var(--brand-surface);
+  --color-brand-raised: var(--brand-raised);
+  --color-brand-border: var(--brand-border);
   --color-status-ok: var(--status-ok);
   --color-status-warn: var(--status-warn);
   --color-status-error: var(--status-error);
+  --radius-brand: var(--brand-radius);
   --font-headline: var(--brand-font-headline);
   --font-mono: var(--brand-font-code);
 }

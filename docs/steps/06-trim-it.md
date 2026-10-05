@@ -81,4 +81,5 @@ Backlog -> Todo -> In Progress -> In Review -> Done
 | **Decisions** | What's in, what waits, what goes, and the order |
 | **Cost** | Nothing |
 
-**Next:** [Build It](07-build-it.md)
+**Next:** [Skin It](07-skin-it.md) to choose how it looks, or straight
+to [Build It](08-build-it.md) if you'd rather build a little first.

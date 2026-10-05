@@ -21,6 +21,7 @@ update every skill that reads or writes the field you change.
     "decidedIn": "trim-it"
   },
   "layout": { "shape": "two-sided", "frontPage": true },
+  "skin": { "name": "Stage Lights", "dark": true, "at": "2026-10-06" },
   "github": {
     "owner": "Iter8-IT-Consulting",
     "repo": "slideit",
@@ -58,7 +59,7 @@ update every skill that reads or writes the field you change.
 
 | Field | Type | Owner | Meaning |
 |---|---|---|---|
-| `stage` | string | every step | Furthest step completed: `spot-it`, `name-it`, `claim-it`, `meet-it`, `dream-it`, `trim-it`, `build-it`, `ship-it`. (`fix-it` and `grow-it` don't advance it.) |
+| `stage` | string | every step | Furthest step completed: `spot-it`, `name-it`, `claim-it`, `meet-it`, `dream-it`, `trim-it`, `skin-it`, `build-it`, `ship-it`. (`fix-it` and `grow-it` don't advance it.) |
 | `name` | string | Name It | Display name, e.g. `SlideIt`. |
 | `slug` | string | Name It | Lowercase slug used for the GitHub repo, Vercel project and Supabase project, e.g. `slideit`. |
 | `purpose` | string | Name It | One-line purpose. Same text as the line under the title in `PRODUCT.md`. |
@@ -67,6 +68,7 @@ update every skill that reads or writes the field you change.
 | `needs.decidedIn` | string | Trim It | Which step recorded the needs (normally `trim-it`; Grow It may revise them). |
 | `layout.shape` | string | Trim It | The app's overall shape: `single-tool`, `app-nav`, `mobile-tabs`, `two-sided` (see `shared/layouts.md`) or `custom` (described in `PRODUCT.md`). Build It's first story builds the frame for it. |
 | `layout.frontPage` | boolean | Trim It | Whether the app has a public front page explaining it, leading into the app. |
+| `skin` | object | Skin It | The app's look: `{ "name": <skin name>, "dark": <bool>, "at": <ISO date> }`. `null` = still the Iter8 starter skin. |
 | `github.owner` | string | Claim It | GitHub org or user that owns the repo. |
 | `github.repo` | string | Claim It | Repo name (normally the slug). |
 | `github.project` | number | Claim It | GitHub Project (board) number. |
@@ -96,6 +98,7 @@ values in:
   "purpose": null,
   "needs": { "auth": null, "database": null, "decidedIn": null },
   "layout": { "shape": null, "frontPage": null },
+  "skin": null,
   "github": { "owner": null, "repo": null, "project": null, "mainProtected": null, "workItems": null },
   "vercel": { "scope": null, "project": null, "url": null },
   "supabase": { "local": false, "org": null, "projectRef": null, "region": null },

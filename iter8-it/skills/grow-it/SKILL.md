@@ -5,7 +5,7 @@ description: "Grow It — Keep improving your app with what you learn from real 
 
 # Grow It
 
-**Step 10 of the iter8-it journey.** Keep improving your app with what you learn from real use.
+**Step 11 of the iter8-it journey.** Keep improving your app with what you learn from real use.
 
 > **Not built yet.** This skill is a placeholder so the plugin structure can
 > be installed and tested. If someone runs it, tell them plainly that Grow It

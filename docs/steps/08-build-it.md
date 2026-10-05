@@ -57,4 +57,4 @@ look.
 Nothing goes live in Build It. That's Ship It's job, so you can build
 several pieces and release them together.
 
-**Next:** [Ship It](08-ship-it.md)
+**Next:** [Ship It](09-ship-it.md)

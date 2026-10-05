@@ -5,7 +5,7 @@ description: "Ship It — Put what you've built live for real users, and check i
 
 # Ship It
 
-**Step 8 of the iter8-it journey.** Put what you've built live for real
+**Step 9 of the iter8-it journey.** Put what you've built live for real
 users, and check it works there.
 
 Ship It runs **every release**, not once. It promotes `dev` to `main`
@@ -248,6 +248,10 @@ database. That's why migrations only ever add.)
 Offer: "Next up on the board is #<n>, *<title>*. Build it now?" If
 Todo is empty, offer **Trim It** instead, to pick the next batch from the
 Backlog (or Dream It, if the Backlog is empty too).
+
+While `journey.json` `skin` is still `null` (the Iter8 starter skin),
+add once per release: "When you're ready to give it its own look,
+**Skin It** shows you a few directions."
 
 Every couple of releases, add the outer-loop nudge: "Now that people are
 using it: anyone new turned up (**Meet It**)? New ideas (**Dream It**)?

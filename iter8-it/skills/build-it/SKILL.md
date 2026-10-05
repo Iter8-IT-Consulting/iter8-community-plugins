@@ -5,7 +5,7 @@ description: "Build It — Add the features one small piece at a time, checking 
 
 # Build It
 
-**Step 7 of the iter8-it journey.** Add the features one small piece at a
+**Step 8 of the iter8-it journey.** Add the features one small piece at a
 time, checking each one as you go.
 
 Build It turns the next thing on the board into working, tested code on
@@ -213,6 +213,10 @@ Work in small steps, keeping the app working after each one.
   Add before you remove: production runs the old code against the new
   schema for a moment during Ship It, so never drop or rename something
   the current live code uses. See `<plugin>/shared/environments.md`.
+- **Looks come from the skin.** Use the `brand-*` colour classes,
+  `rounded-brand` and the fonts from `layout.tsx`; never hard-code colours
+  (`bg-white`, `text-gray-500`, hex values). A new reusable piece (a
+  card, a badge, a list row) gets a small example on `/style-guide` too.
 - **No secrets in the code.** Keys go in `.env.local` (gitignored); names
   go in `.env.example`.
 

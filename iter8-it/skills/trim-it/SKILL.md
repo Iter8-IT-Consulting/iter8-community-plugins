@@ -210,5 +210,11 @@ Show the board link (`journey.json` has the project number:
 `https://github.com/orgs/<owner>/projects/<number>` for an org,
 `https://github.com/users/<owner>/projects/<number>` for a personal
 account), and point out that cards can be dragged between Backlog and
-Todo, and reordered, by hand at any time. Then: "Next is **Build It**:
-building the top Feature in Todo, one small story at a time. Start now?"
+Todo, and reordered, by hand at any time.
+
+Then, first trim (or while `journey.json` `skin` is still `null`), offer
+both, without pushing: "Next is **Skin It**, choosing how the app looks,
+or **Build It** first. If you don't know yet what it should look like,
+let's build some first: you can skin it any time." Otherwise: "Next is
+**Build It**: building the top Feature in Todo, one small story at a
+time. Start now?"

@@ -58,6 +58,14 @@ feature/<issue>-<slug> --PR--> dev --release PR--> main --> Vercel production
   `main` and on demand; for PRs into `dev`, run `npm run test:e2e`
   locally before opening the PR.
 
+## Look
+
+Every colour, font and shape comes from the tokens in `src/app/brand.css`
+(and the fonts in `src/app/layout.tsx`): use the `brand-*` classes and
+`rounded-brand`, never hard-coded colours. **`/style-guide`** shows the
+current skin; add new reusable pieces to it. iter8-it's **Skin It** step
+changes the look.
+
 ## Branding
 
 The app starts with light Iter8 Community branding. It's yours to keep,

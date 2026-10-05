@@ -33,6 +33,8 @@ on the work. Then, mostly while you watch:
   proven way.
 - A starter page with light Iter8 Community branding: easy to keep,
   restyle or remove.
+- A **style guide** page (`/style-guide`) showing the app's colours,
+  fonts and pieces. [Skin It](07-skin-it.md) gives the app its own look.
 
 **No database yet.** That comes later, and only if your app needs one.
 

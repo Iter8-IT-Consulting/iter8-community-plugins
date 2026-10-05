@@ -930,6 +930,19 @@ Not built yet. Their pages in `docs/steps/` describe what they'll do.
   reach the Supabase team, and it files a Backlog Feature. The SMTP
   config format was checked by dry-run against ScoreIt's working Resend
   setup.
+- **Skin It: step 7 (2026-10-06).** A numbered step between Trim It and
+  Build It, offered gently ("if you don't know yet, build some first").
+  It asks about the feel, light/dark (dark is optional) and must-have
+  colours, then shows three named directions on the app's real screens:
+  on the claude.ai Design canvas when the Artifact tool offers one,
+  otherwise on a temporary /skin-preview page. It checks contrast
+  (`contrast.mjs`, WCAG AA) and applies the result as `brand.css` tokens
+  + fonts + a PRODUCT.md "Look" section + `journey.skin`, via a PR. Every
+  app has a public `/style-guide` from Claim It, drawn live from the
+  tokens. Starter tokens gained on-primary, raised, border, radius and a
+  dark slot; the starter muted grey was darkened (#6c757d to #636b73) to
+  pass AA on Cloud. Build It, Ship It and What's Next follow the skin and
+  nudge gently. Later steps renumbered: Build 8, Ship 9, Fix 10, Grow 11.
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.

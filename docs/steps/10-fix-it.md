@@ -23,4 +23,4 @@ come back.
 | **Normal** | It can wait for the next release | The fix goes in with the other work, and Ship It puts it live. |
 | **Hotfix** | The live app is broken now | The fix goes straight to the live version, then back into your work in progress, so nothing drifts apart. |
 
-**Next:** [Grow It](10-grow-it.md)
+**Next:** [Grow It](11-grow-it.md)

@@ -48,6 +48,7 @@ status.journey = journey && {
   needs: journey.needs,
   database: { local: journey.supabase?.local ?? false, production: journey.supabase?.projectRef ?? null },
   lastRelease: journey.lastRelease?.tag ?? null,
+  skin: journey.skin ?? null,
 };
 
 // --- Git -----------------------------------------------------------------
