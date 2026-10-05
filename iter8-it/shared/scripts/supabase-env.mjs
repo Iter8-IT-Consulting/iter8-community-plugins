@@ -32,6 +32,8 @@ const values = {
   NEXT_PUBLIC_SUPABASE_URL: status.API_URL,
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: status.PUBLISHABLE_KEY,
   SUPABASE_SECRET_KEY: status.SECRET_KEY,
+  // The local mail viewer, where sign-up and password-reset emails land.
+  MAILPIT_URL: status.MAILPIT_URL ?? status.INBUCKET_URL,
 };
 for (const [name, value] of Object.entries(values)) {
   if (!value) {

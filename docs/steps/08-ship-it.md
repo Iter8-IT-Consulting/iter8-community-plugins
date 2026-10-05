@@ -19,7 +19,11 @@ computer's copy.
    up: a Supabase project on the free plan (or your paid one, with the
    cost stated first), connected to the live site. You save one password;
    it does the rest. If people sign in, it also points sign-in at your
-   live address, so account links go to the right place.
+   live address, and asks whether you have an **email sending service**
+   (Resend, SendGrid and the like; Resend's free plan is plenty). With
+   one, people confirm their email and can reset a forgotten password.
+   Without one, sign-up still works, but reset emails only reach you and
+   your team, so it reminds you to add one.
 4. **The final checks.** Every test runs one last time on GitHub,
    including the ones that click through the app. Nothing goes live
    unless they pass.

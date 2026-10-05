@@ -113,21 +113,61 @@ again.
 
 If the app has accounts (`src/lib/auth.ts` exists, or `needs.auth`), the
 live project needs its own sign-in settings: the live site's address, so
-links in Supabase's emails point there, not at `localhost`, plus
-password length 8 and email confirmation off, to match local.
+links in Supabase's emails point there, not at `localhost`; password
+length 8; and how its emails are sent.
+
+**Ask about email first.** Never assume a service or reuse someone
+else's settings:
+
+> Sign-in sends emails: "confirm your email" when someone signs up, and
+> password-reset links. Supabase's built-in sender is only for testing:
+> it sends a few emails an hour, and **only to people on your Supabase
+> team**. So with it, real users can't reset a forgotten password.
+>
+> Do you have an email sending service (Resend, SendGrid, Postmark,
+> Amazon SES, Brevo, your own mail server...)?
+
+- **Yes:** ask for its SMTP details, one at a time: server (host), port,
+  username, the sender address emails come from (on a domain verified
+  with the service), and the sender name (usually the app's name). Ask
+  them to paste the password or API key when the command runs (as
+  `SMTP_PASS`); never write it to a file or repeat it back. With a
+  service connected, **email confirmation is turned on**: new people
+  confirm their email before their first sign-in.
+- **Not yet:** say it plainly: the app works, sign-up works straight
+  away (confirmation off), but password-reset emails only reach their
+  own team. Suggest a free plan (Resend's free plan is plenty for a new
+  app), and create a Feature in Backlog so it isn't forgotten: "People
+  get sign-up and password-reset emails" (skip if one exists). Rerun this
+  step when they have one.
+
+Without a service:
 
 ```bash
 node <plugin>/shared/scripts/supabase-prod.mjs auth-config <project-ref> <vercel.url> --dry-run
 node <plugin>/shared/scripts/supabase-prod.mjs auth-config <project-ref> <vercel.url>
 ```
 
+With a service (the same, plus):
+
+```bash
+SMTP_PASS="<pasted by the user>" node <plugin>/shared/scripts/supabase-prod.mjs auth-config <project-ref> <vercel.url> \
+  --smtp-host <host> --smtp-port <port> --smtp-user <user> \
+  --smtp-sender <from address> --smtp-name "<from name>" [--dry-run]
+```
+
+Then, with a service, check one email really arrives: sign up on the
+live site with an address the user can read, or use "Forgot your
+password?", and ask them to confirm the email came.
+
 The first shows what will change; the second changes only those settings
 and checks they took. (It pushes a temporary config that declares just
 these; the project's own `supabase/config.toml` points at `localhost` and
 must never be pushed.)
 
-**Run this again** on any later release that first adds sign-in, and
-whenever the live address changes (a custom domain).
+**Run this again** on any later release that first adds sign-in,
+whenever the live address changes (a custom domain), and when they
+connect an email service later.
 
 ## 6. Record it
 

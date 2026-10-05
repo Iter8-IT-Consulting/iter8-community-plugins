@@ -45,6 +45,9 @@ export default async function SignInPage({ searchParams }: PageProps<"/sign-in">
           Create an account
         </button>
       </form>
+      <a href="/forgot-password" className="text-sm text-brand underline underline-offset-4">
+        Forgot your password?
+      </a>
     </main>
   );
 }

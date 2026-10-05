@@ -135,8 +135,37 @@ function vercelEnv(ref, scope) {
 // sends every property a config.toml declares, so push a temporary one
 // that declares just these, never the project's own (which points at
 // localhost). With --dry-run it only shows the differences.
-function authConfig(ref, liveUrl, ...flags) {
-  if (!ref || !liveUrl?.startsWith("https://")) fail("usage: auth-config <project-ref> <https://live-url> [--dry-run]");
+//
+// Email service (optional): with --smtp-host, the project sends its emails
+// (confirm sign-up, reset password) through the user's own service instead
+// of Supabase's built-in sender, which only reaches the Supabase team and
+// sends very few. Only then is email confirmation turned on. The password
+// comes from the SMTP_PASS environment variable, never the command line.
+//   --smtp-host <host> --smtp-port <port> --smtp-user <user>
+//   --smtp-sender <from address> --smtp-name <from name>
+function authConfig(ref, liveUrl, ...rest) {
+  const usage =
+    "usage: auth-config <project-ref> <https://live-url> [--dry-run] " +
+    "[--smtp-host <host> --smtp-port <port> --smtp-user <user> --smtp-sender <address> --smtp-name <name>] (SMTP_PASS in the environment)";
+  if (!ref || !liveUrl?.startsWith("https://")) fail(usage);
+  const flag = (name) => {
+    const i = rest.indexOf(name);
+    return i === -1 ? undefined : rest[i + 1];
+  };
+  const smtp = flag("--smtp-host")
+    ? {
+        host: flag("--smtp-host"),
+        port: Number(flag("--smtp-port")),
+        user: flag("--smtp-user"),
+        sender: flag("--smtp-sender"),
+        name: flag("--smtp-name"),
+      }
+    : null;
+  if (smtp) {
+    if (!smtp.port || !smtp.user || !smtp.sender || !smtp.name) fail(`all of the --smtp-* options are needed.\n${usage}`);
+    if (!process.env.SMTP_PASS) fail("set SMTP_PASS to the email service's password or API key.");
+  }
+  const quote = (v) => JSON.stringify(String(v));
   const site = liveUrl.replace(/\/+$/, "");
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "iter8-auth-"));
   try {
@@ -147,15 +176,30 @@ function authConfig(ref, liveUrl, ...flags) {
         `project_id = "iter8-auth-config"`,
         ``,
         `[auth]`,
-        `site_url = "${site}"`,
-        `additional_redirect_urls = ["${site}/**"]`,
+        `site_url = ${quote(site)}`,
+        `additional_redirect_urls = [${quote(`${site}/**`)}]`,
         `minimum_password_length = 8`,
         ``,
         `[auth.email]`,
-        `enable_confirmations = false`,
+        // Confirming email only makes sense when emails can reach everyone.
+        `enable_confirmations = ${smtp ? "true" : "false"}`,
         ``,
+        ...(smtp
+          ? [
+              `[auth.email.smtp]`,
+              `enabled = true`,
+              `host = ${quote(smtp.host)}`,
+              `port = ${smtp.port}`,
+              `user = ${quote(smtp.user)}`,
+              `pass = "env(SMTP_PASS)"`,
+              `admin_email = ${quote(smtp.sender)}`,
+              `sender_name = ${quote(smtp.name)}`,
+              ``,
+            ]
+          : []),
       ].join("\n"),
     );
+    const flags = rest;
     const workdir = `--project-ref ${ref} --workdir "${dir}"`;
     const result = json(supabase(`config diff ${workdir} --output-format json`));
     const declared = (result.changes ?? []).filter((c) => c.declared);

@@ -916,6 +916,20 @@ Not built yet. Their pages in `docs/steps/` describe what they'll do.
   on `main`, 7 cards Done). Lessons: Trim It should save as it goes
   (9.2); Docker can wedge and need restarting or updating; stopping other
   local Supabase setups speeds builds up a lot.
+- **From the PlateIt build day (2026-10-05 feedback).** (1) Stories
+  apply migrations to the local DB with `supabase migration up --local`
+  (`npm run db:migrate`), keeping data; `db reset` only on request or
+  when stuck, asked first. (2) The sign-in template gains Forgot password
+  (forgot-password -> email -> /auth/confirm, which now accepts `code` as
+  well as `token_hash` -> reset-password), tested end to end with Mailpit.
+  Local email confirmation stays off. Production: Ship It asks whether the
+  user has an email sending service, and never assumes or wires in
+  anyone's settings. With one, auth-config connects it over SMTP
+  (`--smtp-*`, with the password in `SMTP_PASS`) and turns confirmation
+  on. Without one, confirmation stays off, Ship It says reset emails only
+  reach the Supabase team, and it files a Backlog Feature. The SMTP
+  config format was checked by dry-run against ScoreIt's working Resend
+  setup.
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.

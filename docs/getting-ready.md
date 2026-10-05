@@ -110,6 +110,10 @@ Then type `/iter8-it` and you should see the steps (`spot-it`,
 - **A phone** to try your app on. Most apps are used on phones.
 - **A password manager.** Ship It gives you a database password to keep
   safe.
+- **An email sending service** (Resend, SendGrid, Postmark...), if your
+  app will have accounts: it lets people confirm their email and reset
+  a forgotten password. Free plans are plenty to start, and Ship It
+  asks about it when the time comes.
 - **A domain name**, if you want your app on its own address. Not needed
   to start: see [Your own web address](extras/custom-domain.md).
 - **A partner.** Two heads are better for Spot It, Meet It and Dream It.

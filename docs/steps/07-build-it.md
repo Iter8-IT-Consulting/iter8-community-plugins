@@ -31,7 +31,8 @@ see every piece working before it's kept.
 in Trim It, with its navigation, ready for everything that follows.
 
 **The first time your app needs to remember something**, Build It quietly
-adds a database on your computer, plus sign-in if people need accounts.
+adds a database on your computer, plus sign-in if people need accounts
+(sign up, sign in, sign out and "forgot your password?").
 That goes into the same story as the feature that needed it. Nothing
 gets set up before it's needed. With sign-in, it also adds a note to
 your Backlog for later: making the app's account emails (sign-up,
