@@ -57,6 +57,7 @@ Add to `package.json` `scripts`:
 ```json
 "db:start": "supabase start",
 "db:stop": "supabase stop",
+"db:migrate": "supabase migration up --local",
 "db:reset": "supabase db reset",
 "db:types": "supabase gen types typescript --local > src/lib/supabase/database.types.ts"
 ```
@@ -115,7 +116,12 @@ is one Supabase project, changed only by the migrate Action on `main`.
 - **Schema changes are migrations** in `supabase/migrations/`, never edits
   in Studio: `npx supabase migration new <name>` (then write the SQL), or
   make the change locally and `npx supabase db diff -f <name>`. Check with
-  `npm run db:reset`, then `npm run db:types` and commit the types.
+  `npm run db:migrate` (applies it and keeps the data already there, just
+  as production will), then `npm run db:types` and commit the types.
+- **Don't reset the local database** (`npm run db:reset` wipes it and
+  rebuilds it from the migrations and `seed.sql`) unless the user asks,
+  or it's genuinely stuck (a broken migration, data that needs starting
+  over). Ask first: it deletes everything they've entered locally.
 - **Add before you remove.** A release briefly runs the old code against
   the new schema. Never drop or rename something the live code uses; do
   it in a later release, after the code stops using it.
@@ -131,7 +137,8 @@ is one Supabase project, changed only by the migrate Action on `main`.
   `@/lib/supabase/server` everywhere on the server. `SUPABASE_SECRET_KEY`
   bypasses RLS: server-only, and only when a story truly needs it.
 - **Sample data** for local development and tests goes in
-  `supabase/seed.sql` (applied by `db reset` and in CI).
+  `supabase/seed.sql` (applied when the database is first created, by a
+  reset, and in CI).
 ```
 
 ## 6. Sign-in (only when the story needs it)

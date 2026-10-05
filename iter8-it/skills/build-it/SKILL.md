@@ -205,7 +205,11 @@ Work in small steps, keeping the app working after each one.
   (see `supabase-local.md`), never raw queries scattered in components.
 - **Schema changes** are migration files in `supabase/migrations/`, made
   with `npx supabase migration new <name>` or
-  `npx supabase db diff -f <name>`, and checked with `npx supabase db reset`.
+  `npx supabase db diff -f <name>`, and applied locally with
+  `npm run db:migrate` (`supabase migration up --local`), which keeps the
+  data already there, as production will. **Never reset the local
+  database** (`db reset`) as part of a story: only if the user asks, or
+  it's genuinely stuck, and ask first, since it wipes their local data.
   Add before you remove: production runs the old code against the new
   schema for a moment during Ship It, so never drop or rename something
   the current live code uses. See `<plugin>/shared/environments.md`.

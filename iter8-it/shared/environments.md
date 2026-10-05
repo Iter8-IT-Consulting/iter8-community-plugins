@@ -38,7 +38,13 @@ feature/<issue>-<slug> ──PR──▶ dev ──release PR──▶ main
 
 - `npx supabase start` runs the full stack (Postgres, Auth, Realtime,
   Studio) in Docker.
-- `npx supabase db reset` rebuilds the local DB from `supabase/migrations/`
+- New migrations are applied to the local DB with `npx supabase migration up
+  --local` (`npm run db:migrate`), **keeping the data** in it, the same way
+  production is changed. `npx supabase db reset` (wipe and rebuild from
+  `supabase/migrations/` + `supabase/seed.sql`) is only for a pinch (a
+  broken local DB, data that needs starting over) or when the user asks,
+  and always asked first. CI rebuilds from scratch on every run anyway.
+- (`db reset`) rebuilds the local DB from `supabase/migrations/`
   (+ `supabase/seed.sql`).
 - `.env.local` is written from `npx supabase status -o env`, so it always
   points at local.
@@ -47,7 +53,9 @@ feature/<issue>-<slug> ──PR──▶ dev ──release PR──▶ main
 
 - Files in `supabase/migrations/`, written with `supabase migration new` or
   generated with `supabase db diff -f <name>`.
-- Tested locally with `db reset`. **Never applied to production by hand.**
+- Tested locally with `migration up --local`, against the data already
+  there (which is how production meets it). **Never applied to production
+  by hand.**
 - Keep them backward-compatible with the code currently in production
   ("expand, then contract": add before you remove). The Vercel build and
   the migrate Action run in parallel on a release, so new code can briefly
