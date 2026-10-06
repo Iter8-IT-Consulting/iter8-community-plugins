@@ -83,7 +83,7 @@ found.git = { remote, branches: (run("git", ["branch", "-r", "--format=%(refname
 if (m) {
   const [owner, repo] = [m[1], m[2]];
   const info = json(run("gh", ["repo", "view", `${owner}/${repo}`, "--json", "defaultBranchRef,visibility,isInOrganization"]));
-  const projects = json(run("gh", ["api", "graphql", "-f", `query=query{repository(owner:"${owner}",name:"${repo}"){projectsV2(first:10){nodes{number title field(name:"Status"){... on ProjectV2SingleSelectField{options{name}}}}}}}`]));
+  const projects = json(run("gh", ["api", "graphql", "-f", `query=query{repository(owner:"${owner}",name:"${repo}"){projectsV2(first:10){nodes{number title views(first:20){nodes{name}} field(name:"Status"){... on ProjectV2SingleSelectField{options{name}}}}}}}`]));
   const secrets = (run("gh", ["secret", "list", "-R", `${owner}/${repo}`]) ?? "").split("\n").map((l) => l.split(/\s+/)[0]).filter(Boolean);
   const rulesets = json(run("gh", ["api", `repos/${owner}/${repo}/rulesets`])) ?? [];
   const types = json(run("gh", ["api", `orgs/${owner}/issue-types`]));
@@ -96,7 +96,7 @@ if (m) {
     repo,
     visibility: info?.visibility,
     defaultBranch: info?.defaultBranchRef?.name,
-    projects: (projects?.data?.repository?.projectsV2?.nodes ?? []).map((p) => ({ number: p.number, title: p.title, statuses: p.field?.options?.map((o) => o.name) ?? [] })),
+    projects: (projects?.data?.repository?.projectsV2?.nodes ?? []).map((p) => ({ number: p.number, title: p.title, statuses: p.field?.options?.map((o) => o.name) ?? [], views: p.views?.nodes?.map((v) => v.name) ?? [] })),
     issueTypes: Array.isArray(types) ? types.map((t) => t.name) : "labels (personal account)",
     openIssuesByType: byType,
     labels: labels.filter((l) => /^(later|persona:)/.test(l) || ["epic", "feature", "story", "bug"].includes(l)),
@@ -112,6 +112,8 @@ if (m) {
   if (!board) gap("board", "Board", "no project board linked", `a board: ${want.join(" / ")}`, "needed", "none");
   else {
     const missing = want.filter((s) => !board.statuses.includes(s));
+    const missingViews = ["Issue List", "Tracking Board"].filter((v) => !board.views.includes(v));
+    if (missingViews.length) gap("board-views", "Board", `views: ${board.views.join(", ") || "none"}`, "Issue List (table) and Tracking Board (board, columns by Status)", "recommended", "none", "Adds views; existing ones stay. Run after the Status options are in place.");
     if (missing.length) gap("board-statuses", "Board", `#${board.number} "${board.title}": ${board.statuses.join(" / ")}`, want.join(" / "), "needed", "low", `Add: ${missing.join(", ")} (by hand in the board's settings: the board has items).`);
   }
   if (Array.isArray(types)) {

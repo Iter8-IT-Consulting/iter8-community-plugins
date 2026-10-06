@@ -134,6 +134,7 @@ instead of improvising:
 | Gap | How |
 |---|---|
 | Board statuses, `later` label, Issue types | `shared/conventions.md`; a board with items needs its Status options changed by hand in its settings (say exactly what to add) |
+| Board views | `node <plugin>/skills/claim-it/scripts/board-views.mjs <owner> <number>`, **after** the Status options are fixed (the Tracking Board's columns come from Status). It adds Issue List and Tracking Board and leaves existing views alone; offer to delete old views by hand if they're no longer wanted |
 | Tests, scripts, `vercel.json`, `ci.yml` | Copy from `skills/claim-it/assets/templates/` (and `shared/templates/supabase/` if it has a database), adapting to the app, not overwriting its own tests |
 | `dev` branch and default branch | Create `dev` from the code that's live now, push, `gh repo edit --default-branch dev`. Tell them existing branches stay; new work starts from `dev` |
 | Local database ports | `shared/scripts/supabase-ports.mjs` |
