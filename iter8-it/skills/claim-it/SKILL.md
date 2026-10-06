@@ -5,7 +5,7 @@ description: "Claim It — Claim your name on the internet: a real project and a
 
 # Claim It
 
-**Step 3 of the iter8-it journey.** Claim your name on the internet: a real
+**Part of the iter8-it journey.** Claim your name on the internet: a real
 project and a live page, so it's real from the start.
 
 This is the one-time setup. When it's done, the project has:

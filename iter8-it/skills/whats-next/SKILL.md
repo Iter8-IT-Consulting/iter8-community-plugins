@@ -32,7 +32,10 @@ It reports (as JSON):
 - `laterIdeas`: Features labelled `later`.
 
 No `PRODUCT.md` and no `journey.json`: this folder hasn't started the
-journey. Recommend **Spot It** (or ask if they meant another folder).
+journey. If it's **empty**, recommend **Spot It** (a new idea). If it
+already holds an **app** (a `package.json`, a git history), recommend
+**Adopt It**, the way in for existing apps. Or ask if they meant another
+folder.
 
 ## 2. Decide
 

@@ -44,7 +44,8 @@ setup.
 **How to read it.** Start with the overview, *The iter8-it journey*, to
 see how the steps fit together. Then read each step just before you run
 it, or read it all at once to know what's coming. You'll go through the
-first seven steps once (Skin It can wait until you've built a little). After that, Build It and Ship It repeat for every
+steps up to Skin It once (and Skin It can wait until you've built a
+little). After that, Build It and Ship It repeat for every
 release, and Meet It, Dream It and Trim It come back whenever you've
 learned something.
 

@@ -69,6 +69,7 @@ update every skill that reads or writes the field you change.
 | `layout.shape` | string | Trim It | The app's overall shape: `single-tool`, `app-nav`, `mobile-tabs`, `two-sided` (see `shared/layouts.md`) or `custom` (described in `PRODUCT.md`). Build It's first story builds the frame for it. |
 | `layout.frontPage` | boolean | Trim It | Whether the app has a public front page explaining it, leading into the app. |
 | `skin` | object | Skin It | The app's look: `{ "name": <skin name>, "dark": <bool>, "at": <ISO date> }`. `null` = still the Iter8 starter skin. |
+| `adopted` | object | Adopt It | Only for apps brought in with Adopt It: `{ "at": <ISO date>, "from": <how it was run before>, "exceptions": [{ "id": <gap id>, "why": <reason> }] }`. Steps check `exceptions` before assuming an iter8-it convention (e.g. a kept deploy script). |
 | `github.owner` | string | Claim It | GitHub org or user that owns the repo. |
 | `github.repo` | string | Claim It | Repo name (normally the slug). |
 | `github.project` | number | Claim It | GitHub Project (board) number. |

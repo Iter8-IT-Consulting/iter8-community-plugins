@@ -1,11 +1,11 @@
 ---
 name: spot-it
-description: "Spot It — Find a real problem in your life or work that a simple app could fix. The first step of iter8-it: turns a vague idea or itch into a clear problem statement in PRODUCT.md. Use when someone wants to start a new app, has an idea or a problem to explore, or says 'I want to build an app', 'I have an idea', 'where do I start', or 'spot it'."
+description: "Spot It — Find a real problem in your life or work that a simple app could fix. Where the iter8-it journey starts: turns a vague idea or itch into a clear problem statement in PRODUCT.md. Use when someone wants to start a new app, has an idea or a problem to explore, or says 'I want to build an app', 'I have an idea', 'where do I start', or 'spot it'."
 ---
 
 # Spot It
 
-**Step 1 of the iter8-it journey.** Find a real problem in your life or
+**Part of the iter8-it journey.** Find a real problem in your life or
 work that a simple app could fix.
 
 Spot It is a conversation. It turns "I want to build an app that..." into
@@ -35,6 +35,9 @@ Look at the current folder.
 - **`PRODUCT.md` already has a Problem section:** this is a rerun. Show
   the problem as written and ask whether to sharpen it or start over.
   Keep everything else in the file.
+- **The folder holds an existing app** (a `package.json`, source code,
+  a git history): that's Adopt It's job, not Spot It's. Offer
+  **Adopt It**, which brings an existing app onto the journey.
 - **The folder has unrelated files** (another project, code that isn't
   this app's): say so and ask whether this is the right folder. A new app
   wants its own empty folder, named after the idea for now (it can be

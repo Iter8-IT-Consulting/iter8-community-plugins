@@ -74,6 +74,13 @@ with hyphens, e.g. `feature/12-join-with-qr-code`.
 - Release PRs (`dev -> main`) are merged with a **merge commit**, so
   `main`'s history shows each release.
 
+## Adopted apps
+
+Apps brought in with Adopt It may keep some of their own ways, listed in
+`journey.json` `adopted.exceptions`. Before relying on a convention here
+(branch names, the board's columns, how releases deploy), check that list
+and work with the app's way instead, mentioning it to the user.
+
 ## Commit identity
 
 Set per repo (`git config user.name` / `user.email`), confirmed with the

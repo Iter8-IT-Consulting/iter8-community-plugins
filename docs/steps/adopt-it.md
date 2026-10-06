@@ -1,8 +1,7 @@
 # Adopt It
 
-*Coming soon.*
-
-**Bring an app you've already started onto the journey.**
+**Bring an app you've already started onto the journey.** The other way
+in: instead of Spot It, Name It and Claim It.
 
 Not everyone starts from scratch. Maybe you built something before you
 found iter8-it, with its own GitHub, Vercel and Supabase. Adopt It works
@@ -29,4 +28,6 @@ every step carry on from there.
    live app without a way back. Gaps you'd rather keep are written down,
    so the other steps work around them.
 
-Then [What's Next](whats-next.md) takes it from there.
+Then [What's Next](../extras/whats-next.md) takes it from there, and your
+app carries on along the journey like any other: [Meet It](04-meet-it.md),
+[Dream It](05-dream-it.md), [Trim It](06-trim-it.md) and the rest.

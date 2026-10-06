@@ -1,11 +1,11 @@
 ---
 name: trim-it
-description: "Trim It — Cut the list down to the smallest version someone would actually use, and keep the board groomed after that. Step 6 of iter8-it: moves the chosen Features from Backlog to Todo in build order, parks or drops the rest, and records whether the app needs sign-in or a database. Rerun it any time to groom: pick what's next, reorder, park or drop ideas. Use when someone wants to plan the first version or the next batch, prioritize or reorder the backlog, groom the board, or says 'trim it', 'what should we build next', or 'what's the MVP'."
+description: "Trim It — Cut the list down to the smallest version someone would actually use, and keep the board groomed after that. Part of iter8-it: moves the chosen Features from Backlog to Todo in build order, parks or drops the rest, and records whether the app needs sign-in or a database. Rerun it any time to groom: pick what's next, reorder, park or drop ideas. Use when someone wants to plan the first version or the next batch, prioritize or reorder the backlog, groom the board, or says 'trim it', 'what should we build next', or 'what's the MVP'."
 ---
 
 # Trim It
 
-**Step 6 of the iter8-it journey.** Cut the list down to the smallest
+**Part of the iter8-it journey.** Cut the list down to the smallest
 version someone would actually use.
 
 The board has five columns:

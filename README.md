@@ -8,21 +8,22 @@ Claude Code plugins from Iter8 for the community.
 live and improving", one named step at a time:
 
 Each step has its own explainer page: **[the iter8-it journey](docs/README.md)**.
-New? Start with **[Before you start](docs/getting-ready.md)**.
+New? Start with **[Before you start](docs/getting-ready.md)**. Already
+have an app? **[Adopt It](docs/steps/adopt-it.md)** brings it onto the journey.
 
-| # | Step | What it does |
-|---|------|--------------|
-| 1 | **Spot It** | Find a real problem in your life or work that a simple app could fix. |
-| 2 | **Name It** | Give your project a name. It forces you to decide what it's really for. |
-| 3 | **Claim It** | Claim your name on the internet: a real project and a live page, so it's real from the start. |
-| 4 | **Meet It** | Get to know the people who will use it: what they're trying to get done and what frustrates them today. |
-| 5 | **Dream It** | Get every feature idea out of your head and onto the table, big or small. |
-| 6 | **Trim It** | Cut the list down to the smallest version someone would actually use. |
-| 7 | **Skin It** | Choose how your app looks: colours, fonts, shapes, light or dark. |
-| 8 | **Build It** | Add the features one small piece at a time, checking each one as you go. |
-| 9 | **Ship It** | Put what you've built live for real users, and check it works there. |
-| 10 | **Fix It** | Things will break. Find out why, fix it, and put the fix live. |
-| 11 | **Grow It** | Keep improving your app with what you learn from real use. |
+| Step | What it does |
+|------|--------------|
+| **Spot It** | Find a real problem in your life or work that a simple app could fix. |
+| **Name It** | Give your project a name. It forces you to decide what it's really for. |
+| **Claim It** | Claim your name on the internet: a real project and a live page, so it's real from the start. |
+| **Meet It** | Get to know the people who will use it: what they're trying to get done and what frustrates them today. |
+| **Dream It** | Get every feature idea out of your head and onto the table, big or small. |
+| **Trim It** | Cut the list down to the smallest version someone would actually use. |
+| **Skin It** | Choose how your app looks: colours, fonts, shapes, light or dark. |
+| **Build It** | Add the features one small piece at a time, checking each one as you go. |
+| **Ship It** | Put what you've built live for real users, and check it works there. |
+| **Fix It** | Things will break. Find out why, fix it, and put the fix live. |
+| **Grow It** | Keep improving your app with what you learn from real use. |
 
 Build It and Ship It are a loop: you go around it for every release, and
 Fix It and Grow It feed back into it.

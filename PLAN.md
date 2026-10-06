@@ -943,6 +943,17 @@ Not built yet. Their pages in `docs/steps/` describe what they'll do.
   dark slot; the starter muted grey was darkened (#6c757d to #636b73) to
   pass AA on Cloud. Build It, Ship It and What's Next follow the skin and
   nudge gently. Later steps renumbered: Build 8, Ship 9, Fix 10, Grow 11.
+- **Adopt It built (2026-10-06)** as a parallel way in, instead of Spot /
+  Name / Claim It. `adopt-scan.mjs` is read-only and reports what it
+  found plus gaps (needed / recommended / optional, with risk). The skill
+  drafts PRODUCT.md and confirms it section by section, writes
+  journey.json with `adopted { at, from, exceptions }`, walks the gaps
+  in groups, and closes them one at a time through PRs, using the existing
+  procedures. High-risk gaps (Vercel production branch, `main`,
+  production migrations) need a plan with a rollback first. Gaps the user
+  keeps are recorded as exceptions, which other steps respect
+  (conventions.md). First scan on ScoreIt: 7 needed, 7 recommended, 4
+  optional, nothing changed.
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.

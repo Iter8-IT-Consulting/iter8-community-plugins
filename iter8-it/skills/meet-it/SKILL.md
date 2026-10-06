@@ -1,11 +1,11 @@
 ---
 name: meet-it
-description: "Meet It — Get to know the people who will use it: what they're trying to get done and what frustrates them today. Step 4 of iter8-it: defines 1-3 personas in PRODUCT.md, including the devices and settings they use. Use when someone wants to define their users or personas, or says 'meet it', 'who is this for', or 'who will use this'."
+description: "Meet It — Get to know the people who will use it: what they're trying to get done and what frustrates them today. Part of iter8-it: defines 1-3 personas in PRODUCT.md, including the devices and settings they use. Use when someone wants to define their users or personas, or says 'meet it', 'who is this for', or 'who will use this'."
 ---
 
 # Meet It
 
-**Step 4 of the iter8-it journey.** Get to know the people who will use
+**Part of the iter8-it journey.** Get to know the people who will use
 it: what they're trying to get done and what frustrates them today.
 
 Meet It describes **1-3 personas**: kinds of people, each with a name, what

@@ -15,19 +15,23 @@ anything important.
 **New here?** Start with [Before you start](getting-ready.md): the accounts
 and free tools to set up once.
 
-| | Step | In one line |
-|---|---|---|
-| 1 | [Spot It](steps/01-spot-it.md) | Find a real problem a simple app could fix. |
-| 2 | [Name It](steps/02-name-it.md) | Give it a name, and decide what it's really for. |
-| 3 | [Claim It](steps/03-claim-it.md) | Make it real: a live page at your own address. |
-| 4 | [Meet It](steps/04-meet-it.md) | Get to know the people who'll use it. |
-| 5 | [Dream It](steps/05-dream-it.md) | Get every idea out of your head and onto the board. |
-| 6 | [Trim It](steps/06-trim-it.md) | Choose the smallest version worth building, and keep choosing. |
-| 7 | [Skin It](steps/07-skin-it.md) | Choose how it looks: colours, fonts, the feel. Now, or after building a little. |
-| 8 | [Build It](steps/08-build-it.md) | Build it one small, tested piece at a time. |
-| 9 | [Ship It](steps/09-ship-it.md) | Put it live for real people, and check it works. |
-| 10 | [Fix It](steps/10-fix-it.md) | When something breaks, find out why and fix it. *(coming soon)* |
-| 11 | [Grow It](steps/11-grow-it.md) | Improve it from what real use teaches you. *(coming soon)* |
+**Already have an app?** [Adopt It](steps/adopt-it.md) is the other way in:
+it takes the place of Spot It, Name It and Claim It, and brings your
+app onto the journey.
+
+| Step | In one line |
+|---|---|
+| [Spot It](steps/01-spot-it.md) | Find a real problem a simple app could fix. |
+| [Name It](steps/02-name-it.md) | Give it a name, and decide what it's really for. |
+| [Claim It](steps/03-claim-it.md) | Make it real: a live page at your own address. |
+| [Meet It](steps/04-meet-it.md) | Get to know the people who'll use it. |
+| [Dream It](steps/05-dream-it.md) | Get every idea out of your head and onto the board. |
+| [Trim It](steps/06-trim-it.md) | Choose the smallest version worth building, and keep choosing. |
+| [Skin It](steps/07-skin-it.md) | Choose how it looks: colours, fonts, the feel. Now, or after building a little. |
+| [Build It](steps/08-build-it.md) | Build it one small, tested piece at a time. |
+| [Ship It](steps/09-ship-it.md) | Put it live for real people, and check it works. |
+| [Fix It](steps/10-fix-it.md) | When something breaks, find out why and fix it. *(coming soon)* |
+| [Grow It](steps/11-grow-it.md) | Improve it from what real use teaches you. *(coming soon)* |
 
 **Lost track of where you are?** Ask [What's Next](extras/whats-next.md): it
 looks at your project and tells you the one thing to do now.
@@ -38,14 +42,15 @@ looks at your project and tells you the one thing to do now.
 |---|---|
 | [What's Next](extras/whats-next.md) | Lost track? It tells you where you are and what to do now. |
 | [Your own web address](extras/custom-domain.md) | Move your app from `something.vercel.app` to a name you own. |
-| [Adopt It](extras/adopt-it.md) | Bring an app you've already started onto the journey. *(coming soon)* |
 
 ## How it fits together
 
 ```
-Spot It -> Name It -> Claim It                        (once)
-                         |
-                         v
+Spot It -> Name It -> Claim It ---+                  (once: a new idea)
+                                  |
+Adopt It -------------------------+                  (once: an existing app)
+                                  |
+                                  v
         +--> Meet It -> Dream It -> Trim It ----+     (outer loop: what to build, for whom)
         |                    (Skin It, any time) |
         |                                        |
@@ -56,7 +61,9 @@ Spot It -> Name It -> Claim It                        (once)
 ```
 
 **Once:** Spot It, Name It and Claim It, often in one sitting. They take
-you from an idea to a live web address.
+you from an idea to a live web address. **Already have an app?** Adopt It
+takes their place: it brings your existing app onto the journey, then
+you carry on with everyone else.
 
 **The inner loop: Build It and Ship It.** This is where most of the time
 goes. Build a few small pieces, put them live, repeat. Fix It jumps in

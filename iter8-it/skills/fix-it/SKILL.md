@@ -5,7 +5,7 @@ description: "Fix It — Things will break. Find out why, fix it, and put the fi
 
 # Fix It
 
-**Step 10 of the iter8-it journey.** Things will break. Find out why, fix it, and put the fix live.
+**Part of the iter8-it journey.** Things will break. Find out why, fix it, and put the fix live.
 
 > **Not built yet.** This skill is a placeholder so the plugin structure can
 > be installed and tested. If someone runs it, tell them plainly that Fix It

@@ -1,11 +1,11 @@
 ---
 name: name-it
-description: "Name It — Give your project a name. It forces you to decide what it's really for. Step 2 of iter8-it: settles the display name, the web-safe slug and a one-line purpose, and checks the name is free. Use when someone needs a name for their app, or says 'name it', 'what should we call it', or 'help me pick a name'."
+description: "Name It — Give your project a name. It forces you to decide what it's really for. Part of iter8-it: settles the display name, the web-safe slug and a one-line purpose, and checks the name is free. Use when someone needs a name for their app, or says 'name it', 'what should we call it', or 'help me pick a name'."
 ---
 
 # Name It
 
-**Step 2 of the iter8-it journey.** Give your project a name. It forces you
+**Part of the iter8-it journey.** Give your project a name. It forces you
 to decide what it's really for.
 
 Name It settles three things:

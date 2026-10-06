@@ -40,9 +40,10 @@ const pages = sample
   : [
       "README.md",
       "getting-ready.md",
+      "steps/adopt-it.md",
       ...fs
         .readdirSync(path.join(docs, "steps"))
-        .filter((f) => f.endsWith(".md"))
+        .filter((f) => f.endsWith(".md") && f !== "adopt-it.md")
         .sort((a, b) => a.localeCompare(b))
         .map((f) => `steps/${f}`),
       ...fs

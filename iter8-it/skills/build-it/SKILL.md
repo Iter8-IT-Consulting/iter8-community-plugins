@@ -5,7 +5,7 @@ description: "Build It — Add the features one small piece at a time, checking 
 
 # Build It
 
-**Step 8 of the iter8-it journey.** Add the features one small piece at a
+**Part of the iter8-it journey.** Add the features one small piece at a
 time, checking each one as you go.
 
 Build It turns the next thing on the board into working, tested code on

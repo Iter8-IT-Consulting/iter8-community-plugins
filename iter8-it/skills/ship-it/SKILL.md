@@ -5,7 +5,7 @@ description: "Ship It — Put what you've built live for real users, and check i
 
 # Ship It
 
-**Step 9 of the iter8-it journey.** Put what you've built live for real
+**Part of the iter8-it journey.** Put what you've built live for real
 users, and check it works there.
 
 Ship It runs **every release**, not once. It promotes `dev` to `main`

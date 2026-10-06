@@ -1,11 +1,11 @@
 ---
 name: dream-it
-description: "Dream It — Get every feature idea out of your head and onto the table, big or small. Step 5 of iter8-it: brainstorms features for each persona and records them as Epic and Feature issues, with the Features in the board's Backlog column (the idea pile, not the plan). Rerunnable any time to add ideas. Use when someone wants to brainstorm features, add ideas, or says 'dream it', 'what could it do', or 'I have more ideas'."
+description: "Dream It — Get every feature idea out of your head and onto the table, big or small. Part of iter8-it: brainstorms features for each persona and records them as Epic and Feature issues, with the Features in the board's Backlog column (the idea pile, not the plan). Rerunnable any time to add ideas. Use when someone wants to brainstorm features, add ideas, or says 'dream it', 'what could it do', or 'I have more ideas'."
 ---
 
 # Dream It
 
-**Step 5 of the iter8-it journey.** Get every feature idea out of your
+**Part of the iter8-it journey.** Get every feature idea out of your
 head and onto the table, big or small.
 
 Dream It is a brainstorm with **no judging yet**. Ideas become GitHub

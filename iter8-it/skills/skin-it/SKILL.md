@@ -1,11 +1,11 @@
 ---
 name: skin-it
-description: "Skin It — Choose how your app looks: colours, fonts, shapes, light or dark, and the feel of it all. Step 7 of iter8-it: shows a few style directions using the app's own screens (on a Design canvas when available), lets the user pick, mix and tweak, checks readability, and applies the result as the app's skin, visible on its public /style-guide page. Run it any time; it's fine to build first and skin later. Use when someone wants to change or choose the look, colours, fonts, theme, dark mode or style, or says 'skin it', 'make it look nicer', or 'it needs a look'."
+description: "Skin It — Choose how your app looks: colours, fonts, shapes, light or dark, and the feel of it all. Part of iter8-it: shows a few style directions using the app's own screens (on a Design canvas when available), lets the user pick, mix and tweak, checks readability, and applies the result as the app's skin, visible on its public /style-guide page. Run it any time; it's fine to build first and skin later. Use when someone wants to change or choose the look, colours, fonts, theme, dark mode or style, or says 'skin it', 'make it look nicer', or 'it needs a look'."
 ---
 
 # Skin It
 
-**Step 7 of the iter8-it journey.** Choose how your app looks.
+**Part of the iter8-it journey.** Choose how your app looks.
 
 The app starts in the Iter8 Community starter skin. Skin It replaces it
 with the app's own: colours, fonts, corner shapes, spacing, button style,
