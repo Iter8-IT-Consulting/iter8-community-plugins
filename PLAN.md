@@ -954,6 +954,17 @@ Not built yet. Their pages in `docs/steps/` describe what they'll do.
   keeps are recorded as exceptions, which other steps respect
   (conventions.md). First scan on ScoreIt: 7 needed, 7 recommended, 4
   optional, nothing changed.
+- **Product brief (2026-10-06).** `PRODUCT.md` doubles as each app's
+  one-page brief, for the community Claude project: Vision (purpose,
+  Problem, People, Layout, Look; human intent), History (First Version),
+  and Status (new: What it does today, live features by persona with
+  versions; Up next, the top of Todo). Ship It refreshes the status
+  sections in its prepare commit, so the brief ships in the release PR.
+  Trim It refreshes Up next when grooming. Adopt It drafts it all, marking
+  vision sections DRAFT until confirmed. `journey.json` `brief { release,
+  updatedAt }` is the freshness signal: current when it equals
+  `lastRelease.tag`. Refreshed on release, not per feature, because
+  Done means live.
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.

@@ -186,7 +186,10 @@ shape as layouts.md: fits / desktop / phone / first story builds.)
 ```
 
 Grooming: leave First Version as it is once it's live (it's history);
-the board and Issues carry the plan from then on.
+the board and Issues carry the plan from then on. Do refresh **Up next**
+(the new top of Todo, 3-7 items, plus a line on notable `later` ideas)
+and its freshness line ("_Updated on <date>, after grooming._"), so the
+product brief shows the new plan.
 
 **`journey.json`**, first trim: `needs` =
 `{ "auth": <bool>, "database": <bool>, "decidedIn": "trim-it" }`,

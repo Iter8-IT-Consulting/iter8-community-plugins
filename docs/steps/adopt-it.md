@@ -15,7 +15,7 @@ every step carry on from there.
    the live site today. Nothing changes yet.
 2. **Place it on the journey.** A live app with a backlog is past Trim It,
    for example. It picks up from the right step.
-3. **Write down the product story.** It drafts your problem, your people,
+3. **Write down the product brief.** It drafts your problem, your people,
    your first version and your layout from what's already there (your
    README, your code, your live site), then checks each with you. It
    won't re-interview you from scratch.

@@ -42,7 +42,8 @@ update every skill that reads or writes the field you change.
     "projectRef": null,
     "region": "us-east-1"
   },
-  "lastRelease": { "tag": null, "at": null }
+  "lastRelease": { "tag": null, "at": null },
+  "brief": { "release": null, "updatedAt": null }
 }
 ```
 
@@ -70,6 +71,7 @@ update every skill that reads or writes the field you change.
 | `layout.frontPage` | boolean | Trim It | Whether the app has a public front page explaining it, leading into the app. |
 | `skin` | object | Skin It | The app's look: `{ "name": <skin name>, "dark": <bool>, "at": <ISO date> }`. `null` = still the Iter8 starter skin. |
 | `adopted` | object | Adopt It | Only for apps brought in with Adopt It: `{ "at": <ISO date>, "from": <how it was run before>, "exceptions": [{ "id": <gap id>, "why": <reason> }] }`. Steps check `exceptions` before assuming an iter8-it convention (e.g. a kept deploy script). |
+| `brief.release` / `brief.updatedAt` | string | Ship It | Which release `PRODUCT.md`'s status sections (What it does today, Up next) describe, and when they were refreshed. Current when `brief.release` equals `lastRelease.tag`. |
 | `github.owner` | string | Claim It | GitHub org or user that owns the repo. |
 | `github.repo` | string | Claim It | Repo name (normally the slug). |
 | `github.project` | number | Claim It | GitHub Project (board) number. |
@@ -103,6 +105,7 @@ values in:
   "github": { "owner": null, "repo": null, "project": null, "mainProtected": null, "workItems": null },
   "vercel": { "scope": null, "project": null, "url": null },
   "supabase": { "local": false, "org": null, "projectRef": null, "region": null },
-  "lastRelease": { "tag": null, "at": null }
+  "lastRelease": { "tag": null, "at": null },
+  "brief": { "release": null, "updatedAt": null }
 }
 ```

@@ -69,10 +69,24 @@ there.
 
 ## 2. The product story, drafted
 
-Draft `PRODUCT.md` (`<plugin>/shared/product-template.md`) from what you
-read: **Problem**, **People**, **First Version** (written as "what's live
-today"), and **Layout** (the shape the app already has, from
-`<plugin>/shared/layouts.md`, or `custom`). Then confirm it **section by
+Draft `PRODUCT.md` (`<plugin>/shared/product-template.md`), the app's
+product brief, from what you read:
+
+- **Vision**: **Problem**, **People** and the purpose line. Code shows
+  what an app does, not why, so each of these starts with
+  `<!-- DRAFT: drafted from the code; please confirm the intent -->`
+  until the owner confirms it.
+- **What it does today**: from the README, the app's pages and routes,
+  recent merged PRs (`gh pr list --state merged --limit 30`) and releases
+  (`gh release list`): "<Persona> can ..." bullets, with versions where
+  releases exist.
+- **Up next**: from open Issues and the board (or milestones, if that's
+  what the app uses).
+- **First Version**: leave it out (it's the plan from before building);
+  **Layout**: the shape the app already has, from
+  `<plugin>/shared/layouts.md`, or `custom`.
+
+Keep it to about one page. Then confirm it **section by
 section**, in a short "confirm mode" of Spot It / Meet It / Trim It: show
 the draft, ask "what's wrong or missing?", fix it. Never re-interview from
 scratch. The app's name and one-line purpose too (Name It in a sentence).
@@ -83,7 +97,8 @@ Write `journey.json` (`<plugin>/shared/journey-schema.md`) from what was
 found: `name`, `slug` (the repo name), `purpose`, `needs` (sign-in? stored
 data?), `layout`, `github`, `vercel`, `supabase` (`projectRef` of the
 production project), `lastRelease` (the newest release or tag, if any),
-`skin` (`null` unless it already uses brand tokens), and:
+`skin` (`null` unless it already uses brand tokens), `brief` (`release`:
+the newest release or `null`, `updatedAt`: now), and:
 
 ```json
 "adopted": { "at": "<ISO date>", "from": "<one line: how it was run before>", "exceptions": [] }

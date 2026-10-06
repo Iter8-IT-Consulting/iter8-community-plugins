@@ -113,7 +113,19 @@ already exists but this release is the first with sign-in (it adds
 Record the release first, so `main` and `dev` end up identical. On `dev`:
 
 - `journey.json`: `lastRelease` = `{ "tag": "<version>", "at": "<now, ISO 8601>" }`,
-  and `stage` = `"ship-it"` if it was earlier.
+  `brief` = `{ "release": "<version>", "updatedAt": "<now>" }`, and `stage` =
+  `"ship-it"` if it was earlier.
+- **Refresh the product brief** in `PRODUCT.md` (see "The product brief"
+  in `<plugin>/shared/product-template.md`):
+  - **What it does today**: add what this release makes possible, as
+    "<Persona> can ..." bullets with this version, under each persona;
+    adjust or remove anything this release changed. Create the section
+    if it's missing (older apps: build it from the release history,
+    `gh release list` and the release notes, the first time).
+  - **Up next**: rewrite from the board's Todo after this release (the
+    top 3-7, in order) plus one line on notable `later` ideas.
+  - Update both freshness lines. Keep the file to about one page.
+  So the brief ships in the same release PR as the work it describes.
 - Commit (`Ship It: prepare <version>`) and push.
 
 Then the release PR, with plain-language release notes:

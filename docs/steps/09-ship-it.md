@@ -33,8 +33,10 @@ computer's copy.
 6. **Check it live.** The tests run against your real web address, and
    you're asked to try the headline change yourself, on the device it's
    for.
-7. **Close the loop.** A release page lists what's new, and the finished
-   cards move to **Done**.
+7. **Close the loop.** A release page lists what's new, the finished
+   cards move to **Done**, and the app's one-page **product brief**
+   (in `PRODUCT.md`) is brought up to date: what it does today, and
+   what's up next.
 
 **If something goes wrong:** a failed build changes nothing for your
 users, and the old version stays live. If a problem only shows up after
