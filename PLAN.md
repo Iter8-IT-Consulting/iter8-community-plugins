@@ -965,6 +965,14 @@ Not built yet. Their pages in `docs/steps/` describe what they'll do.
   updatedAt }` is the freshness signal: current when it equals
   `lastRelease.tag`. Refreshed on release, not per feature, because
   Done means live.
+- **Standard board views (2026-10-06).** Claim It runs
+  `board-views.mjs` after `board-status.mjs`: Issue List (table: Title,
+  Status, Sub-issues progress) and Tracking Board (board: Title,
+  Assignees, Status, Linked pull requests, Sub-issues progress, columns by
+  Status), copied from SlideIt's board. It uses the REST views API (field
+  IDs looked up by name; orgs/ or users/ paths), skips views that exist,
+  and checks the grouping. The API can't delete views, so the hand-off
+  tells the user to delete "View 1". Recipe tested on JobIt (#7).
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.

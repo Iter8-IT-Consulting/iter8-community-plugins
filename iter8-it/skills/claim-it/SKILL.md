@@ -48,6 +48,7 @@ iter8-it plugin folder, two levels up (`<skill-dir>/../..`).
 |---|---|
 | `scripts/apply-templates.mjs` | Copies the templates and branding into the scaffolded app and fills in the name and purpose. |
 | `scripts/board-status.mjs` | Makes the board's Status field Backlog / Todo / In Progress / In Review / Done (empty boards only). |
+| `scripts/board-views.mjs` | Adds the two standard views: **Issue List** (table) and **Tracking Board** (board, columns by Status). Leaves existing views alone. |
 | `<plugin>/shared/scripts/vercel-check.mjs` | `account`: the Vercel account's email. `visible <owner>/<repo>`: can Vercel's GitHub App see the repo? `project <name>`: the project's Git connection, production branch and URL. |
 | `assets/templates/` | The project files, laid out as they go into the project. |
 | `assets/brand/` | Iter8 Community branding (favicon, palette, footer credit). |
@@ -252,10 +253,22 @@ This pushes `main`. The first CI run starts right away; step 7 watches it.
 gh project create --owner <owner> --title "<Name>" --format json --jq '"number=\(.number) url=\(.url)"'
 node <skill-dir>/scripts/board-status.mjs <owner> <number>
 gh project link <number> --owner <owner> --repo <owner>/<slug>
+node <skill-dir>/scripts/board-views.mjs <owner> <number>
 ```
 
 `board-status.mjs` adds "Backlog" and "In Review" to the Status field. It only changes
 an empty board, which a new one is.
+
+`board-views.mjs` then adds the two standard views (run it after
+`board-status.mjs`, so the Tracking Board's columns are the five
+statuses):
+
+- **Issue List**: a table of Title, Status and Sub-issues progress.
+- **Tracking Board**: a board of Title, Assignees, Status, Linked pull
+  requests and Sub-issues progress, with a column per status.
+
+GitHub's API can create views but not delete them, so the default
+"View 1" stays until the user deletes it (step 11 says how).
 
 **Work item types** (from step 1):
 
@@ -473,6 +486,10 @@ Tell the user, in plain words:
 - **The code:** https://github.com/<owner>/<slug>. `dev` is where work
   happens; `main` is what's live.
 - **The board:** <project url>. It's empty. Ideas go on it in Dream It.
+  It has two views: **Tracking Board** (cards in columns) and **Issue
+  List** (a table). One tidy-up only you can do: delete GitHub's default
+  **View 1**: on the board, click the **▾** on the "View 1" tab, then
+  **Delete view**.
 - **Checks:** every change is tested automatically before it can go live.
 - **Cost:** nothing so far.
 

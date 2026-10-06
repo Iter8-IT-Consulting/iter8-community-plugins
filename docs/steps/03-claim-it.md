@@ -17,8 +17,9 @@ on the work. Then, mostly while you watch:
 - **The app**: a starter Next.js app showing your name and purpose,
   with tests that already pass.
 - **The code's home**: a private GitHub repository.
-- **The board**: Backlog, Todo, In Progress, In Review, Done. Empty for
-  now; your ideas go here in Dream It.
+- **The board**: Backlog, Todo, In Progress, In Review, Done, with two
+  views: a Tracking Board (cards in columns) and an Issue List (a table).
+  Empty for now; your ideas go here in Dream It.
 - **Automatic checks**: every change is tested on GitHub before it can
   go live.
 - **Hosting**: a Vercel project connected to the code. Only the
