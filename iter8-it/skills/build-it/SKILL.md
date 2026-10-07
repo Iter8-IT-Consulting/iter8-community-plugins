@@ -253,6 +253,17 @@ anything outside the story's scope.
 **Let the user try it: this is the approval.** Offer: "Want to try it
 yourself? Run `npm run dev` and open http://localhost:3000 (on your
 phone too, if it's for mobile: use your computer's network address).
+
+**On a phone** (same Wi-Fi): `npm run dev` prints a **Network** address
+(`http://192.168.x.x:3000`); that's the one to open. The first time,
+Windows may ask whether Node.js can use the network: allow it on private
+networks. If the page loads but buttons or forms do nothing, or sign-in
+links land on `127.0.0.1`, the app is missing the network setting in
+`next.config.ts`: `allowedDevOrigins` must include
+`"127.0.0.1", "192.168.*.*", "10.*.*.*", "172.*.*.*"` (Claim It's
+template has it; older apps may not). Add it (merge with whatever the
+file already has), restart `npm run dev`, and it works from both
+addresses.
 When it looks good, say so and I'll open the PR and merge it into `dev`
 once the checks pass." Adjust from their feedback until they approve.
 Their "looks good" covers the merge: Build It doesn't ask again (step 7).

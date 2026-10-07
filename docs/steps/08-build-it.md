@@ -20,7 +20,8 @@ see every piece working before it's kept.
      code.
    - It runs every check on your computer, including tests that click
      through the app on a desktop and on a phone.
-   - **You try it.** Open it on your computer (or your phone) and say
+   - **You try it.** Open it on your computer, or on your phone over
+     your Wi-Fi (the app is set up for that from the start), and say
      whether it's right. Feedback gets built in before anything is kept.
    - **When you say it looks good,** it goes to GitHub for a quick
      automatic check (about a minute) and, once that passes, it's added

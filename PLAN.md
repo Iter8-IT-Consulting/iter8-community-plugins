@@ -973,6 +973,15 @@ Not built yet. Their pages in `docs/steps/` describe what they'll do.
   IDs looked up by name; orgs/ or users/ paths), skips views that exist,
   and checks the grouping. The API can't delete views, so the hand-off
   tells the user to delete "View 1". Recipe tested on JobIt (#7).
+- **Trying the app from a phone on the LAN (2026-10-07).** It broke on
+  the first try in every app. Next.js dev refuses cross-origin requests
+  silently (the page loads but hydration fails, so buttons do nothing).
+  Claim It's template now ships `next.config.ts` with `allowedDevOrigins:
+  ["127.0.0.1", "192.168.*.*", "10.*.*.*", "172.*.*.*"]` (wildcards,
+  not ScoreIt's hard-coded IP, which breaks when DHCP changes it). Build
+  It explains the Network address, the Windows firewall prompt and the
+  fix for older apps. Local Supabase redirects include the LAN ranges.
+  Adopt It reports the gap.
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.

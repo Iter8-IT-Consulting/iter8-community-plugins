@@ -52,9 +52,9 @@ story's decisions. Keep the security parts as they are:
 In `supabase/config.toml`:
 
 - `[auth]` `minimum_password_length = 8` (the sign-in form asks for 8).
-- `[auth]` `additional_redirect_urls = ["http://localhost:*/**", "http://127.0.0.1:*/**"]`
+- `[auth]` `additional_redirect_urls = ["http://localhost:*/**", "http://127.0.0.1:*/**", "http://192.168.*.*:*/**", "http://10.*.*.*:*/**"]`
   (any local port, so reset links work whichever port the app or the
-  tests run on).
+  tests run on, and on a phone trying the app over the home network).
 - `[auth.email]` `enable_confirmations = false` (the default locally;
   keep it off: confirming is a production decision, see Ship It).
 

@@ -70,6 +70,8 @@ if (found.repo.skin === "no brand tokens") gap("skin", "Look", "no brand tokens"
 if (found.repo.otherPlanningFiles.length) gap("old-planning", "Product", found.repo.otherPlanningFiles.join(", "), "PRODUCT.md + journey.json + the board", "optional", "none", "Keep them, or retire them once their content is in PRODUCT.md / the board.");
 const deployOff = found.repo.vercelJson?.git?.deploymentEnabled;
 if (!deployOff || deployOff["**"] !== false) gap("vercel-json", "Hosting", deployOff ? JSON.stringify(deployOff) : "every branch deploys", 'vercel.json: only main deploys ({"main": true, "**": false})', "recommended", "low", "Preview deploys of feature branches would point at a local database.");
+const nextConfig = read("next.config.ts") ?? read("next.config.mjs") ?? read("next.config.js") ?? "";
+if (deps.next && !/allowedDevOrigins[\s\S]*192\.168\.\*/.test(nextConfig)) gap("dev-origins", "Repo", /allowedDevOrigins/.test(nextConfig) ? "allowedDevOrigins without the network ranges" : "no allowedDevOrigins", 'next.config.ts allowedDevOrigins: ["127.0.0.1", "192.168.*.*", "10.*.*.*", "172.*.*.*"]', "recommended", "none", "Lets a phone on the same Wi-Fi try the app while it runs locally; without it, pages load but buttons quietly do nothing.");
 if (!found.repo.workflows.includes("ci.yml")) gap("ci", "CI", "no ci.yml", "ci.yml: quick checks on every PR, e2e on PRs into main", "needed", "low");
 if (found.repo.migrations > 0 && !found.repo.workflows.includes("migrate.yml")) gap("migrate-workflow", "Database", "migrations, no migrate workflow", "migrate.yml applies migrations on main", "needed", "medium");
 for (const s of ["deploy:test", "deploy:prod", "deploy"]) {
