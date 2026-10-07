@@ -24,7 +24,10 @@ you're ready, and again whenever you want a fresh look.
    "Warmer." "Rounder buttons." It updates until it looks right.
 4. **Readable for everyone.** Every colour is checked so text stays easy
    to read, including in dark mode. Anything too faint gets nudged.
-5. **Applied everywhere at once.** The whole app takes on the new look,
+5. **An app icon, if you like.** A simple symbol in your new colours for
+   browser tabs, phone home screens and your project on Vercel, instead
+   of the Iter8 "8".
+6. **Applied everywhere at once.** The whole app takes on the new look,
    because everything draws from the same small set of settings.
 
 ## What you end up with

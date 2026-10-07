@@ -140,6 +140,7 @@ instead of improvising:
 | Local database ports | `shared/scripts/supabase-ports.mjs` |
 | Migrations workflow, `SUPABASE_DB_URL`, env var names | `shared/supabase-prod.md` steps 3-5. First find out how migrations reach production today, and keep that working until the new way is proven with a dry run |
 | Skin and `/style-guide` | Offer **Skin It** (it can capture the current look as tokens) |
+| Vercel avatar | If the app has its own icon but Vercel still shows another (often the Iter8 "8"): `node <plugin>/shared/scripts/vercel-check.mjs set-avatar <project> src/app/apple-icon.png` |
 
 **High-risk gaps** (Vercel's production branch, `main` itself, how
 production gets its database changes) need a short plan before anything

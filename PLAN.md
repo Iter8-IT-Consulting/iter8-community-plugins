@@ -982,6 +982,14 @@ Not built yet. Their pages in `docs/steps/` describe what they'll do.
   It explains the Network address, the Windows firewall prompt and the
   fix for older apps. Local Supabase redirects include the LAN ranges.
   Adopt It reports the gap.
+- **App icon and Vercel avatar (2026-10-07).** Vercel stores a
+  project's avatar once, from the first deploy's favicon (Claim It's
+  Iter8 "8"), and never refreshes it. `vercel-check.mjs set-avatar`
+  uploads a new one (`POST /v1/projects/<name>/avatar`, raw PNG, JPG or
+  SVG). Skin It gains an optional app-icon step (icon.svg with dark mode,
+  favicon.ico, apple-icon.png), then sets the avatar after the release.
+  Adopt It offers the same. SlideIt's avatar was switched to its own
+  logo this way; PlateIt's is still the "8".
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.

@@ -23,6 +23,13 @@
 //     Vercel's first-choice CNAME and A values, and the current state.
 //     Exit: 0 configured, 2 not configured yet, 1 error.
 //
+//   node <plugin>/shared/scripts/vercel-check.mjs set-avatar <project-name> <image> [--scope <team>]
+//     Uploads the project's avatar on the Vercel dashboard (PNG, JPG or
+//     SVG; a square ~180px icon like src/app/apple-icon.png is ideal).
+//     Vercel stores the avatar once (from the first deploy's favicon) and
+//     never refreshes it, so a new app icon needs uploading. --scope lets
+//     it run outside a linked folder. Exit: 0 changed, 1 error.
+//
 //   node <plugin>/shared/scripts/vercel-check.mjs deployment <project-name> <commit-sha> [minutes]
 //     Waits (default 10 minutes) for the production deployment of that
 //     commit to finish, then prints it as JSON. One blocking wait: it prints
@@ -47,11 +54,12 @@ if (
   !(
     command === "account" ||
     (["visible", "project", "domain"].includes(command) && arg) ||
-    (command === "deployment" && arg && process.argv[4])
+    (command === "deployment" && arg && process.argv[4]) ||
+    (command === "set-avatar" && arg && process.argv[4])
   )
 ) {
   console.error(
-    "usage: vercel-check.mjs account | visible <owner>/<repo> | project <project-name> | domain <domain> | deployment <project-name> <sha> [minutes]",
+    "usage: vercel-check.mjs account | visible <owner>/<repo> | project <project-name> | domain <domain> | deployment <project-name> <sha> [minutes] | set-avatar <project-name> <image> [--scope <team>]",
   );
   process.exit(1);
 }
@@ -85,12 +93,20 @@ function findToken() {
 
 let teamId;
 let headers;
+// "teamId=..." from the linked folder, or "slug=..." from --scope.
+let teamQuery;
 function init() {
   headers = { Authorization: `Bearer ${findToken()}` };
   if (command === "account") return;
+  const scopeAt = process.argv.indexOf("--scope");
+  if (scopeAt !== -1 && process.argv[scopeAt + 1]) {
+    teamQuery = `slug=${encodeURIComponent(process.argv[scopeAt + 1])}`;
+    return;
+  }
   const projectFile = path.join(process.cwd(), ".vercel", "project.json");
   if (!fs.existsSync(projectFile)) fail(".vercel/project.json not found. Run `vercel link` first.");
   teamId = JSON.parse(fs.readFileSync(projectFile, "utf8")).orgId;
+  teamQuery = `teamId=${teamId}`;
 }
 
 async function get(url) {
@@ -222,9 +238,35 @@ async function deployment(name) {
   return state === "READY" ? 0 : 2;
 }
 
+async function setAvatar(name) {
+  const file = path.resolve(process.argv[4]);
+  if (!fs.existsSync(file)) fail(`${file} not found.`);
+  const type = { ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml" }[
+    path.extname(file).toLowerCase()
+  ];
+  if (!type) fail("the avatar must be a .png, .jpg or .svg file.");
+  const project = `https://api.vercel.com/v9/projects/${encodeURIComponent(name)}?${teamQuery}`;
+  const before = (await get(project)).avatar ?? null;
+  const res = await fetch(`https://api.vercel.com/v1/projects/${encodeURIComponent(name)}/avatar?${teamQuery}`, {
+    method: "POST",
+    headers: { ...headers, "Content-Type": type },
+    body: fs.readFileSync(file),
+  });
+  if (!res.ok) fail(`${res.status} uploading the avatar: ${await res.text()}`);
+  const after = (await res.json()).avatar ?? null;
+  console.log(
+    JSON.stringify(
+      { project: name, image: path.basename(file), before, after, changed: before !== after },
+      null,
+      2,
+    ),
+  );
+  return 0;
+}
+
 try {
   init();
-  process.exitCode = await { account, visible, project, domain, deployment }[command](arg);
+  process.exitCode = await { account, visible, project, domain, deployment, "set-avatar": setAvatar }[command](arg);
 } catch (err) {
   if (!(err instanceof CheckError)) throw err;
   console.error(`vercel-check: ${err.message}`);

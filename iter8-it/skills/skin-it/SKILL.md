@@ -148,7 +148,25 @@ git switch -c feature/skin-<name>
 5. **The footer credit**: ask whether to keep "Started with tools from
    the Iter8 Community" (it's theirs to remove; see `CLAUDE.md`
    Branding).
-6. **`PRODUCT.md`**: add or replace a **Look** section after Layout:
+6. **The app icon** (offer it; skip if they're happy with the Iter8 "8"
+   for now). The icon shows in browser tabs, on phone home screens, and
+   as the project's picture on Vercel. Make a simple, bold symbol in the
+   skin's colours (an initial, or something the app is about; or use the
+   user's own logo), readable at 16px:
+   - `src/app/icon.svg`: the symbol, with a dark-mode version in a
+     `<style>` `@media (prefers-color-scheme: dark)` block;
+   - `src/app/favicon.ico` (16 and 32px) and `src/app/apple-icon.png`
+     (180px, square, solid background) made from it. Replace the Iter8
+     ones; the `public/brand/` mark is only for the footer credit.
+
+   After the release that puts it live (Ship It), update the **Vercel
+   avatar**. Vercel stores it once, from the first deploy's favicon, and
+   never refreshes it:
+
+   ```bash
+   node <plugin>/shared/scripts/vercel-check.mjs set-avatar <vercel.project> src/app/apple-icon.png
+   ```
+7. **`PRODUCT.md`**: add or replace a **Look** section after Layout:
 
    ```markdown
    ## Look
@@ -158,7 +176,7 @@ git switch -c feature/skin-<name>
    two.> The full skin: /style-guide.
    ```
 
-7. **`journey.json`**: `skin` = `{ "name": "<name>", "dark": <bool>, "at": "<ISO date>" }`,
+8. **`journey.json`**: `skin` = `{ "name": "<name>", "dark": <bool>, "at": "<ISO date>" }`,
    and `stage` = `"skin-it"` if it was earlier.
 
 Then check, as Build It does: `npm run lint`, `npm run typecheck`,
