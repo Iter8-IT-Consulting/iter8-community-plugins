@@ -173,7 +173,7 @@ it, the **Layout** section, following `<plugin>/shared/product-template.md`:
 ## First Version
 
 <The goal sentence.> The first version includes <short list, in order>.
-Out for now: <the main things labelled later>. The app needs sign-in: yes/no.
+Out for now: <the main things labeled later>. The app needs sign-in: yes/no.
 It stores data: yes/no.
 
 ## Layout

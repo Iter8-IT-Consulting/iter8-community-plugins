@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// iter8-it: are these colour pairs readable? Checks WCAG contrast ratios.
+// iter8-it: are these color pairs readable? Checks WCAG contrast ratios.
 //
 //   node contrast.mjs <text>:<background>[:large] ...
 //   node contrast.mjs "#2b2b2b:#f1f3f5" "#ffffff:#1356cf" "#6c757d:#ffffff"

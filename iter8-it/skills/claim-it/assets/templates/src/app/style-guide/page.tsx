@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { site } from "@/app/site";
 import { TokenValue } from "./TokenValue";
 
-// The app's style guide: its colours, fonts and common pieces, drawn from
+// The app's style guide: its colors, fonts and common pieces, drawn from
 // the same tokens the app uses (src/app/brand.css), so it's always current.
 // Public on purpose, so anyone working on the app can look things up.
 // When a story adds a reusable piece (a card, a badge), add it here too.
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-const colours = [
+const colors = [
   { token: "--brand-primary", name: "Primary", use: "Buttons, links, highlights", className: "bg-brand" },
   { token: "--brand-on-primary", name: "On primary", use: "Text on primary", className: "bg-brand-on" },
   { token: "--brand-accent", name: "Accent", use: "Sparingly, for emphasis", className: "bg-brand-accent" },
@@ -40,13 +40,13 @@ export default function StyleGuidePage() {
       <header className="flex flex-col gap-2">
         <h1 className="font-headline text-4xl font-bold text-brand-ink">{site.name} style guide</h1>
         <p className="text-brand-muted">
-          The colours, fonts and pieces this app is made of. Values come from <code>src/app/brand.css</code>.
+          The colors, fonts and pieces this app is made of. Values come from <code>src/app/brand.css</code>.
         </p>
       </header>
 
-      <Section title="Colours">
+      <Section title="Colors">
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {colours.map((c) => (
+          {colors.map((c) => (
             <li key={c.token} className="overflow-hidden rounded-brand border border-brand-border bg-brand-raised">
               <div className={`h-16 border-b border-brand-border ${c.className}`} />
               <div className="flex flex-col gap-1 p-3">

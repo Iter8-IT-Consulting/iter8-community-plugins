@@ -19,7 +19,7 @@ have an app? **[Adopt It](docs/steps/adopt-it.md)** brings it onto the journey.
 | **Meet It** | Get to know the people who will use it: what they're trying to get done and what frustrates them today. |
 | **Dream It** | Get every feature idea out of your head and onto the table, big or small. |
 | **Trim It** | Cut the list down to the smallest version someone would actually use. |
-| **Skin It** | Choose how your app looks: colours, fonts, shapes, light or dark. |
+| **Skin It** | Choose how your app looks: colors, fonts, shapes, light or dark. |
 | **Build It** | Add the features one small piece at a time, checking each one as you go. |
 | **Ship It** | Put what you've built live for real users, and check it works there. |
 | **Fix It** | Things will break. Find out why, fix it, and put the fix live. |

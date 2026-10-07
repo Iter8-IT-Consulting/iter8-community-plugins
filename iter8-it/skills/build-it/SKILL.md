@@ -213,8 +213,10 @@ Work in small steps, keeping the app working after each one.
   Add before you remove: production runs the old code against the new
   schema for a moment during Ship It, so never drop or rename something
   the current live code uses. See `<plugin>/shared/environments.md`.
-- **Looks come from the skin.** Use the `brand-*` colour classes,
-  `rounded-brand` and the fonts from `layout.tsx`; never hard-code colours
+- **American English spelling** in everything the app shows (and in
+  comments): color, center, gray, organize, canceled.
+- **Looks come from the skin.** Use the `brand-*` color classes,
+  `rounded-brand` and the fonts from `layout.tsx`; never hard-code colors
   (`bg-white`, `text-gray-500`, hex values). A new reusable piece (a
   card, a badge, a list row) gets a small example on `/style-guide` too.
 - **No secrets in the code.** Keys go in `.env.local` (gitignored); names

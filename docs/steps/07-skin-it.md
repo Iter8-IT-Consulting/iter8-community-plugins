@@ -1,6 +1,6 @@
 # Skin It
 
-**Choose how your app looks: colours, fonts, shapes, light or dark, and
+**Choose how your app looks: colors, fonts, shapes, light or dark, and
 the feel of it all.**
 
 Your app starts in a simple starter look. Skin It gives it its own:
@@ -12,19 +12,19 @@ you're ready, and again whenever you want a fresh look.
 ## What happens
 
 1. **A few quick questions.** The feel you're after, in your own words.
-   Light, dark, or both. Any colours that must (or mustn't) appear. Apps
+   Light, dark, or both. Any colors that must (or mustn't) appear. Apps
    or sites whose look you like.
 2. **Three directions, on your own screens.** Claude makes three distinct
-   looks, each with a name, a colour palette, a pair of fonts, and a style
+   looks, each with a name, a color palette, a pair of fonts, and a style
    (corners, buttons, spacing), and shows them on your app's real pages,
    on a computer and on a phone. If your Claude has the design canvas,
    they appear there side by side; otherwise as a preview page in your
    app.
 3. **Pick, mix and tweak.** "That one, but with the other one's blue."
    "Warmer." "Rounder buttons." It updates until it looks right.
-4. **Readable for everyone.** Every colour is checked so text stays easy
+4. **Readable for everyone.** Every color is checked so text stays easy
    to read, including in dark mode. Anything too faint gets nudged.
-5. **An app icon, if you like.** A simple symbol in your new colours for
+5. **An app icon, if you like.** A simple symbol in your new colors for
    browser tabs, phone home screens and your project on Vercel, instead
    of the Iter8 "8".
 6. **Applied everywhere at once.** The whole app takes on the new look,
@@ -33,7 +33,7 @@ you're ready, and again whenever you want a fresh look.
 ## What you end up with
 
 - Your app's own look, live with your next release.
-- A **style guide** page in your app (`/style-guide`): every colour,
+- A **style guide** page in your app (`/style-guide`): every color,
   font, button, form and card, always matching what the app actually
   uses. Open it any time, or share it with anyone helping on the app.
 - A short "Look" description in `PRODUCT.md`, so every new feature

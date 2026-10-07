@@ -151,6 +151,10 @@ Retire old planning files (`context.json`, `po-backlog`, old CLAUDE.md
 sections) only once their content is in `PRODUCT.md` or on the board, and
 only with a yes.
 
+If the app's text uses British spellings (colour, centre, organise...),
+list it as a gap: iter8-it writes American English (see
+`shared/conventions.md`), so offer to switch the app's visible text.
+
 Add `CLAUDE.md` sections from Claim It's template (links, stack,
 commands, branches, look) next to what's already there. Keep their own
 notes.

@@ -1,6 +1,6 @@
 ---
 name: skin-it
-description: "Skin It — Choose how your app looks: colours, fonts, shapes, light or dark, and the feel of it all. Part of iter8-it: shows a few style directions using the app's own screens (on a Design canvas when available), lets the user pick, mix and tweak, checks readability, and applies the result as the app's skin, visible on its public /style-guide page. Run it any time; it's fine to build first and skin later. Use when someone wants to change or choose the look, colours, fonts, theme, dark mode or style, or says 'skin it', 'make it look nicer', or 'it needs a look'."
+description: "Skin It — Choose how your app looks: colors, fonts, shapes, light or dark, and the feel of it all. Part of iter8-it: shows a few style directions using the app's own screens (on a Design canvas when available), lets the user pick, mix and tweak, checks readability, and applies the result as the app's skin, visible on its public /style-guide page. Run it any time; it's fine to build first and skin later. Use when someone wants to change or choose the look, colors, fonts, theme, dark mode or style, or says 'skin it', 'make it look nicer', or 'it needs a look'."
 ---
 
 # Skin It
@@ -8,7 +8,7 @@ description: "Skin It — Choose how your app looks: colours, fonts, shapes, lig
 **Part of the iter8-it journey.** Choose how your app looks.
 
 The app starts in the Iter8 Community starter skin. Skin It replaces it
-with the app's own: colours, fonts, corner shapes, spacing, button style,
+with the app's own: colors, fonts, corner shapes, spacing, button style,
 the overall feel, and optionally a dark version. Everything comes from a
 handful of **tokens** (`src/app/brand.css`) and the fonts in
 `src/app/layout.tsx`, so changing the skin changes the whole app at once,
@@ -52,8 +52,8 @@ One at a time, briefly:
 2. **Light, dark, or both?** Offer dark as an option: some apps suit it
    (used in dim rooms, at night, on stage), most are fine light-only.
    "Both" follows the device's setting.
-3. **Colours that must or mustn't appear**: a club's or company's
-   colours, a logo, a colour they dislike.
+3. **Colors that must or mustn't appear**: a club's or company's
+   colors, a logo, a color they dislike.
 4. **Anything they like the look of**: an app or website. (Use it for
    the feel, never copy a brand.)
 5. **Fonts**, only if they have views; otherwise you'll suggest pairings.
@@ -83,7 +83,7 @@ screen, and both on a phone.
 tool: `quickstart` with intent `design`. If it offers a **Design** type,
 create a Design artifact ("<Name> skins") with one row of artboards per
 direction (front page desktop, main screen desktop, main screen phone),
-labelled with the direction's name, palette and fonts. Open it for the
+labeled with the direction's name, palette and fonts. Open it for the
 user and talk through the differences. Tweaks ("Paper Notes with Stage
 Lights' blue") update the artboards.
 
@@ -104,7 +104,7 @@ set.
 
 ## 4. Check it's readable
 
-Every text colour must be readable on what it sits on, in light and (if
+Every text color must be readable on what it sits on, in light and (if
 used) dark:
 
 ```bash
@@ -115,8 +115,8 @@ node <plugin>/shared/scripts/contrast.mjs \\
 ```
 
 (Large text and outlines need 3:1, so mark those `:large`.) Any FAIL:
-nudge that colour darker or lighter until it passes, keeping the feel,
-and tell the user what changed and why ("the grey was a bit faint for
+nudge that color darker or lighter until it passes, keeping the feel,
+and tell the user what changed and why ("the gray was a bit faint for
 small text").
 
 ## 5. Apply it
@@ -140,7 +140,7 @@ git switch -c feature/skin-<name>
    copy `/style-guide` from Claim It's templates
    (`<plugin>/skills/claim-it/assets/templates/src/app/style-guide/` and
    `e2e/style-guide.spec.ts`).
-4. **Hard-coded colours.** Search the app for colours that bypass the
+4. **Hard-coded colors.** Search the app for colors that bypass the
    tokens (`bg-white`, `text-white`, `text-gray-*`, `bg-black`, hex values
    in `className`) and switch them to tokens (`bg-brand-raised`,
    `text-brand-on`, `text-brand-muted`...), or the new skin (and dark
@@ -151,7 +151,7 @@ git switch -c feature/skin-<name>
 6. **The app icon** (offer it; skip if they're happy with the Iter8 "8"
    for now). The icon shows in browser tabs, on phone home screens, and
    as the project's picture on Vercel. Make a simple, bold symbol in the
-   skin's colours (an initial, or something the app is about; or use the
+   skin's colors (an initial, or something the app is about; or use the
    user's own logo), readable at 16px:
    - `src/app/icon.svg`: the symbol, with a dark-mode version in a
      `<style>` `@media (prefers-color-scheme: dark)` block;
@@ -181,7 +181,7 @@ git switch -c feature/skin-<name>
 
 Then check, as Build It does: `npm run lint`, `npm run typecheck`,
 `npm test`, `npm run build`, `npm run test:e2e`. Some e2e tests may look
-for exact colours or text styles; update them. Open `/style-guide` with
+for exact colors or text styles; update them. Open `/style-guide` with
 the user (and the main screens) to confirm it all looks right: their
 "looks good" is the approval.
 

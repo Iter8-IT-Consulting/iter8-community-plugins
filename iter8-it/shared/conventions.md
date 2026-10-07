@@ -74,6 +74,13 @@ with hyphens, e.g. `feature/12-join-with-qr-code`.
 - Release PRs (`dev -> main`) are merged with a **merge commit**, so
   `main`'s history shows each release.
 
+## Spelling
+
+**American English** everywhere: in the apps (every word people see,
+plus code comments and docs) and in what iter8-it itself writes (issues,
+PRs, PRODUCT.md, release notes). Color, center, gray, organize,
+favorite, canceled, labeled, behavior, license; never the British forms.
+
 ## Adopted apps
 
 Apps brought in with Adopt It may keep some of their own ways, listed in

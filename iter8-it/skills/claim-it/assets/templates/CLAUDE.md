@@ -58,11 +58,17 @@ feature/<issue>-<slug> --PR--> dev --release PR--> main --> Vercel production
   `main` and on demand; for PRs into `dev`, run `npm run test:e2e`
   locally before opening the PR.
 
+## Writing
+
+Everything the app shows, and its code comments and docs, use **American
+English spelling**: color, center, gray, organize, favorite, canceled,
+labeled, behavior, license (never colour, centre, grey, organise...).
+
 ## Look
 
-Every colour, font and shape comes from the tokens in `src/app/brand.css`
+Every color, font and shape comes from the tokens in `src/app/brand.css`
 (and the fonts in `src/app/layout.tsx`): use the `brand-*` classes and
-`rounded-brand`, never hard-coded colours. **`/style-guide`** shows the
+`rounded-brand`, never hard-coded colors. **`/style-guide`** shows the
 current skin; add new reusable pieces to it. iter8-it's **Skin It** step
 changes the look.
 

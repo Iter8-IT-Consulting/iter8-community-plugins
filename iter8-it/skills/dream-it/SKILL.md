@@ -20,7 +20,7 @@ Rerun it any time to add ideas.
 
 - Energetic and generous. "Big or silly ideas welcome. We'll trim later."
 - Brainstorm **per persona**: "What would make the Presenter's day
-  easier?" Offer ideas of your own too, clearly labelled as suggestions.
+  easier?" Offer ideas of your own too, clearly labeled as suggestions.
 - Don't evaluate or estimate. If they start debating an idea, note it and
   say "Trim It will sort that out."
 - If two people are brainstorming, give both room.

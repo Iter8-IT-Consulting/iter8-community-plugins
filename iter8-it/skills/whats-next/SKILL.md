@@ -29,7 +29,7 @@ It reports (as JSON):
 - `openPullRequests`;
 - `board`: how many Features are in Backlog; the Todo, In Progress and In
   Review items; and how many are Done;
-- `laterIdeas`: Features labelled `later`.
+- `laterIdeas`: Features labeled `later`.
 
 No `PRODUCT.md` and no `journey.json`: this folder hasn't started the
 journey. If it's **empty**, recommend **Spot It** (a new idea). If it

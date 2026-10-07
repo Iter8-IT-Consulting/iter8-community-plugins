@@ -25,7 +25,7 @@ cage: later stories can change it, and Grow It may suggest a change.
 
 - **Fits:** apps where people come to do one thing and leave. Little or no
   navigation; maybe a second page (about, results).
-- **Desktop:** a centred column, max ~640px wide, with the app name at the
+- **Desktop:** a centered column, max ~640px wide, with the app name at the
   top, the tool in the middle and a quiet footer. Generous white space.
 - **Phone:** the same column, full width with side padding. Big touch
   targets; the main action within thumb reach.
@@ -56,7 +56,7 @@ cage: later stories can change it, and Grow It may suggest a change.
 - **First story builds:** the signed-in frame (top bar with account menu,
   sign-in redirect for its pages) and the first list page. Pages for
   people who aren't signed in (sign-in, a simple home) use a plain
-  centred frame.
+  centered frame.
 
 ## `mobile-tabs`: Mobile-first with bottom tabs
 
@@ -158,7 +158,7 @@ the shape.
 ## Building (Build It)
 
 The first story builds the frame its layout describes, alongside the
-story's feature, using the brand tokens (`brand-*` colours, the fonts in
+story's feature, using the brand tokens (`brand-*` colors, the fonts in
 `layout.tsx`). Shared pieces (header, navigation, footer) go in
 `src/components/`; route groups (`src/app/(app)/`, `src/app/(public)/`)
 keep different frames apart. Test the frame on the device projects the

@@ -17,7 +17,7 @@ This is the one-time setup. When it's done, the project has:
 - CI running on every PR into `dev` and `main` (and pushes to `main`), green
 - `main` protected: nothing merges into it unless CI is green
 - a Vercel project that deploys `main` only
-- a public `/style-guide` page showing the app's colours, fonts and pieces
+- a public `/style-guide` page showing the app's colors, fonts and pieces
   (the Iter8 starter skin until Skin It gives it its own)
 - a live URL a stranger could open on their phone
 

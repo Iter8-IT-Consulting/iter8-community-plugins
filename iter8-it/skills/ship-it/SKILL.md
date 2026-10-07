@@ -84,7 +84,7 @@ Gather:
 | **patch** (0.3.1 -> 0.3.2) | Only fixes; nothing new people can do. |
 | **minor** (0.3.1 -> 0.4.0) | New things people can do (new stories). |
 | **major** (1.4.0 -> 2.0.0) | Something people relied on changed or was removed, or a redesign. |
-| **1.0.0** | The release that completes the first version: after it, every Feature Trim It put on the board (not labelled `later`) is live. |
+| **1.0.0** | The release that completes the first version: after it, every Feature Trim It put on the board (not labeled `later`) is live. |
 
 Show the summary and the proposal, and ask to go ahead:
 

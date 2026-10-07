@@ -27,7 +27,7 @@ app onto the journey.
 | [Meet It](steps/04-meet-it.md) | Get to know the people who'll use it. |
 | [Dream It](steps/05-dream-it.md) | Get every idea out of your head and onto the board. |
 | [Trim It](steps/06-trim-it.md) | Choose the smallest version worth building, and keep choosing. |
-| [Skin It](steps/07-skin-it.md) | Choose how it looks: colours, fonts, the feel. Now, or after building a little. |
+| [Skin It](steps/07-skin-it.md) | Choose how it looks: colors, fonts, the feel. Now, or after building a little. |
 | [Build It](steps/08-build-it.md) | Build it one small, tested piece at a time. |
 | [Ship It](steps/09-ship-it.md) | Put it live for real people, and check it works. |
 | [Fix It](steps/10-fix-it.md) | When something breaks, find out why and fix it. *(coming soon)* |
