@@ -232,16 +232,19 @@ npm run build
 npm run test:e2e
 ```
 
-**If port 3000 is busy**, check whose server it is: open
-http://localhost:3000 and compare the page title with this app's name.
+**How `test:e2e` runs:** it builds the app for production and starts it
+on its own port (3100), the same way CI does, and never reuses a running
+server. So it's fine if `npm run dev` is open for the user to try things,
+and it doesn't matter what else runs on port 3000. Each run includes a
+production build, so allow a minute or two. If 3100 is taken, run it as
+`E2E_PORT=3200 npm run test:e2e`.
 
-- **This app** (the user trying the story with `npm run dev`): just run
-  `npm run test:e2e`. Locally, the tests reuse that server, which is
-  what you want. (Next.js allows only one dev server per project folder,
-  so a second one on another port won't start.)
-- **Another app:** run the tests on a free port instead:
-  `E2E_PORT=3100 npm run test:e2e`. Don't stop the other app without
-  asking.
+**Apps from before iter8-it 0.26** test against the dev server instead
+(`npm run dev` in `playwright.config.ts`, `reuseExistingServer: !isCI`),
+which is slower and flaky. If you see that, update `playwright.config.ts`
+from Claim It's template (`webServer` always `npm run build && npm run
+start -- --port <port>`, `reuseExistingServer: false`, default port 3100,
+and `failOnFlakyTests: isCI`) as part of the story, and say so in the PR.
 
 All must pass. **The local `test:e2e` run is the story's end-to-end check**:
 CI runs only the quick checks on PRs into `dev`, and the end-to-end tests

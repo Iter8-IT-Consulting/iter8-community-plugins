@@ -223,7 +223,8 @@ npm run test:e2e
   it as a real failure.
 - `npx playwright install chromium` downloads a browser (~150 MB) once per
   machine. Say so.
-- `npm run test:e2e` starts the app itself and tests it on a desktop and a
+- `npm run test:e2e` builds the app, starts it on its own port (3100) and
+  tests it there, as CI does; it tests on a desktop and a
   mobile screen size.
 
 ## 5. First commit

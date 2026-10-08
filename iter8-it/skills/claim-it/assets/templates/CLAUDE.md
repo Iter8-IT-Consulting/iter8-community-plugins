@@ -41,7 +41,7 @@ It, Fix It, Grow It.
 | `npm run lint` | ESLint |
 | `npm run typecheck` | `next typegen && tsc --noEmit` (route types live in the gitignored `.next/types`, so they're generated first) |
 | `npm test` | Unit tests (Vitest) |
-| `npm run test:e2e` | End-to-end tests (Playwright; starts the app itself) |
+| `npm run test:e2e` | End-to-end tests (Playwright): builds the app and tests the production server on port 3100, like CI. `npm run dev` can stay open. |
 | `BASE_URL=<url> npm run test:e2e` | End-to-end tests against a deployed site |
 
 ## Branches and environments

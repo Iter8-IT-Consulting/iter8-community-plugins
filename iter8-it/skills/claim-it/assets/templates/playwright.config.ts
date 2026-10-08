@@ -1,9 +1,14 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// Set BASE_URL to run the tests against a deployed site (for example the
-// live production URL) instead of starting the app locally. Set E2E_PORT to
-// test on a different port when 3000 is busy (another app's dev server).
-const port = Number(process.env.E2E_PORT ?? 3000);
+// The tests run against a production build of the app (`next build` +
+// `next start`), on its own port, locally and in CI alike: the same thing
+// people get, without the dev server's compile-on-first-visit delays that
+// make tests slow and flaky. It never reuses a server that's already
+// running (that could be another app, or `npm run dev`).
+//
+// Set BASE_URL to test a deployed site instead (for example the live
+// production URL). Set E2E_PORT if 3100 is taken.
+const port = Number(process.env.E2E_PORT ?? 3100);
 const baseURL = process.env.BASE_URL ?? `http://localhost:${port}`;
 const isCI = !!process.env.CI;
 
@@ -12,6 +17,9 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: isCI,
   retries: isCI ? 2 : 0,
+  // In CI a test that only passes on a retry fails the run: flaky tests get
+  // fixed instead of quietly retried.
+  failOnFlakyTests: isCI,
   reporter: isCI ? [["github"], ["html", { open: "never" }]] : "list",
   use: {
     baseURL,
@@ -27,9 +35,9 @@ export default defineConfig({
   webServer: process.env.BASE_URL
     ? undefined
     : {
-        command: isCI ? `npm run build && npm run start -- --port ${port}` : `npm run dev -- --port ${port}`,
+        command: `npm run build && npm run start -- --port ${port}`,
         url: baseURL,
-        reuseExistingServer: !isCI,
-        timeout: 180_000,
+        reuseExistingServer: false,
+        timeout: 300_000,
       },
 });

@@ -990,6 +990,13 @@ Not built yet. Their pages in `docs/steps/` describe what they'll do.
   favicon.ico, apple-icon.png), then sets the avatar after the release.
   Adopt It offers the same. SlideIt's avatar was switched to its own
   logo this way; PlateIt's is still the "8".
+- **Local e2e = production build on its own port (2026-10-08).** From
+  app sessions: local e2e ran against `npm run dev` and reused whatever was
+  on port 3000, which was slow (compile on first visit) and flaky in every
+  app. The Playwright template now always runs `next build` + `next start`
+  on port 3100 (E2E_PORT to change it), never reuses a server, and sets
+  `failOnFlakyTests` in CI. Build It explains it and updates older apps'
+  config as part of a story; Adopt It reports the old setup.
 - **Cold-start test times on Windows** are antivirus scanning freshly
   installed files (33s jsdom / 14s happy-dom on the first run, ~1-2s
   after). Retry once before treating a timeout as a failure.
